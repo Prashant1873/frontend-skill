@@ -61,7 +61,7 @@ function runSuite(suite, isJsonMode) {
   let stderr = '';
 
   try {
-    stdout = execFileSync('node', [suite.script, ...suite.args], {
+    stdout = execFileSync(process.execPath, [suite.script, ...suite.args], {
       cwd: REPO_ROOT,
       encoding: 'utf-8',
       stdio: ['ignore', 'pipe', 'pipe'],

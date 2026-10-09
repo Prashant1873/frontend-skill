@@ -2,7 +2,7 @@
 
 Adapt an existing design to a different context: another screen size, device, platform, or use case. The trap is treating adaptation as scaling. The job is rethinking the experience for the new context.
 
-**Web only** (mobile web included). Native platforms (`ios` / `android` / `adaptive`) route to [adapt.native.md](adapt.native.md) instead; if the project is native, switch to it now.
+**Web and Native**. For native platforms (`ios` / `android` / `adaptive`), see the [Native Platform Adaptation](#native-platform-adaptation-ios--android) section below.
 
 ---
 
@@ -310,3 +310,37 @@ DevTools device emulation is useful for layout but misses:
 ---
 
 **Avoid**: Desktop-first design. Device detection instead of feature detection. Separate mobile/desktop codebases. Ignoring tablet and landscape. Assuming all mobile devices are powerful.
+
+---
+
+## Native Platform Adaptation (iOS / Android)
+
+When adapting native designs (`ios`, `android`, or `adaptive`) across devices or platforms:
+
+### 1. Phone → Tablet (iPad / Large Screens)
+- **Restructure, don't stretch**: Scaled-up phone UI on tablet is a primary antipattern. Use size classes (iOS) / window size classes (Android) to switch layout topology.
+- **Navigation changes shape**: Tab bar becomes a sidebar/rail on expanded widths.
+- **Multi-column presentation**: Use master-detail split views, multi-column grids, and popovers where phones use sheets.
+- **Multitasking / Multi-window**: Account for split-screen widths dynamically.
+
+### 2. Orientation & Foldables
+- Landscape restructures into side-by-side panes with repositioned controls. Never clip or letterbox.
+- Foldables (Android): React to posture and hinge via window size classes across folded, unfolded, and tabletop modes.
+
+### 3. Cross-Platform Idiom Translation (iOS ↔ Android)
+Translate idioms directly rather than transplanting alien controls:
+
+| Feature / UI Element | iOS Pattern | Android Pattern |
+|---|---|---|
+| Primary Navigation | Tab bar | Navigation bar / rail / drawer |
+| Backward Traversal | Edge-swipe back, chevron | Predictive Back gesture / button |
+| Selection & Toggles | Switch, segmented control | Material switch, filter chips |
+| Context Overlays | Action sheet | Bottom sheet / Material dialog |
+| Iconography & Type | SF Symbols, SF Pro, Dynamic Type | Material Symbols, Roboto, sp scaling |
+| Theming & Elevation | Semantic system colors, materials | Material color roles, tonal elevation |
+
+### 4. Implementation Invariants
+- Drive structure from **size classes / window size classes**, never from hardcoded device-model strings.
+- Respect safe areas and window insets in every configuration (notch, Dynamic Island, home indicator, status bar, IME keyboard).
+- Verify on real hardware across phone, tablet, and both orientations.
+

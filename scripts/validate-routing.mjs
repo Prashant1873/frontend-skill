@@ -89,6 +89,22 @@ function extractCommandMatrix(content) {
   return commands;
 }
 
+function extractFrontmatter(content) {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) return null;
+  const raw = match[1];
+  const fields = {};
+  for (const line of raw.split(/\r?\n/)) {
+    const colonIdx = line.indexOf(':');
+    if (colonIdx !== -1) {
+      const key = line.slice(0, colonIdx).trim();
+      const val = line.slice(colonIdx + 1).trim().replace(/^['"]|['"]$/g, '');
+      fields[key] = val;
+    }
+  }
+  return fields;
+}
+
 function main() {
   const flags = parseArgs(process.argv);
 
@@ -100,6 +116,28 @@ function main() {
   const content = fs.readFileSync(SKILL_FILE, 'utf-8');
   const issues = [];
   const verifiedRoutes = [];
+
+  // 0. Validate Multi-Agent Frontmatter Contract (Antigravity, Claude, Cursor, Codex, OpenCode)
+  const frontmatter = extractFrontmatter(content);
+  if (!frontmatter) {
+    issues.push({
+      type: 'missing_frontmatter',
+      message: 'SKILL.md is missing YAML frontmatter enclosed in --- delimiters.',
+    });
+  } else {
+    if (!frontmatter.name || !/^[a-z0-9_-]+$/.test(frontmatter.name)) {
+      issues.push({
+        type: 'invalid_frontmatter_name',
+        message: `Frontmatter "name" must be lowercase alphanumeric/dash, got: "${frontmatter.name}"`,
+      });
+    }
+    if (!frontmatter.description || frontmatter.description.length < 20) {
+      issues.push({
+        type: 'invalid_frontmatter_description',
+        message: 'Frontmatter "description" is missing or too short (< 20 characters).',
+      });
+    }
+  }
 
   // 1. Check command matrix mapping
   const commands = extractCommandMatrix(content);

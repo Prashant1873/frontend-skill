@@ -31,7 +31,7 @@ function assert(condition, message) {
 
 function runDoctorCli(args = [], cwd = REPO_ROOT) {
   try {
-    const stdout = execFileSync('node', [DOCTOR_CLI, ...args], {
+    const stdout = execFileSync(process.execPath, [DOCTOR_CLI, ...args], {
       cwd,
       encoding: 'utf-8',
       stdio: ['ignore', 'pipe', 'pipe'],

@@ -2,7 +2,7 @@ Run systematic **technical** quality checks and generate a comprehensive report.
 
 This is a code-level audit, not a design critique. Check what's measurable and verifiable in the implementation.
 
-**Web only.** Native platforms (`ios` / `android` / `adaptive`) route to [audit.native.md](audit.native.md) instead; if the project is native, switch to it now.
+**Web and Native.** For native platforms (`ios` / `android` / `adaptive`), see the [Native App Auditing](#native-app-auditing-ios--android) section below.
 
 ## Diagnostic Scan
 
@@ -134,3 +134,39 @@ After presenting the summary, tell the user:
 - Skip positive findings (celebrate what works)
 - Forget to prioritize (everything can't be P0)
 - Report false positives without verification
+
+---
+
+## Native App Auditing (iOS / Android)
+
+When auditing native application codebases (`ios`, `android`, or `adaptive`), scan source across 5 technical quality dimensions (scored 0–4):
+
+### 1. Accessibility (VoiceOver & TalkBack)
+- **Missing labels**: Interactive views missing accessibility labels, traits, or state descriptions.
+- **Traversal order**: Illogical focus order or unreachable controls during assistive navigation.
+- **Font scaling**: Fixed point sizes defeating iOS Dynamic Type or Android `sp` units; text clipping on large settings.
+- **Hit targets**: Tap areas below 44pt (iOS) / 48dp (Android).
+- **Reduced motion**: Parallax or large animations that fail to respect `prefers-reduced-motion` equivalents.
+
+### 2. Performance & Threading
+- **Startup latency**: Synchronous blocking tasks on launch before initial frame render.
+- **List virtualization**: Missing list recycling (unvirtualized FlatList, LazyColumn, or SwiftUI List).
+- **Main thread jank**: Work dispatched to the main run loop causing frame drops on 60/120Hz displays.
+- **Image memory**: Loading full-resolution bitmaps into small thumbnail views without caching.
+
+### 3. Appearance & Theming
+- **Hardcoded colors**: Hex values instead of system semantic colors (iOS UI/NSColor, Android Material color roles).
+- **Broken dark mode**: Inadequate contrast or inverted assets in dark appearance.
+- **Dynamic Color**: Lack of fallback palettes when Material You dynamic color is unavailable.
+
+### 4. Platform Conformance
+- **System gesture hijacking**: Disabling iOS edge swipe back or Android predictive back.
+- **Inset & Safe Area violations**: Layout clipped by notch, Dynamic Island, status bar, or keyboard.
+- **Web-shaped controls**: Re-implementing HTML checkboxes or web tabs instead of platform-standard controls.
+- **Icon inconsistency**: Mixing web SVG sets instead of system SF Symbols or Material Symbols.
+
+### 5. Adaptivity
+- **Scaled phone layouts**: iPad / tablet rendering a blown-up phone interface instead of responsive size classes.
+- **Orientation & Foldables**: Layout breakages or forced portrait lock.
+- **IME handling**: Form fields obscured by the on-screen keyboard without scroll offsets.
+

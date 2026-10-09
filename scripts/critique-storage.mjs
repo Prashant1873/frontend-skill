@@ -312,15 +312,16 @@ function main(argv) {
     case 'write': {
       const [slugArg, bodyFile] = args;
       const slug = coerceSlug(slugArg);
-      if (!slug || !bodyFile) { process.stderr.write('usage: write <slug-or-target> <body-file>\n'); process.exit(1); }
+      if (!slug || !bodyFile) { process.stderr.write('usage: write <slug-or-target> <body-file> [--meta <json>]\n'); process.exit(1); }
       const raw = fs.readFileSync(bodyFile, 'utf-8');
-      // The body file may be a full report. The caller passes the meta as
-      // a JSON object on stdin if it wants structured frontmatter; otherwise
-      // we write with minimal metadata.
       let meta = {};
       const metaArg = process.env.IMPECCABLE_CRITIQUE_META;
       if (metaArg) {
         try { meta = JSON.parse(metaArg); } catch { /* ignore */ }
+      }
+      const metaFlagIndex = args.indexOf('--meta');
+      if (metaFlagIndex !== -1 && args[metaFlagIndex + 1]) {
+        try { meta = { ...meta, ...JSON.parse(args[metaFlagIndex + 1]) }; } catch { /* ignore */ }
       }
       // The helper, not caller-provided metadata, owns the target fingerprint.
       // This makes the snapshot describe the exact file bytes critique saw.
