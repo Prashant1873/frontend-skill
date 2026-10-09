@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clean Accessible Fixture</title>
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-text: #111827;
+      --color-primary: #1d4ed8;
+      --color-surface: #f3f4f6;
+    }
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1rem;
+      color: var(--color-text);
+      max-width: 65ch;
+    }
+    .btn {
+      display: inline-block;
+      background-color: var(--color-primary);
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>High Craft Product Design</h1>
+    <p>Intentional typography with solid contrast and accessible focus indicators.</p>
+    <button type="button" class="btn">Explore Platform</button>
+  </main>
+</body>
+</html>
