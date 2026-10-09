@@ -89,6 +89,12 @@ const SUITES = [
     description: 'Local zero-dependency HTTP server, API endpoints, and sandbox UI',
   },
   {
+    name: 'Multi-Variant Prototype Engine',
+    script: path.join(REPO_ROOT, 'test', 'test-prototype.mjs'),
+    args: [],
+    description: 'PICKER.md spec, floating glass switcher, keyboard controls, and URL sync',
+  },
+  {
     name: 'Doctor Automation',
     script: path.join(SCRIPT_DIR, 'test-doctor.mjs'),
     args: [],
