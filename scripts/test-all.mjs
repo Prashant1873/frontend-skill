@@ -107,6 +107,12 @@ const SUITES = [
     description: 'Design token dictionary compilation, CSS, Tailwind v3/v4, DTCG, and SCSS',
   },
   {
+    name: 'Cognitive UX Laws Scanner',
+    script: path.join(REPO_ROOT, 'test', 'test-ux-scan.mjs'),
+    args: [],
+    description: "Hick's, Fitts's, and Miller's laws cognitive friction audit",
+  },
+  {
     name: 'Doctor Automation',
     script: path.join(SCRIPT_DIR, 'test-doctor.mjs'),
     args: [],
