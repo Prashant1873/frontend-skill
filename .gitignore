@@ -1,11 +1,30 @@
+# Project Knowledge & Agent Dev Artifacts (Internal only)
+great_ideas.md
+neural_map.md
+.planning/
+tasks/
+FRONTEND_PLAN.md
+
 # OS Files
 .DS_Store
 Thumbs.db
+Desktop.ini
 
-# Logs & Temp
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs & Temporary Files
 *.log
-.temp/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
 tmp/
+.temp/
+.cache/
 
-# Node
+# Dependencies
 node_modules/
+
