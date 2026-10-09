@@ -101,6 +101,12 @@ const SUITES = [
     description: 'Apple spring physics solver, rubber-band curve, and pointer tracker',
   },
   {
+    name: 'Universal Design Token Compiler',
+    script: path.join(REPO_ROOT, 'test', 'test-token-compiler.mjs'),
+    args: [],
+    description: 'Design token dictionary compilation, CSS, Tailwind v3/v4, DTCG, and SCSS',
+  },
+  {
     name: 'Doctor Automation',
     script: path.join(SCRIPT_DIR, 'test-doctor.mjs'),
     args: [],
