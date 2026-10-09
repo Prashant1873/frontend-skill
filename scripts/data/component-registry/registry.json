@@ -101,6 +101,24 @@
       "tags": ["bento", "grid", "asymmetric", "editorial", "typography", "rhythm"],
       "tokensUsed": ["--surface", "--border", "--text-primary", "--text-secondary", "--radius-lg", "--radius-xl"],
       "path": "bento/rhythmic-editorial-bento.json"
+    },
+    {
+      "id": "sheet-drawer",
+      "name": "Fluid Drag-to-Dismiss Bottom Sheet",
+      "category": "gestures",
+      "archetype": "modern-saas",
+      "tags": ["gesture", "sheet", "drawer", "modal", "drag", "physics"],
+      "tokensUsed": ["--surface", "--text-primary", "--radius-xl"],
+      "path": "gestures/sheet-drawer.json"
+    },
+    {
+      "id": "physics-toggle",
+      "name": "Tactile Physics Toggle Switch",
+      "category": "gestures",
+      "archetype": "modern-saas",
+      "tags": ["gesture", "toggle", "switch", "tactile", "spring", "squish"],
+      "tokensUsed": ["--primary", "--surface", "--radius-full"],
+      "path": "gestures/physics-toggle.json"
     }
   ]
 }

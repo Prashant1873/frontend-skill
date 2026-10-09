@@ -1,0 +1,14 @@
+{
+  "id": "sheet-drawer",
+  "category": "gestures",
+  "name": "Fluid Drag-to-Dismiss Bottom Sheet",
+  "description": "Apple HIG mobile bottom sheet with 1:1 drag tracking, rubber-band upper resistance, and momentum velocity dismissal.",
+  "html": "<div class=\"gesture-sheet-backdrop\" data-open=\"\">\n  <div class=\"gesture-sheet\" data-open=\"\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Details Sheet\">\n    <div class=\"gesture-sheet-header\">\n      <div class=\"gesture-sheet-handle\" aria-hidden=\"true\"></div>\n    </div>\n    <div class=\"gesture-sheet-body\">\n      <h3>Sheet Title</h3>\n      <p>Swipe down to dismiss with fluid momentum velocity or drag up against rubber-band resistance.</p>\n    </div>\n  </div>\n</div>",
+  "css": ".gesture-sheet { touch-action: pan-y; border-radius: 28px 28px 0 0; will-change: transform; }",
+  "metadata": {
+    "archetype": "Experience",
+    "physics": "Apple fluid spring",
+    "touchAction": "pan-y",
+    "minHitbox": "44px"
+  }
+}

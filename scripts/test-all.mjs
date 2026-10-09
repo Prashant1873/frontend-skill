@@ -95,6 +95,12 @@ const SUITES = [
     description: 'PICKER.md spec, floating glass switcher, keyboard controls, and URL sync',
   },
   {
+    name: 'Fluid Gestures & Spring Physics',
+    script: path.join(REPO_ROOT, 'test', 'test-gestures.mjs'),
+    args: [],
+    description: 'Apple spring physics solver, rubber-band curve, and pointer tracker',
+  },
+  {
     name: 'Doctor Automation',
     script: path.join(SCRIPT_DIR, 'test-doctor.mjs'),
     args: [],
