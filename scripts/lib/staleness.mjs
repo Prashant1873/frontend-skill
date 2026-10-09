@@ -276,9 +276,35 @@ export function checkDesignSidecar({ designPath, sidecarCandidates = [], project
     }));
   }
 
-  const sidecar = readJson(present);
+  let sidecar;
+  try {
+    sidecar = JSON.parse(fs.readFileSync(present, 'utf-8'));
+  } catch (err) {
+    findings.push(finding({
+      id: 'design-sidecar-corrupted-json',
+      artifact: 'design.json',
+      filePath: relPresent,
+      severity: 'route',
+      summary: `${relPresent} exists but cannot be parsed as JSON: ${err.message}.`,
+      fix: 'Repair the syntax error or run `document` to recreate the design sidecar.',
+    }));
+    return findings;
+  }
+
+  if (!sidecar || typeof sidecar !== 'object' || Array.isArray(sidecar)) {
+    findings.push(finding({
+      id: 'design-sidecar-corrupted-json',
+      artifact: 'design.json',
+      filePath: relPresent,
+      severity: 'route',
+      summary: `${relPresent} must contain a JSON object.`,
+      fix: 'Run `document` to regenerate the sidecar from DESIGN.md.',
+    }));
+    return findings;
+  }
+
   const schemaVersion = readSidecarSchemaVersion(sidecar);
-  if (sidecar && (schemaVersion === null || schemaVersion < DESIGN_SIDECAR_SCHEMA_VERSION)) {
+  if (schemaVersion === null || schemaVersion < DESIGN_SIDECAR_SCHEMA_VERSION) {
     findings.push(finding({
       id: 'design-sidecar-schema-outdated',
       artifact: 'design.json',
@@ -323,9 +349,35 @@ export function checkConfig({ projectRoot, repoRoot }) {
   for (const root of roots) {
     for (const name of ['config.json', 'config.local.json']) {
       const filePath = path.join(root, '.impeccable', name);
-      const raw = readJson(filePath);
-      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) continue;
+      if (!fs.existsSync(filePath)) continue;
       const rel = toRelative(filePath, projectRoot || root);
+
+      let raw;
+      try {
+        raw = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      } catch (err) {
+        findings.push(finding({
+          id: 'config-corrupted-json',
+          artifact: 'config.json',
+          filePath: rel,
+          severity: 'route',
+          summary: `${rel} exists but cannot be parsed as JSON: ${err.message}.`,
+          fix: 'Repair the syntax error in the configuration file or recreate it.',
+        }));
+        continue;
+      }
+
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+        findings.push(finding({
+          id: 'config-corrupted-json',
+          artifact: 'config.json',
+          filePath: rel,
+          severity: 'route',
+          summary: `${rel} must contain a JSON object, but contains ${raw === null ? 'null' : Array.isArray(raw) ? 'an array' : typeof raw}.`,
+          fix: 'Replace the contents with a valid JSON configuration object.',
+        }));
+        continue;
+      }
 
       const unknownTop = Object.keys(raw).filter((key) => !KNOWN_CONFIG_KEYS.has(key));
       if (unknownTop.length) {
@@ -349,8 +401,8 @@ export function checkConfig({ projectRoot, repoRoot }) {
           severity: 'mention',
           summary: `${rel} sets \`buildPath\` to ${JSON.stringify(raw.buildPath)}, which nothing reads. `
             + `The values are ${BUILD_PATH_VALUES.map((value) => `\`${value}\``).join(' and ')}.`,
-          fix: 'Report the value. An unread `buildPath` does not fall back to the other path; '
-            + 'it falls back to the default, so a project meaning `code` has been building comp-led.',
+          fix: 'Report the value. An unread \`buildPath\` does not fall back to the other path; '
+            + 'it falls back to the default, so a project meaning \`code\` has been building comp-led.',
         }));
       }
 

@@ -59,10 +59,11 @@ function safeRead(filePath) {
 
 function parseArgs(argv) {
   const passthrough = [];
-  const flags = { json: false, fix: false, help: false };
+  const flags = { json: false, fix: false, help: false, strict: false };
   for (const arg of argv) {
     if (arg === '--json') flags.json = true;
     else if (arg === '--fix') flags.fix = true;
+    else if (arg === '--strict' || arg === '--check') flags.strict = true;
     else if (arg === '--help' || arg === '-h') flags.help = true;
     else passthrough.push(arg);
   }
@@ -71,7 +72,7 @@ function parseArgs(argv) {
 
 function usage() {
   return [
-    `Usage: node doctor.mjs [--json] [--fix] [--target <path>]`,
+    `Usage: node doctor.mjs [--json] [--fix] [--strict] [--target <path>]`,
     '',
     "Report drift between this project's Impeccable artifacts and what the",
     'installed version reads: PRODUCT.md, DESIGN.md and its sidecar,',
@@ -79,6 +80,7 @@ function usage() {
     '',
     '  --json           Emit findings as JSON.',
     '  --fix            Apply the mechanical migrations (severity "auto") only.',
+    '  --strict         Exit code 1 if any findings exist or artifacts are corrupted.',
     '  --target <path>  Select a workspace in a monorepo.',
   ].join('\n');
 }
@@ -290,6 +292,11 @@ async function cli() {
   const report = await collect(process.cwd(), parsed.targetOptions);
   const fixes = parsed.flags.fix ? applyFixes(report) : null;
 
+  const hasCritical = report.findings.some((entry) =>
+    entry.id.includes('corrupted')
+  );
+  const shouldFail = hasCritical || (parsed.flags.strict && report.findings.length > 0);
+
   if (parsed.flags.json) {
     process.stdout.write(`${JSON.stringify({
       projectRoot: report.projectRoot,
@@ -303,10 +310,18 @@ async function cli() {
       workspaces: report.workspaces,
       ...(fixes ? { fixes } : {}),
     }, null, 2)}\n`);
+
+    if (shouldFail) {
+      process.exit(1);
+    }
     return;
   }
 
   process.stdout.write(`${renderText(report, fixes)}\n`);
+
+  if (shouldFail) {
+    process.exit(1);
+  }
 }
 
 function invokedAsScript() {
