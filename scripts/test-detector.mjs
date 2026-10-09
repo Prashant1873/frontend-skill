@@ -132,6 +132,24 @@ async function main() {
     suite.assertNoFindings(findings, 'tactile button');
   });
 
+  await suite.run('Unit: detectText catches gesture-linear-transition', () => {
+    const css = '.bottom-sheet { transition: transform 0.3s linear; }';
+    const findings = detectText(css, 'gesture.css');
+    suite.assertHasFinding(findings, 'gesture-linear-transition', 'linear gesture transition');
+  });
+
+  await suite.run('Unit: detectText catches gesture-pointer-lag', () => {
+    const css = '.drag-handle { width: 40px; height: 6px; touch-action: auto; }';
+    const findings = detectText(css, 'drag.css');
+    suite.assertHasFinding(findings, 'gesture-pointer-lag', 'missing touch-action');
+  });
+
+  await suite.run('Unit: detectText catches touch-target-sub-44px', () => {
+    const css = '.close-btn { width: 20px; height: 20px; }';
+    const findings = detectText(css, 'button.css');
+    suite.assertHasFinding(findings, 'touch-target-sub-44px', 'sub-44px button');
+  });
+
   // ── Fixture Tests: detectHtml & detectText on test/fixtures/ ──
   const typographyFixture = path.join(FIXTURES_DIR, 'slop-typography.html');
   await suite.run('Fixture: slop-typography.html triggers overused-font', async () => {
@@ -181,6 +199,22 @@ async function main() {
     suite.assert(fs.existsSync(cleanButtonsFixture), 'Fixture file exists');
     const findings = await detectHtml(cleanButtonsFixture);
     suite.assertNoFindings(findings, 'clean-tactile-buttons fixture');
+  });
+
+  const slopGesturesFixture = path.join(FIXTURES_DIR, 'slop-gestures.html');
+  await suite.run('Fixture: slop-gestures.html triggers gesture and touch target rules', async () => {
+    suite.assert(fs.existsSync(slopGesturesFixture), 'Fixture file exists');
+    const findings = await detectHtml(slopGesturesFixture);
+    suite.assertHasFinding(findings, 'gesture-linear-transition', 'slop-gestures linear transition');
+    suite.assertHasFinding(findings, 'gesture-pointer-lag', 'slop-gestures pointer lag');
+    suite.assertHasFinding(findings, 'touch-target-sub-44px', 'slop-gestures sub-44px target');
+  });
+
+  const cleanGesturesFixture = path.join(FIXTURES_DIR, 'clean-gestures.html');
+  await suite.run('Fixture: clean-gestures.html produces zero findings (negative control)', async () => {
+    suite.assert(fs.existsSync(cleanGesturesFixture), 'Fixture file exists');
+    const findings = await detectHtml(cleanGesturesFixture);
+    suite.assertNoFindings(findings, 'clean-gestures fixture');
   });
 
   // Output formatting

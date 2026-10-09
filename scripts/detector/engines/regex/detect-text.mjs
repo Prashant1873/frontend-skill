@@ -2,7 +2,7 @@ import { GENERIC_FONTS, OVERUSED_FONTS, EM_DASH_FLOOR, EM_DASH_CHARS_PER_DASH } 
 import { isNeutralColor } from '../../shared/color.mjs';
 import { extractGoogleFontFamilies } from '../../shared/fonts.mjs';
 import { checkSourceDesignSystem } from '../../design-system.mjs';
-import { scanCssTextForButtonDynamics, scanCssTextForGlow, scanCssTextForGridBackground, scanCssTextForMarquee, scanCssTextForPseudoStripe, scanCssTextForRadialHalo } from '../../rules/checks.mjs';
+import { scanCssTextForButtonDynamics, scanCssTextForGestureDynamics, scanCssTextForGlow, scanCssTextForGridBackground, scanCssTextForMarquee, scanCssTextForPseudoStripe, scanCssTextForRadialHalo } from '../../rules/checks.mjs';
 import { isFullPage } from '../../shared/page.mjs';
 import { applyInlineIgnores } from '../../shared/inline-ignores.mjs';
 import { finding } from '../../findings.mjs';
@@ -1202,6 +1202,12 @@ function detectText(content, filePath, options = {}) {
 
   // Button dynamics scan (:active squish and contrast)
   for (const hit of scanCssTextForButtonDynamics(source)) {
+    const line = source.substring(0, hit.index).split('\n').length;
+    findings.push(finding(hit.id, filePath, hit.snippet, line));
+  }
+
+  // Gesture dynamics and touch targets scan
+  for (const hit of scanCssTextForGestureDynamics(source)) {
     const line = source.substring(0, hit.index).split('\n').length;
     findings.push(finding(hit.id, filePath, hit.snippet, line));
   }

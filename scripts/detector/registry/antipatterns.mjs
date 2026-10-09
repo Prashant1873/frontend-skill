@@ -601,6 +601,36 @@ const ANTIPATTERNS = [
     skillSection: 'Color & Contrast',
     skillGuideline: 'accessible button contrast',
   },
+  {
+    id: 'gesture-linear-transition',
+    category: 'slop',
+    scopes: ['motion'],
+    name: 'Gesture surface with linear or un-sprung CSS transition',
+    description:
+      'Interactive drag gestures, bottom sheets, sliders, and toggles must use fluid harmonic oscillator spring physics instead of linear or static ease transitions.',
+    skillSection: 'Motion & Fluid Gestures',
+    skillGuideline: 'gesture momentum spring transitions',
+  },
+  {
+    id: 'gesture-pointer-lag',
+    category: 'slop',
+    scopes: ['motion'],
+    name: 'Gesture component missing touch-action optimization',
+    description:
+      'Drag and swipe components must declare "touch-action: none" or "touch-action: pan-y" to eliminate 300ms mobile touch delay and browser scroll competition.',
+    skillSection: 'Motion & Fluid Gestures',
+    skillGuideline: 'pointer tracking touch-action',
+  },
+  {
+    id: 'touch-target-sub-44px',
+    category: 'slop',
+    scopes: ['layout'],
+    name: 'Interactive touch target under 44x44px',
+    description:
+      'Interactive buttons, links, and form controls must establish a minimum 44x44px touch target (Apple HIG & WCAG AAA) or provide pseudo-element hitbox expansion.',
+    skillSection: 'Buttons & Micro-Interactions',
+    skillGuideline: 'minimum touch target 44px',
+  },
 ];
 
 const RULE_ENGINE_SUPPORT = {

@@ -1137,6 +1137,83 @@ function scanCssTextForButtonDynamics(rawContent) {
   return findings;
 }
 
+// Scans stylesheet text for gesture and touch target dynamics:
+// 1. gesture-linear-transition: Gesture components using linear or arbitrary ease CSS transitions
+// 2. gesture-pointer-lag: Drag components missing touch-action optimization
+// 3. touch-target-sub-44px: Interactive controls with explicit geometry < 44px lacking hit expansion
+function scanCssTextForGestureDynamics(rawContent) {
+  const content = String(rawContent || '').replace(/\/\*[\s\S]*?\*\//g,
+    (block) => block.replace(/[^\n]/g, ' '));
+  const findings = [];
+
+  const ruleRe = new RegExp(CSS_RULE_BLOCK_SOURCE, 'g');
+  let m;
+  while ((m = ruleRe.exec(content)) !== null) {
+    const selector = m[1].trim();
+    const decls = parseCssDeclBlock(m[2]);
+
+    // 1 & 2: Gesture component checks
+    const isGestureSelector = /(?:^|[\s>+~,.])(?:sheet|bottom-sheet|drawer|drag-handle|draggable|swipeable|physics-toggle|gesture-sheet)(?![\w-])/i.test(selector);
+    if (isGestureSelector) {
+      const transition = decls.get('transition') || decls.get('transition-timing-function') || '';
+      if (transition) {
+        if (/\blinear\b/i.test(transition) || /all\s+[\d.]+s\s+ease/i.test(transition) || /transform\s+[\d.]+s\s+ease\b/i.test(transition)) {
+          findings.push({
+            id: 'gesture-linear-transition',
+            snippet: `${selector} has linear/un-sprung gesture transition (${transition})`,
+            index: m.index,
+            selector,
+          });
+        }
+      }
+
+      // Check touch-action on drag surfaces
+      const isDragTarget = /(?:^|[\s>+~,.])(?:sheet|bottom-sheet|drag-handle|draggable|swipeable|gesture-sheet)(?![\w-])/i.test(selector);
+      if (isDragTarget) {
+        const touchAction = decls.get('touch-action');
+        if (!touchAction || touchAction === 'auto') {
+          findings.push({
+            id: 'gesture-pointer-lag',
+            snippet: `${selector} missing touch-action: none or touch-action: pan-y (causes mobile 300ms gesture delay)`,
+            index: m.index,
+            selector,
+          });
+        }
+      }
+    }
+
+    // 3: Sub-44px touch target check on interactive controls
+    const isInteractiveControl = /(?:^|[\s>+~,.])(?:btn|button|icon-btn|btn-icon|close-btn|drag-handle|sheet-handle)(?![\w-])/i.test(selector) || /button\b/i.test(selector);
+    if (isInteractiveControl) {
+      const w = decls.get('width');
+      const h = decls.get('height');
+      const wPx = cssLengthToPx(w);
+      const hPx = cssLengthToPx(h);
+
+      if ((wPx !== null && wPx < 44 && wPx > 0) || (hPx !== null && hPx < 44 && hPx > 0)) {
+        const minW = decls.get('min-width') || decls.get('min-inline-size');
+        const minH = decls.get('min-height') || decls.get('min-block-size');
+        const minWPx = cssLengthToPx(minW);
+        const minHPx = cssLengthToPx(minH);
+        const hasPseudoHitbox = content.includes(`${selector}::before`) || content.includes(`${selector}::after`) || content.includes(`${selector}:before`) || content.includes(`${selector}:after`);
+        const hasHitboxExpand = hasPseudoHitbox || /hitbox|touch-target|expand/i.test(selector) || /(?:^|[\s>+~,.])(?:hitbox|touch-target)(?![\w-])/i.test(selector);
+
+        const meetsMin = (minWPx !== null && minWPx >= 44) || (minHPx !== null && minHPx >= 44);
+        if (!meetsMin && !hasHitboxExpand) {
+          findings.push({
+            id: 'touch-target-sub-44px',
+            snippet: `${selector} explicit size (${wPx ?? '?'}x${hPx ?? '?'}px) under 44x44px touch target standard`,
+            index: m.index,
+            selector,
+          });
+        }
+      }
+    }
+  }
+
+  return findings;
+}
+
 function checkGenericPillBadge(opts) {
   const { classList, text, siblingHeading } = opts || {};
   const classes = typeof classList === 'string' ? classList : Array.from(classList || []).join(' ');
@@ -5723,6 +5800,7 @@ export {
   scanCssTextForPseudoStripe,
   scanCssTextForInsetStripe,
   scanCssTextForButtonDynamics,
+  scanCssTextForGestureDynamics,
   checkGenericPillBadge,
   scanCssTextForMarquee,
   collectMarqueeKeyframes,
