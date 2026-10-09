@@ -1,0 +1,1001 @@
+{
+  "schema": 1,
+  "description": "Curated typography catalog and fallback metrics for Frontend Skill",
+  "archetypes": {
+    "modern-saas": {
+      "name": "Modern SaaS & Flagship",
+      "description": "Ultra-precise neo-grotesque and geometric sans optimized for developer tooling, high-density UI, dashboards, and dark-mode web applications.",
+      "defaultHeading": "Plus Jakarta Sans",
+      "defaultBody": "Geist",
+      "fallbackBase": "Arial"
+    },
+    "editorial-luxury": {
+      "name": "Editorial, Literary & Luxury",
+      "description": "High-contrast serifs with warm human rhythm, magazine editorial authority, cultural depth, and elevated typography scales.",
+      "defaultHeading": "PP Editorial New",
+      "defaultBody": "Charter",
+      "fallbackBase": "Georgia"
+    },
+    "consumer-lifestyle": {
+      "name": "Product & Consumer Lifestyle",
+      "description": "Approachable geometric curves and humanist geometry tailored for consumer web applications, e-commerce, and onboarding journeys.",
+      "defaultHeading": "Circular",
+      "defaultBody": "DM Sans",
+      "fallbackBase": "Arial"
+    },
+    "expressive-display": {
+      "name": "Creative, Brutalist & Expressive Display",
+      "description": "High-impact, asymmetrical, boutique agency, streetwear, and cutting-edge display faces commanding immediate focal attention.",
+      "defaultHeading": "Space Grotesk",
+      "defaultBody": "Cabinet Grotesk",
+      "fallbackBase": "Arial"
+    },
+    "swiss-authority": {
+      "name": "Swiss International & Enterprise Authority",
+      "description": "Mid-century modernist clarity, neutral corporate authority, documentation portals, and enterprise-grade data readability.",
+      "defaultHeading": "Neue Haas Grotesk",
+      "defaultBody": "IBM Plex Sans",
+      "fallbackBase": "Arial"
+    }
+  },
+  "fonts": [
+    {
+      "family": "Plus Jakarta Sans",
+      "slug": "plus-jakarta-sans",
+      "archetype": "modern-saas",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 600, 700, 800],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "102%",
+        "ascentOverride": "98%",
+        "descentOverride": "26%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Geist",
+      "slug": "geist",
+      "archetype": "modern-saas",
+      "roles": ["display", "headline", "body", "data"],
+      "weights": [300, 400, 500, 600, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Söhne",
+      "slug": "soehne",
+      "archetype": "modern-saas",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Geist",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Google Sans",
+      "slug": "google-sans",
+      "archetype": "modern-saas",
+      "roles": ["display", "headline"],
+      "weights": [400, 500, 700],
+      "variable": false,
+      "source": "system-or-brand",
+      "openAlternative": "Plus Jakarta Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "102%",
+        "ascentOverride": "98%",
+        "descentOverride": "26%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Mona Sans",
+      "slug": "mona-sans",
+      "archetype": "modern-saas",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 600, 700, 800],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700;800&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "98%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Figma Sans",
+      "slug": "figma-sans",
+      "archetype": "modern-saas",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": false,
+      "source": "brand",
+      "openAlternative": "Plus Jakarta Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Slack Sans",
+      "slug": "slack-sans",
+      "archetype": "modern-saas",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 600, 700],
+      "variable": false,
+      "source": "brand",
+      "openAlternative": "General Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "102%",
+        "ascentOverride": "98%",
+        "descentOverride": "26%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "SF Pro Display",
+      "slug": "sf-pro-display",
+      "archetype": "modern-saas",
+      "roles": ["display", "headline"],
+      "weights": [400, 500, 600, 700, 800],
+      "variable": false,
+      "source": "system",
+      "openAlternative": "Geist",
+      "fallback": {
+        "base": "system-ui",
+        "sizeAdjust": "100%",
+        "ascentOverride": "95%",
+        "descentOverride": "23%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "SF Pro Text",
+      "slug": "sf-pro-text",
+      "archetype": "modern-saas",
+      "roles": ["body", "data"],
+      "weights": [400, 500, 600, 700],
+      "variable": false,
+      "source": "system",
+      "openAlternative": "Inter",
+      "fallback": {
+        "base": "system-ui",
+        "sizeAdjust": "100%",
+        "ascentOverride": "95%",
+        "descentOverride": "23%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "General Sans",
+      "slug": "general-sans",
+      "archetype": "modern-saas",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": true,
+      "source": "fontshare",
+      "cdn": "https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Instrument Sans",
+      "slug": "instrument-sans",
+      "archetype": "modern-saas",
+      "roles": ["headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Untitled Sans",
+      "slug": "untitled-sans",
+      "archetype": "modern-saas",
+      "roles": ["headline", "body"],
+      "weights": [400, 500, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "General Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Inter",
+      "slug": "inter",
+      "archetype": "modern-saas",
+      "roles": ["data", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+      "note": "Relegated to data tables & micro labels; banned as primary display voice",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+
+    {
+      "family": "PP Editorial New",
+      "slug": "pp-editorial-new",
+      "archetype": "editorial-luxury",
+      "roles": ["display", "headline"],
+      "weights": [300, 400, 600, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Instrument Serif",
+      "fallback": {
+        "base": "Georgia",
+        "sizeAdjust": "98%",
+        "ascentOverride": "94%",
+        "descentOverride": "26%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "The Seasons",
+      "slug": "the-seasons",
+      "archetype": "editorial-luxury",
+      "roles": ["display", "headline"],
+      "weights": [400, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Fraunces",
+      "fallback": {
+        "base": "Georgia",
+        "sizeAdjust": "99%",
+        "ascentOverride": "95%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Recoleta",
+      "slug": "recoleta",
+      "archetype": "editorial-luxury",
+      "roles": ["display", "headline"],
+      "weights": [400, 600, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Fraunces",
+      "fallback": {
+        "base": "Georgia",
+        "sizeAdjust": "102%",
+        "ascentOverride": "98%",
+        "descentOverride": "26%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Canela",
+      "slug": "canela",
+      "archetype": "editorial-luxury",
+      "roles": ["display", "headline"],
+      "weights": [300, 400, 600, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Instrument Serif",
+      "fallback": {
+        "base": "Georgia",
+        "sizeAdjust": "97%",
+        "ascentOverride": "93%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Fraunces",
+      "slug": "fraunces",
+      "archetype": "editorial-luxury",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 600, 700, 900],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;600;700;900&display=swap",
+      "fallback": {
+        "base": "Georgia",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Tiempos Text",
+      "slug": "tiempos-text",
+      "archetype": "editorial-luxury",
+      "roles": ["body", "headline"],
+      "weights": [400, 500, 600, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Charter",
+      "fallback": {
+        "base": "Georgia",
+        "sizeAdjust": "99%",
+        "ascentOverride": "95%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Charter",
+      "slug": "charter",
+      "archetype": "editorial-luxury",
+      "roles": ["body", "headline"],
+      "weights": [400, 700],
+      "variable": false,
+      "source": "system-or-open",
+      "openAlternative": "Charter",
+      "fallback": {
+        "base": "Georgia",
+        "sizeAdjust": "99%",
+        "ascentOverride": "95%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Instrument Serif",
+      "slug": "instrument-serif",
+      "archetype": "editorial-luxury",
+      "roles": ["display", "headline"],
+      "weights": [400],
+      "variable": false,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap",
+      "fallback": {
+        "base": "Georgia",
+        "sizeAdjust": "98%",
+        "ascentOverride": "94%",
+        "descentOverride": "26%",
+        "lineGapOverride": "0%"
+      }
+    },
+
+    {
+      "family": "Airbnb Cereal",
+      "slug": "airbnb-cereal",
+      "archetype": "consumer-lifestyle",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 700, 900],
+      "variable": false,
+      "source": "brand",
+      "openAlternative": "Plus Jakarta Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Circular",
+      "slug": "circular",
+      "archetype": "consumer-lifestyle",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 700, 900],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "DM Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "102%",
+        "ascentOverride": "98%",
+        "descentOverride": "26%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Shopify Sans",
+      "slug": "shopify-sans",
+      "archetype": "consumer-lifestyle",
+      "roles": ["headline", "body"],
+      "weights": [400, 600, 700],
+      "variable": false,
+      "source": "brand",
+      "openAlternative": "Manrope",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Poppins",
+      "slug": "poppins",
+      "archetype": "consumer-lifestyle",
+      "roles": ["display", "headline"],
+      "weights": [400, 500, 600, 700],
+      "variable": false,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "105%",
+        "ascentOverride": "102%",
+        "descentOverride": "28%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Quicksand",
+      "slug": "quicksand",
+      "archetype": "consumer-lifestyle",
+      "roles": ["display", "headline"],
+      "weights": [500, 600, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "103%",
+        "ascentOverride": "100%",
+        "descentOverride": "27%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Jost",
+      "slug": "jost",
+      "archetype": "consumer-lifestyle",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "98%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Proxima Nova",
+      "slug": "proxima-nova",
+      "archetype": "consumer-lifestyle",
+      "roles": ["headline", "body"],
+      "weights": [400, 600, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Plus Jakarta Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Avenir Next",
+      "slug": "avenir-next",
+      "archetype": "consumer-lifestyle",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": false,
+      "source": "system-or-foundry",
+      "openAlternative": "Jost",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "DM Sans",
+      "slug": "dm-sans",
+      "archetype": "consumer-lifestyle",
+      "roles": ["headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "98%",
+        "descentOverride": "26%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Manrope",
+      "slug": "manrope",
+      "archetype": "consumer-lifestyle",
+      "roles": ["headline", "body"],
+      "weights": [400, 500, 600, 700, 800],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Work Sans",
+      "slug": "work-sans",
+      "archetype": "consumer-lifestyle",
+      "roles": ["headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "103%",
+        "ascentOverride": "100%",
+        "descentOverride": "27%",
+        "lineGapOverride": "0%"
+      }
+    },
+
+    {
+      "family": "Space Grotesk",
+      "slug": "space-grotesk",
+      "archetype": "expressive-display",
+      "roles": ["display", "headline"],
+      "weights": [400, 500, 600, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "104%",
+        "ascentOverride": "101%",
+        "descentOverride": "27%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Cabinet Grotesk",
+      "slug": "cabinet-grotesk",
+      "archetype": "expressive-display",
+      "roles": ["display", "headline"],
+      "weights": [400, 700, 800, 900],
+      "variable": true,
+      "source": "fontshare",
+      "cdn": "https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,700,800,900&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "102%",
+        "ascentOverride": "98%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "PP Neue Montreal",
+      "slug": "pp-neue-montreal",
+      "archetype": "expressive-display",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "General Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Agrandir Grand",
+      "slug": "agrandir-grand",
+      "archetype": "expressive-display",
+      "roles": ["display"],
+      "weights": [700, 900],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Space Grotesk",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "105%",
+        "ascentOverride": "102%",
+        "descentOverride": "28%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Everett",
+      "slug": "everett",
+      "archetype": "expressive-display",
+      "roles": ["display", "headline"],
+      "weights": [400, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Space Grotesk",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "103%",
+        "ascentOverride": "99%",
+        "descentOverride": "26%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Horizon",
+      "slug": "horizon",
+      "archetype": "expressive-display",
+      "roles": ["display"],
+      "weights": [700, 900],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Space Grotesk",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "106%",
+        "ascentOverride": "104%",
+        "descentOverride": "29%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Shrikhand",
+      "slug": "shrikhand",
+      "archetype": "expressive-display",
+      "roles": ["display"],
+      "weights": [400],
+      "variable": false,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Shrikhand&display=swap",
+      "fallback": {
+        "base": "Georgia",
+        "sizeAdjust": "105%",
+        "ascentOverride": "103%",
+        "descentOverride": "28%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Basis Grotesque",
+      "slug": "basis-grotesque",
+      "archetype": "expressive-display",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Cabinet Grotesk",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+
+    {
+      "family": "Neue Haas Grotesk",
+      "slug": "neue-haas-grotesk",
+      "archetype": "swiss-authority",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Public Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Suisse Int'l",
+      "slug": "suisse-intl",
+      "archetype": "swiss-authority",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Public Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Aperçu",
+      "slug": "apercu",
+      "archetype": "swiss-authority",
+      "roles": ["headline", "body"],
+      "weights": [400, 500, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "General Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Graphik",
+      "slug": "graphik",
+      "archetype": "swiss-authority",
+      "roles": ["headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Public Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Maison Neue",
+      "slug": "maison-neue",
+      "archetype": "swiss-authority",
+      "roles": ["headline", "body"],
+      "weights": [400, 500, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Public Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Aktiv Grotesk",
+      "slug": "aktiv-grotesk",
+      "archetype": "swiss-authority",
+      "roles": ["headline", "body"],
+      "weights": [400, 500, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "Public Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "ABC Diatype",
+      "slug": "abc-diatype",
+      "archetype": "swiss-authority",
+      "roles": ["headline", "body", "data"],
+      "weights": [400, 500, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "IBM Plex Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "GT America",
+      "slug": "gt-america",
+      "archetype": "swiss-authority",
+      "roles": ["display", "headline", "body"],
+      "weights": [400, 500, 700],
+      "variable": false,
+      "source": "foundry",
+      "openAlternative": "General Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "IBM Plex Sans",
+      "slug": "ibm-plex-sans",
+      "archetype": "swiss-authority",
+      "roles": ["headline", "body", "data"],
+      "weights": [400, 500, 600, 700],
+      "variable": false,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "98%",
+        "descentOverride": "26%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Public Sans",
+      "slug": "public-sans",
+      "archetype": "swiss-authority",
+      "roles": ["headline", "body"],
+      "weights": [400, 500, 600, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Source Sans 3",
+      "slug": "source-sans-3",
+      "archetype": "swiss-authority",
+      "roles": ["body", "data"],
+      "weights": [400, 600, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "97%",
+        "descentOverride": "25%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Open Sauce",
+      "slug": "open-sauce",
+      "archetype": "swiss-authority",
+      "roles": ["headline", "body"],
+      "weights": [400, 600, 700],
+      "variable": false,
+      "source": "open-source",
+      "openAlternative": "Public Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Noto Sans",
+      "slug": "noto-sans",
+      "archetype": "swiss-authority",
+      "roles": ["body", "data"],
+      "weights": [400, 500, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Open Sans",
+      "slug": "open-sans",
+      "archetype": "swiss-authority",
+      "roles": ["body"],
+      "weights": [400, 600, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "101%",
+        "ascentOverride": "98%",
+        "descentOverride": "26%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Helvetica Neue",
+      "slug": "helvetica-neue",
+      "archetype": "swiss-authority",
+      "roles": ["headline", "body"],
+      "weights": [400, 500, 700],
+      "variable": false,
+      "source": "system",
+      "openAlternative": "Public Sans",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    },
+    {
+      "family": "Roboto",
+      "slug": "roboto",
+      "archetype": "swiss-authority",
+      "roles": ["data"],
+      "weights": [400, 500, 700],
+      "variable": true,
+      "source": "google-fonts",
+      "cdn": "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
+      "note": "Relegated to Android platform parity & data only; banned as default display voice",
+      "fallback": {
+        "base": "Arial",
+        "sizeAdjust": "100%",
+        "ascentOverride": "96%",
+        "descentOverride": "24%",
+        "lineGapOverride": "0%"
+      }
+    }
+  ]
+}

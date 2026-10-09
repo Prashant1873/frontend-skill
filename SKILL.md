@@ -95,6 +95,17 @@ Before generating layout, declare:
 - ❌ NO pure gray (`#71717A`) on pure black (`#000000`) without intentional color tinting.
 - ❌ NO generic Inter + slate-900 combinations when brand character demands personality.
 
+### 1.4 Granular Sub-Playbook Routing & Green-Field Consent (ROUTER-01, ROUTER-02)
+- **Surgical Intent Routing**: When user requests target specific elements (buttons, headings, grids, colors, typography), route strictly to that sub-playbook per [reference/router.md](reference/router.md) without modifying unrelated subsystems:
+  - Buttons & click physics -> [reference/buttons.md](reference/buttons.md)
+  - Editorial headings & anti-pill -> [reference/editorial.md](reference/editorial.md)
+  - Bento & asymmetric grids -> [reference/bento.md](reference/bento.md)
+  - Color & contrast -> [reference/colorize.md](reference/colorize.md)
+  - Typography & pairings -> [reference/typeset.md](reference/typeset.md)
+  - Motion & fluid springs -> [reference/animate.md](reference/animate.md)
+  - Simplification & chrome reduction -> [reference/distill.md](reference/distill.md)
+- **Green-Field Consent Protocol**: Prompts asking to create an app from scratch (`build app from scratch`, `new app`) must trigger an explicit confirmation prompt before activating the full Human-Craft design system.
+
 ---
 
 ## Section 2: Impeccable Craft & Quality Invariants

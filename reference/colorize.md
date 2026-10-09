@@ -37,6 +37,84 @@ Build roles, not a bag of swatches:
 
 Use the project's existing color space. For a new web palette, prefer OKLCH because lightness and chroma can be adjusted predictably. Choose hue from product meaning and visual direction, never from a default category association.
 
+## Perceptual OKLCH Token Architecture
+
+OKLCH models human perceptual lightness ($L$), chroma ($C$), and hue ($h$). Unlike HSL or sRGB, identical lightness in OKLCH guarantees consistent perceived luminance across all hues.
+
+### 9-Step Luminance Scale
+
+Every primary color family must follow a calibrated 9-step luminance ramp:
+
+| Step | Target $L$ | Nominal $C$ | Semantic Usage |
+|---|---|---|---|
+| **50** | 0.97 | 0.02 | Subtlest tint, background pill fill |
+| **100** | 0.93 | 0.04 | Highlight surface, selected row hover |
+| **200** | 0.86 | 0.07 | Soft badge fill, secondary interactive surface |
+| **300** | 0.77 | 0.11 | Focus ring glow, subtle border accent |
+| **400** | 0.67 | 0.15 | Vibrant decorative accent, dark mode icon |
+| **500** | 0.56 | 0.18 | Core brand anchor, primary action fill |
+| **600** | 0.46 | 0.17 | Hover state on light mode, active badge |
+| **700** | 0.37 | 0.14 | High-contrast text on light tint, dark mode surface |
+| **800** | 0.28 | 0.10 | Deep container surface, dark mode panel |
+| **900** | 0.19 | 0.06 | Dark mode base surface |
+| **950** | 0.13 | 0.03 | Extreme contrast dark canvas anchor |
+
+### Semantic Token Roles
+
+```css
+:root {
+  --canvas: oklch(0.985 0.012 var(--brand-hue));
+  --surface: oklch(0.965 0.012 var(--brand-hue));
+  --border: oklch(0.880 0.012 var(--brand-hue));
+  --text-primary: oklch(0.180 0.015 var(--brand-hue));
+  --text-muted: oklch(0.460 0.015 var(--brand-hue));
+  --primary: var(--color-primary-500);
+  --primary-hover: var(--color-primary-600);
+}
+
+[data-theme="dark"] {
+  --canvas: oklch(0.140 0.012 var(--brand-hue));
+  --surface: oklch(0.180 0.012 var(--brand-hue));
+  --border: oklch(0.280 0.012 var(--brand-hue));
+  --text-primary: oklch(0.960 0.015 var(--brand-hue));
+  --text-muted: oklch(0.680 0.015 var(--brand-hue));
+  --primary: var(--color-primary-400);
+  --primary-hover: var(--color-primary-300);
+}
+```
+
+## Hue-Tinted Neutral Standards (Eliminating AI Grays)
+
+Generic AI-generated interfaces uniformly rely on flat, dead, washed-out grays (`#888888`, `#71717a`, `#18181b` with zero chroma). This produces cold, lifeless screens.
+
+### Mandatory Neutral Rules
+
+1. **Subtle Hue Chroma ($C \approx 0.010 - 0.015$):** All surface, canvas, border, and secondary text neutrals must carry subtle chroma derived from the primary brand hue.
+2. **Warm Brands (Hue 30°–80°):** Neutrals shift gently toward warm slate, stone, and rich parchment.
+3. **Cool Brands (Hue 200°–270°):** Neutrals shift gently toward deep obsidian, frost, and twilight zinc.
+4. **Guaranteed Contrast:** Every hue-derived neutral pair (`--text-primary` on `--canvas`, `--text-muted` on `--surface`) must be verified to guarantee minimum 4.5:1 WCAG AA contrast. Never sacrifice readability for tint intensity.
+
+## Strict Anti-Slop Gradient & Button Rule
+
+- **Ban Unearned Linear Gradients:** Never apply generic purple-to-blue linear gradients (`linear-gradient(135deg, #6366f1, #a855f7)`) on primary action buttons, container borders, or hero heading text.
+- **Earned Lighting:** Gradients are only permitted when modeling physical light sources (e.g. top-edge specular highlight or soft inner shadow).
+- **Solid High-Contrast Actions:** Primary buttons should use deliberate solid fills with crisp contrast and tactile state transitions, not floating fuzzy gradients.
+
+## CLI Color Tooling
+
+Use `scripts/color-cli.mjs` for mechanical verification and generation during development:
+
+```bash
+# Contrast audit between any two hex, rgb, or oklch colors (WCAG 2.2 AA/AAA + APCA)
+node scripts/color-cli.mjs --contrast "#ffffff" "#18181b"
+
+# Generate 9-step OKLCH ramp and harmonic accents for a brand hue
+node scripts/color-cli.mjs --palette --hue 250 --scheme complementary
+
+# Emit copy-paste CSS custom properties with guaranteed contrast
+node scripts/color-cli.mjs --css --hue 250 --theme both
+```
+
 ## Apply at system scale
 
 - Let the strongest color own a deliberate region or role instead of scattering tiny accents.
@@ -54,11 +132,11 @@ Decoration without a relationship to hierarchy, state, content, or the visual wo
 
 Verify computed foreground/background pairs:
 
-| Content | WCAG AA minimum |
-|---|---|
-| body text | 4.5:1 |
-| large text | 3:1 |
-| controls, icons, focus indicators | 3:1 |
+| Content | WCAG AA minimum | APCA minimum ($L_c$) |
+|---|---|---|
+| body text | 4.5:1 | $|L_c| \ge 60$ |
+| large text (>= 24px or 18.5px bold) | 3:1 | $|L_c| \ge 45$ |
+| controls, icons, focus indicators | 3:1 | $|L_c| \ge 30$ |
 
 Do not rely on eyesight alone. Check interactive states, overlays, text on images, disabled content, and both themes. Simulate common vision deficiencies. Information conveyed by color also needs text, shape, iconography, or position.
 

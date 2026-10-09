@@ -1,0 +1,106 @@
+{
+  "$schema": "./registry.schema.json",
+  "version": "1.0.0",
+  "updatedAt": "2026-10-09T20:09:00Z",
+  "components": [
+    {
+      "id": "asymmetric-feature-bento",
+      "name": "Asymmetric Feature Bento",
+      "category": "bento",
+      "archetype": "modern-saas",
+      "tags": ["bento", "grid", "asymmetric", "features", "saas"],
+      "tokensUsed": ["--surface", "--border", "--text-primary", "--text-muted", "--primary", "--radius-lg"],
+      "path": "bento/asymmetric-feature-bento.json"
+    },
+    {
+      "id": "editorial-stat-card",
+      "name": "Editorial Stat Card",
+      "category": "cards",
+      "archetype": "editorial-luxury",
+      "tags": ["card", "stats", "editorial", "typography", "luxury"],
+      "tokensUsed": ["--surface", "--border", "--text-primary", "--text-muted", "--font-heading", "--radius-md"],
+      "path": "cards/editorial-stat-card.json"
+    },
+    {
+      "id": "tactile-interactive-card",
+      "name": "Tactile Interactive Card",
+      "category": "cards",
+      "archetype": "modern-saas",
+      "tags": ["card", "interactive", "tactile", "hover", "depth"],
+      "tokensUsed": ["--surface", "--border", "--text-primary", "--text-muted", "--primary", "--radius-lg"],
+      "path": "cards/tactile-interactive-card.json"
+    },
+    {
+      "id": "floating-glass-bar",
+      "name": "Floating Glass Navigation Bar",
+      "category": "navigation",
+      "archetype": "modern-saas",
+      "tags": ["navigation", "navbar", "glassmorphism", "floating", "blur"],
+      "tokensUsed": ["--surface", "--border", "--text-primary", "--text-muted", "--primary", "--radius-full"],
+      "path": "navigation/floating-glass-bar.json"
+    },
+    {
+      "id": "split-editorial-hero",
+      "name": "Split Editorial Hero",
+      "category": "heros",
+      "archetype": "editorial-luxury",
+      "tags": ["hero", "editorial", "split", "typography", "luxury"],
+      "tokensUsed": ["--surface", "--border", "--text-primary", "--text-muted", "--font-heading", "--primary"],
+      "path": "heros/split-editorial-hero.json"
+    },
+    {
+      "id": "tactile-action-cluster",
+      "name": "Tactile Action Cluster",
+      "category": "buttons",
+      "archetype": "modern-saas",
+      "tags": ["buttons", "tactile", "spring", "squish", "cluster"],
+      "tokensUsed": ["--surface", "--border", "--text-primary", "--text-muted", "--primary", "--radius-full"],
+      "path": "buttons/tactile-action-cluster.json"
+    },
+    {
+      "id": "squish-pill-button",
+      "name": "Squish Pill Button",
+      "category": "buttons",
+      "archetype": "modern-saas",
+      "tags": ["buttons", "pill", "squish", "tactile", "spring", "saas"],
+      "tokensUsed": ["--primary", "--canvas", "--radius-full"],
+      "path": "buttons/squish-pill-button.json"
+    },
+    {
+      "id": "tactile-secondary-button",
+      "name": "Tactile Secondary Button",
+      "category": "buttons",
+      "archetype": "modern-saas",
+      "tags": ["buttons", "secondary", "rounded", "surface", "tactile"],
+      "tokensUsed": ["--surface", "--border", "--text-primary", "--radius-lg"],
+      "path": "buttons/tactile-secondary-button.json"
+    },
+    {
+      "id": "editorial-hero-asymmetric",
+      "name": "Editorial Hero Asymmetric",
+      "category": "editorial",
+      "archetype": "editorial-luxury",
+      "tags": ["editorial", "hero", "asymmetric", "anti-pill", "typography", "luxury"],
+      "tokensUsed": ["--surface", "--border", "--text-primary", "--text-secondary", "--editorial-display-size"],
+      "path": "editorial/editorial-hero-asymmetric.json"
+    },
+    {
+      "id": "editorial-section-header",
+      "name": "Editorial Section Header",
+      "category": "editorial",
+      "archetype": "editorial-luxury",
+      "tags": ["editorial", "section", "hairline", "divider", "anti-pill", "typography"],
+      "tokensUsed": ["--border", "--text-primary", "--text-secondary", "--text-tertiary"],
+      "path": "editorial/editorial-section-header.json"
+    },
+    {
+      "id": "rhythmic-editorial-bento",
+      "name": "Rhythmic Editorial Bento",
+      "category": "bento",
+      "archetype": "editorial-luxury",
+      "tags": ["bento", "grid", "asymmetric", "editorial", "typography", "rhythm"],
+      "tokensUsed": ["--surface", "--border", "--text-primary", "--text-secondary", "--radius-lg", "--radius-xl"],
+      "path": "bento/rhythmic-editorial-bento.json"
+    }
+  ]
+}

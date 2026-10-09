@@ -23,6 +23,7 @@ These are the category's defaults, not bans: the brief's own words can earn any 
 Page scaffolds:
 
 - Same-size cards of icon plus heading plus text as the page structure. Cards are the lazy container; nested cards are always wrong.
+- Uniform 3-column card grids repeated across sections. Break repetitive layouts using asymmetric Bento grids, rhythmic multi-spans (2:1 or 1:2), and varied content density (reference `scripts/data/component-registry/`).
 - The hero-metric template: big number, small label, supporting stats, accent.
 - A kicker or eyebrow above a heading. This one is a ban, not a default: no brief earns it back. The heading carries its own weight; delete the label and let the heading speak.
 - Section numbers (01 / 02 / 03) unless the sequence itself carries information the reader needs.

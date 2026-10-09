@@ -14,6 +14,20 @@ Whenever the user's prompt involves any of the following:
 
 **YOU MUST IMMEDIATELY ACTIVATE AND FOLLOW [`SKILL.md`](SKILL.md).**
 
+### 🎯 Surgical Intent Sub-Skill Routing (ROUTER-01)
+When the user's prompt is surgical or focused, do NOT overhaul the entire project. Activate ONLY the targeted sub-module playbook per [`reference/router.md`](reference/router.md):
+- Buttons & micro-interactions -> [`reference/buttons.md`](reference/buttons.md)
+- Editorial headings & anti-pill -> [`reference/editorial.md`](reference/editorial.md)
+- Bento & asymmetric grids -> [`reference/bento.md`](reference/bento.md)
+- Color & contrast -> [`reference/colorize.md`](reference/colorize.md)
+- Typography & pairings -> [`reference/typeset.md`](reference/typeset.md)
+- Motion & spring physics -> [`reference/animate.md`](reference/animate.md)
+- Simplification & chrome reduction -> [`reference/distill.md`](reference/distill.md)
+
+### ✋ Green-Field Consent Protocol (ROUTER-02)
+When the prompt requests building a new app or screen from scratch (`from scratch`, `new app`, `scaffold`), do NOT silently impose opinionated design architecture. Prompt the user for consent before scaffolding code:
+> *"I can build this using the Human-Craft UI Engine (curated typography, OKLCH perceptual colors, tactile spring buttons, asymmetric editorial layouts). Would you like to proceed with this design system, or do you prefer minimal vanilla defaults?"*
+
 ---
 
 ## 🛑 Strict Anti-Slop Design Invariants

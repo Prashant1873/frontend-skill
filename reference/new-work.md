@@ -127,6 +127,23 @@ No comp and no apology for it: the ambition lives in the direction contract's FI
 
 Preserve semantics, accessibility, performance, responsiveness, project conventions, and working behavior.
 
+### Human Component Registry Archetypes
+
+Rather than generating repetitive, cookie-cutter AI layouts (e.g. uniform 3-card columns or generic hero cards with floating pill kickers), inspect and adapt vetted human components from the local component registry:
+
+```bash
+# List available components across categories (bento, cards, navigation, heros, buttons)
+node scripts/ingest-component.mjs --list
+
+# Inspect component markup and styling
+node scripts/ingest-component.mjs --get asymmetric-feature-bento --both
+
+# Search components by tag or aesthetic archetype
+node scripts/ingest-component.mjs --search "bento"
+```
+
+Adapt the imported HTML structure and CSS variables to the active surface's tokens. Ingest additional external patterns using `node scripts/ingest-component.mjs --url <url> --name <name> --category <cat>` or `--file <path>`.
+
 ## 7. Inspect and finish
 
 Inspect the surface's target sizes in one batched screenshot round: desktop and mobile on the web; on a native platform (`ios` / `android` / `adaptive`), the shipped device classes per OS, captured from the simulator or emulator the way the platform reference's Verifying the build section describes. When the harness reports the user's actual viewport (an in-app browser's size, a named resolution), add that width to the set: the width that breaks is the one the user sees first. Critique the render against the user's request and the direction contract, fix material gaps, and confirm with one final round; two rounds is the ceiling, and fixes batch between them rather than earning per-tweak screenshots. On a comp-led build, run `node scripts/comp-diff.mjs --comp <approved comp> --build .impeccable/review/desktop.png --spec .impeccable/build/spec.json --out-dir .impeccable/review/diff/final` and read its region rows and paired crops as the critique: the side-by-side is the view the build thread never has on its own, and a region it scores missing or contradicted is a fix whatever the page looks like from memory. Never judge fidelity from one full-page thumbnail; it hides exactly the failures that matter. On a Persuade surface, verify the mode did its job: a first-time visitor should know what this is, why it matters, and what to do within seconds, in the form's own vocabulary.

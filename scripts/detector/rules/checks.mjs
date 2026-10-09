@@ -1076,6 +1076,82 @@ function scanCssTextForInsetStripe(content) {
   return findings;
 }
 
+// Scans stylesheet text for interactive button declarations:
+// 1. button-missing-active-squish: Buttons with :hover but omitting :active squish deformation (scale)
+// 2. button-insufficient-contrast: Buttons with text/bg declarations failing contrast
+function scanCssTextForButtonDynamics(rawContent) {
+  const content = String(rawContent || '').replace(/\/\*[\s\S]*?\*\//g,
+    (block) => block.replace(/[^\n]/g, ' '));
+  const findings = [];
+  const buttonSelectors = new Map();
+
+  const ruleRe = new RegExp(CSS_RULE_BLOCK_SOURCE, 'g');
+  let m;
+  while ((m = ruleRe.exec(content)) !== null) {
+    const selector = m[1].trim();
+    const decls = parseCssDeclBlock(m[2]);
+
+    const isButtonSelector = /(?:^|[\s>+~,.])(?:btn|button|tactile-button)(?![\w-])/i.test(selector) || /button\b/i.test(selector);
+    if (isButtonSelector) {
+      const color = decls.get('color');
+      const bg = decls.get('background') || decls.get('background-color');
+      if (color && bg) {
+        if (/#(?:94a3b8|cbd5e1|aaa|bbb|999|888)\b/i.test(color) && /#(?:fff|ffffff)\b/i.test(bg)) {
+          findings.push({
+            id: 'button-insufficient-contrast',
+            snippet: `${selector} has low contrast text (${color} on ${bg})`,
+            index: m.index,
+            selector,
+          });
+        }
+      }
+
+      const baseSelector = selector.replace(/:(?:hover|active|focus|focus-visible|focus-within)\b.*/i, '').trim();
+      if (!buttonSelectors.has(baseSelector)) {
+        buttonSelectors.set(baseSelector, { hasHover: false, hasActiveSquish: false, index: m.index });
+      }
+      const entry = buttonSelectors.get(baseSelector);
+      if (/:hover\b/i.test(selector)) {
+        entry.hasHover = true;
+      }
+      if (/:active\b/i.test(selector)) {
+        const transform = decls.get('transform') || '';
+        if (/\bscale\b/i.test(transform)) {
+          entry.hasActiveSquish = true;
+        }
+      }
+    }
+  }
+
+  for (const [sel, info] of buttonSelectors.entries()) {
+    if (info.hasHover && !info.hasActiveSquish) {
+      findings.push({
+        id: 'button-missing-active-squish',
+        snippet: `${sel}:hover exists without :active squish transform (scale)`,
+        index: info.index,
+        selector: sel,
+      });
+    }
+  }
+
+  return findings;
+}
+
+function checkGenericPillBadge(opts) {
+  const { classList, text, siblingHeading } = opts || {};
+  const classes = typeof classList === 'string' ? classList : Array.from(classList || []).join(' ');
+  const isPillClass = /\b(?:pill|badge|eyebrow|kicker)(?:-badge|-chip|-pill)?\b/i.test(classes);
+  const content = String(text || '').trim();
+  const isGenericCopy = /\b(?:WELCOME|NEW(?: FEATURE)?|FEATURE|BETA|ANNOUNCEMENT|UPDATES?|COMING SOON|PRO|AI POWERED|AI|LAUNCH)\b/i.test(content);
+  if (isPillClass && (isGenericCopy || siblingHeading)) {
+    return [{
+      id: 'generic-pill-badge',
+      snippet: `Generic pill badge "${content.slice(0, 30)}" (${classes})`,
+    }];
+  }
+  return [];
+}
+
 // Collect @keyframes names whose body travels horizontally — the marquee
 // loop. X travel is measured across every translateX/translate/translate3d
 // X component in the body: a centered element animating something else
@@ -5646,6 +5722,8 @@ export {
   scanCssTextForRadialHalo,
   scanCssTextForPseudoStripe,
   scanCssTextForInsetStripe,
+  scanCssTextForButtonDynamics,
+  checkGenericPillBadge,
   scanCssTextForMarquee,
   collectMarqueeKeyframes,
   collectCssCustomProps,

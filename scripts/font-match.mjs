@@ -41,6 +41,15 @@ import { crop } from './lib/raster.mjs';
 import { fingerprint, distance } from './lib/font-fingerprint.mjs';
 import { loadFontIndex, candidatesFromIndex, MIN_RANK_CAP_PX } from './lib/font-index.mjs';
 import { loadSpec, SPEC_PATH } from './comp-spec.mjs';
+import {
+  loadCuratedCatalog,
+  getFontsByArchetype,
+  findFont,
+  generateFallbackCss,
+  generateFontStackCss,
+  generateEmbedSnippet,
+  recommendPairing
+} from './lib/font-fallbacks.mjs';
 
 const require = createRequire(import.meta.url);
 
@@ -342,12 +351,80 @@ function compactFp(fp) {
 }
 
 async function main() {
+  if (process.argv.includes('--list-curated')) {
+    const catalog = loadCuratedCatalog();
+    console.log(`\n========================================================================`);
+    console.log(`                   CURATED TYPOGRAPHY CATALOG                           `);
+    console.log(`========================================================================`);
+    for (const [key, arch] of Object.entries(catalog.archetypes)) {
+      const fonts = catalog.fonts.filter((f) => f.archetype === key);
+      console.log(`\n▶ ${arch.name} (${key})`);
+      console.log(`  Description: ${arch.description}`);
+      console.log(`  Recommended Stack: Headline '${arch.defaultHeading}' / Body '${arch.defaultBody}'`);
+      console.log(`  Available Faces (${fonts.length}):`);
+      for (const f of fonts) {
+        console.log(`    - ${f.family} [roles: ${f.roles.join(', ')}] [weights: ${f.weights.join(', ')}] (${f.source})`);
+      }
+    }
+    console.log(`\nRun 'node scripts/font-match.mjs --pair "<Font Name>"' for pairing and CSS snippet.\n`);
+    return;
+  }
+
+  const archetypeQuery = arg('archetype');
+  if (archetypeQuery) {
+    const catalog = loadCuratedCatalog();
+    const arch = catalog.archetypes[archetypeQuery.toLowerCase()];
+    if (!arch) {
+      console.error(`Unknown archetype '${archetypeQuery}'. Available: ${Object.keys(catalog.archetypes).join(', ')}`);
+      process.exit(1);
+    }
+    const fonts = getFontsByArchetype(archetypeQuery);
+    console.log(`\nArchetype: ${arch.name}`);
+    console.log(`Description: ${arch.description}\n`);
+    for (const f of fonts) {
+      console.log(`- ${f.family} (${f.roles.join(', ')}) weights: ${f.weights.join(', ')}`);
+    }
+    return;
+  }
+
+  const pairQuery = arg('pair');
+  if (pairQuery) {
+    const font = findFont(pairQuery);
+    if (!font) {
+      console.error(`Font '${pairQuery}' not found in curated catalog.`);
+      process.exit(1);
+    }
+    const pairing = recommendPairing(font);
+    console.log(`\n========================================================================`);
+    console.log(`                   TYPOGRAPHY PAIRING RECOMMENDATION                   `);
+    console.log(`========================================================================`);
+    console.log(`Target Font:    ${font.family} (${font.archetype})`);
+    console.log(`Headline Face:  ${pairing.heading.family} (${pairing.heading.roles.join(', ')})`);
+    console.log(`Body Face:      ${pairing.body.family} (${pairing.body.roles.join(', ')})`);
+    console.log(`Rationale:      ${pairing.reason}\n`);
+    console.log(`--- CSS EMBED SNIPPET ---`);
+    console.log(generateEmbedSnippet(pairing.heading));
+    if (pairing.body && pairing.body.family !== pairing.heading.family) {
+      console.log(generateEmbedSnippet(pairing.body));
+    }
+    console.log(`\n--- CSS FONT STACKS (WITH ZERO-CLS FALLBACKS) ---`);
+    console.log(`--font-heading: ${generateFontStackCss(pairing.heading)};`);
+    console.log(`--font-body:    ${generateFontStackCss(pairing.body)};\n`);
+    console.log(`--- METRIC FALLBACK DEFINITIONS ---`);
+    console.log(generateFallbackCss(pairing.heading));
+    if (pairing.body && pairing.body.family !== pairing.heading.family) {
+      console.log('\n' + generateFallbackCss(pairing.body));
+    }
+    console.log('');
+    return;
+  }
+
   const specPath = arg('spec', SPEC_PATH);
   const spec = loadSpec(specPath);
   const measureId = arg('measure'), rankId = arg('rank');
   const id = measureId || rankId;
   if (!id) {
-    console.error('usage: font-match.mjs --measure <text-region-id> | --rank <text-region-id> [--candidates "Family:700,Family2:400,..."] [--text "..."] [--transform uppercase] [--category sans,serif,display,handwriting,mono]');
+    console.error('usage: font-match.mjs --list-curated | --archetype <name> | --pair <font> | --measure <id> | --rank <id>');
     process.exit(1);
   }
   if (!spec) { console.error(`font-match: no spec at ${specPath}; run comp-spec.mjs first`); process.exit(1); }

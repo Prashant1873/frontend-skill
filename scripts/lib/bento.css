@@ -1,0 +1,120 @@
+/**
+ * Asymmetric Bento Grid Systems & Layout Utilities
+ * Enforces responsive multi-span layout rhythms, surface elevation, and graceful mobile collapse.
+ */
+
+:root {
+  --bento-gap: clamp(1rem, 2vw, 1.75rem);
+  --bento-radius: var(--radius-lg, 16px);
+  --bento-radius-hero: var(--radius-xl, 20px);
+  --bento-surface: var(--surface, #ffffff);
+  --bento-surface-hero: var(--surface-raised, #ffffff);
+  --bento-border: var(--border-subtle, rgba(0, 0, 0, 0.08));
+  --bento-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06), 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+  --bento-shadow-hover: 0 8px 28px -4px rgba(0, 0, 0, 0.1), 0 2px 6px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* ─── Bento Grid Container ──────────────────────────────────────────────── */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--bento-gap);
+  width: 100%;
+  max-width: 76rem;
+  margin: 0 auto;
+}
+
+/* ─── Multi-Span Utilities ──────────────────────────────────────────────── */
+.bento-span-2 {
+  grid-column: span 2;
+}
+
+.bento-span-3 {
+  grid-column: 1 / -1;
+}
+
+.bento-row-2 {
+  grid-row: span 2;
+}
+
+/* ─── Bento Card Primitives ─────────────────────────────────────────────── */
+.bento-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bento-surface);
+  border: 1px solid var(--bento-border);
+  border-radius: var(--bento-radius);
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  box-shadow: var(--bento-shadow);
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+.bento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--bento-shadow-hover);
+}
+
+/* ─── Card Specialized Variants ─────────────────────────────────────────── */
+.bento-card-hero {
+  border-radius: var(--bento-radius-hero);
+  background: var(--bento-surface-hero);
+  padding: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+.bento-card-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.bento-stat-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  color: var(--text-primary, #0f172a);
+}
+
+.bento-stat-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary, #475569);
+}
+
+/* ─── Responsive Viewport Adaptations ───────────────────────────────────── */
+@media (max-width: 1023px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .bento-row-2 {
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .bento-span-2,
+  .bento-span-3 {
+    grid-column: auto;
+  }
+
+  .bento-row-2 {
+    grid-row: auto;
+  }
+
+  .bento-card {
+    padding: 1.25rem;
+  }
+}

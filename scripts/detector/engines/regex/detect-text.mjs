@@ -2,7 +2,7 @@ import { GENERIC_FONTS, OVERUSED_FONTS, EM_DASH_FLOOR, EM_DASH_CHARS_PER_DASH } 
 import { isNeutralColor } from '../../shared/color.mjs';
 import { extractGoogleFontFamilies } from '../../shared/fonts.mjs';
 import { checkSourceDesignSystem } from '../../design-system.mjs';
-import { scanCssTextForGlow, scanCssTextForGridBackground, scanCssTextForMarquee, scanCssTextForPseudoStripe, scanCssTextForRadialHalo } from '../../rules/checks.mjs';
+import { scanCssTextForButtonDynamics, scanCssTextForGlow, scanCssTextForGridBackground, scanCssTextForMarquee, scanCssTextForPseudoStripe, scanCssTextForRadialHalo } from '../../rules/checks.mjs';
 import { isFullPage } from '../../shared/page.mjs';
 import { applyInlineIgnores } from '../../shared/inline-ignores.mjs';
 import { finding } from '../../findings.mjs';
@@ -499,6 +499,16 @@ function isNeutralBorderColor(str) {
 }
 
 const REGEX_MATCHERS = [
+  // --- Generic eyebrow / pill badge ---
+  { id: 'generic-pill-badge', regex: /<(?:span|div|p|a)\b[^>]*class=["'][^"']*\b(?:pill|badge|eyebrow|kicker)(?:-badge|-chip|-pill)?\b[^"']*["'][^>]*>\s*(?:[A-Z0-9_\-\s]+)\s*<\/(?:span|div|p|a)>/gi,
+    test: (m, line) => {
+      const inner = m[0].replace(/<[^>]+>/g, '').trim();
+      return /\b(?:WELCOME|NEW(?: FEATURE)?|FEATURE|BETA|ANNOUNCEMENT|UPDATES?|COMING SOON|PRO|AI POWERED|AI|LAUNCH)\b/i.test(inner);
+    },
+    fmt: (m) => `generic pill badge: "${m[0].replace(/<[^>]+>/g, '').trim()}"` },
+  { id: 'generic-pill-badge', regex: /\bclass=["'][^"']*\b(?:pill-badge|hero-badge|eyebrow-pill|kicker-badge)\b[^"']*["']/gi,
+    test: () => true,
+    fmt: (m) => m[0] },
   // --- Side-tab ---
   { id: 'side-tab', regex: /\bborder-[lrse]-(\d+)\b/g,
     test: (m, line) => { const n = +m[1]; return hasRounded(line) ? n >= 2 : n >= 4; },
@@ -1189,6 +1199,12 @@ function detectText(content, filePath, options = {}) {
     const line = source.substring(0, hit.index).split('\n').length;
     return finding('codex-grid-background', filePath, hit.snippet, line);
   })));
+
+  // Button dynamics scan (:active squish and contrast)
+  for (const hit of scanCssTextForButtonDynamics(source)) {
+    const line = source.substring(0, hit.index).split('\n').length;
+    findings.push(finding(hit.id, filePath, hit.snippet, line));
+  }
 
   // Extract and scan <style> blocks from Astro/Vue/Svelte components.
   const styleBlocks = profile

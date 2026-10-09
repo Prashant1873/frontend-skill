@@ -1,0 +1,11 @@
+{
+  "id": "editorial-hero-asymmetric",
+  "name": "Editorial Hero Asymmetric",
+  "category": "editorial",
+  "archetype": "editorial-luxury",
+  "tags": ["editorial", "hero", "asymmetric", "anti-pill", "typography", "luxury"],
+  "tokensUsed": ["--surface", "--border", "--text-primary", "--text-secondary", "--editorial-display-size"],
+  "preview": "Asymmetric human editorial hero layout with discrete series metadata, massive display title, and zero floating pill badges.",
+  "html": "<header class=\"editorial-asymmetric\">\n  <div class=\"editorial-kicker-col\">\n    <span class=\"editorial-kicker-text\">Volume 04 · Research</span>\n  </div>\n  <div class=\"editorial-content-col\">\n    <h1 class=\"editorial-display\">Perceptual Foundations of Human UI</h1>\n    <p class=\"editorial-lead\">Eliminating artificial capsule badges in favor of asymmetric weight balance, optical scale contrast, and calm editorial whitespace.</p>\n  </div>\n</header>",
+  "css": ".editorial-asymmetric {\n  display: grid;\n  grid-template-columns: 1fr;\n  gap: 1.5rem;\n  align-items: start;\n  max-width: 68rem;\n  margin-bottom: clamp(2.5rem, 5vw, 4rem);\n}\n\n@media (min-width: 768px) {\n  .editorial-asymmetric {\n    grid-template-columns: minmax(140px, 1.2fr) 4fr;\n    gap: 3.5rem;\n  }\n}\n\n.editorial-kicker-col {\n  padding-top: 0.35rem;\n}\n\n.editorial-kicker-text {\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  font-size: 0.8125rem;\n  line-height: 1.4;\n  letter-spacing: 0.05em;\n  color: var(--text-tertiary, #64748b);\n  text-transform: uppercase;\n  font-weight: 600;\n}\n\n.editorial-content-col {\n  display: flex;\n  flex-direction: column;\n  gap: 1.25rem;\n}\n\n.editorial-display {\n  font-size: clamp(2.75rem, 6vw, 4.75rem);\n  line-height: 1.02;\n  letter-spacing: -0.035em;\n  font-weight: 700;\n  color: var(--text-primary, #0f172a);\n  margin: 0;\n  text-wrap: balance;\n}\n\n.editorial-lead {\n  font-size: clamp(1.125rem, 2vw, 1.35rem);\n  line-height: 1.55;\n  letter-spacing: -0.01em;\n  color: var(--text-secondary, #475569);\n  max-width: 44rem;\n  margin: 0;\n}"
+}

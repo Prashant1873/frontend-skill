@@ -29,6 +29,43 @@ node scripts/detect.mjs --json --scope type [target files or dirs]
 
 Also inspect dynamic or arbitrary font values the detector cannot interpret. Synthesize both assessments before editing, noting what each caught alone. A clean scan is a floor, not proof of good typography.
 
+## Curated Typography Archetypes
+
+Never default to generic unexamined AI fonts (Inter, Roboto, Arial) for primary brand voice or headlines. Select intentional faces categorized by product archetype from `scripts/data/curated-fonts.json`:
+
+1. **Modern SaaS & Tech Flagships:** `Plus Jakarta Sans`, `Geist`, `Söhne`, `Mona Sans`, `Figma Sans`, `General Sans`, `Instrument Sans`. *(Inter is strictly relegated to micro-labels & data tables; never as display voice).*
+2. **Editorial, Literary & Luxury:** `PP Editorial New`, `Canela`, `Fraunces`, `Recoleta`, `The Seasons`, `Charter`, `Instrument Serif`.
+3. **Product & Consumer Lifestyle:** `Circular`, `Airbnb Cereal`, `Shopify Sans`, `Poppins`, `Quicksand`, `Jost`, `DM Sans`, `Manrope`, `Work Sans`.
+4. **Creative, Brutalist & Expressive Display:** `Space Grotesk`, `Cabinet Grotesk`, `PP Neue Montreal`, `Agrandir Grand`, `Everett`, `Horizon`, `Shrikhand`, `Basis Grotesque`.
+5. **Swiss International & Enterprise Authority:** `Neue Haas Grotesk`, `Suisse Int'l`, `Aperçu`, `Graphik`, `Maison Neue`, `IBM Plex Sans`, `Public Sans`, `Source Sans 3`.
+
+To inspect the full catalog or retrieve paired stacks with copy-paste CSS:
+```bash
+node scripts/font-match.mjs --list-curated
+node scripts/font-match.mjs --pair "PP Editorial New"
+```
+
+## Pairing Heuristics & Rules
+
+- **Maximum 2 Families:** Limit every interface to at most two distinct font families (Display/Headline + Workhorse Body).
+- **No Same-Category Clashes:** Never pair two similar geometric sans faces (e.g. Poppins + Proxima Nova). Pair high-contrast display with neutral workhorse (e.g. Editorial Serif + Modern SaaS Sans, or Expressive Display + Swiss Sans).
+- **Zero-CLS Metric Fallbacks:** Always declare `@font-face` metric overrides on local fallback fonts to eliminate Cumulative Layout Shift:
+
+```css
+@font-face {
+  font-family: 'Plus Jakarta Sans Fallback';
+  src: local('Arial');
+  size-adjust: 102%;
+  ascent-override: 98%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+}
+
+:root {
+  --font-heading: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', system-ui, sans-serif;
+}
+```
+
 ## Set the system
 
 Before editing, state:

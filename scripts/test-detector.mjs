@@ -108,6 +108,30 @@ async function main() {
     suite.assertNoFindings(findings, 'clean css');
   });
 
+  await suite.run('Unit: detectText catches generic-pill-badge', () => {
+    const html = '<span class="pill-badge">NEW FEATURE</span><h1>Headline</h1>';
+    const findings = detectText(html, 'hero.html');
+    suite.assertHasFinding(findings, 'generic-pill-badge', 'pill badge kicker');
+  });
+
+  await suite.run('Unit: detectText catches button-missing-active-squish', () => {
+    const css = '.btn { color: #fff; background: #000; } .btn:hover { background: #222; }';
+    const findings = detectText(css, 'button.css');
+    suite.assertHasFinding(findings, 'button-missing-active-squish', 'unsquished button');
+  });
+
+  await suite.run('Unit: detectText catches button-insufficient-contrast', () => {
+    const css = 'button { color: #94a3b8; background: #ffffff; }';
+    const findings = detectText(css, 'button.css');
+    suite.assertHasFinding(findings, 'button-insufficient-contrast', 'low contrast button');
+  });
+
+  await suite.run('Unit: detectText passes tactile button with active squish', () => {
+    const css = '.tactile-btn { color: #fff; background: #0284c7; } .tactile-btn:hover { background: #0369a1; } .tactile-btn:active { transform: scale(1.03, 0.94); }';
+    const findings = detectText(css, 'tactile-button.css');
+    suite.assertNoFindings(findings, 'tactile button');
+  });
+
   // ── Fixture Tests: detectHtml & detectText on test/fixtures/ ──
   const typographyFixture = path.join(FIXTURES_DIR, 'slop-typography.html');
   await suite.run('Fixture: slop-typography.html triggers overused-font', async () => {
@@ -130,11 +154,33 @@ async function main() {
     suite.assertHasFinding(findings, 'side-tab', 'slop-layout fixture');
   });
 
+  const pillFixture = path.join(FIXTURES_DIR, 'slop-eyebrow-pill.html');
+  await suite.run('Fixture: slop-eyebrow-pill.html triggers generic-pill-badge', async () => {
+    suite.assert(fs.existsSync(pillFixture), 'Fixture file exists');
+    const findings = await detectHtml(pillFixture);
+    suite.assertHasFinding(findings, 'generic-pill-badge', 'slop-eyebrow-pill fixture');
+  });
+
+  const buttonFixture = path.join(FIXTURES_DIR, 'slop-button.html');
+  await suite.run('Fixture: slop-button.html triggers button dynamics rules', async () => {
+    suite.assert(fs.existsSync(buttonFixture), 'Fixture file exists');
+    const findings = await detectHtml(buttonFixture);
+    suite.assertHasFinding(findings, 'button-missing-active-squish', 'slop-button fixture missing squish');
+    suite.assertHasFinding(findings, 'button-insufficient-contrast', 'slop-button fixture contrast');
+  });
+
   const cleanFixture = path.join(FIXTURES_DIR, 'clean-accessible.html');
   await suite.run('Fixture: clean-accessible.html produces zero findings (negative control)', async () => {
     suite.assert(fs.existsSync(cleanFixture), 'Fixture file exists');
     const findings = await detectHtml(cleanFixture);
     suite.assertNoFindings(findings, 'clean-accessible fixture');
+  });
+
+  const cleanButtonsFixture = path.join(FIXTURES_DIR, 'clean-tactile-buttons.html');
+  await suite.run('Fixture: clean-tactile-buttons.html produces zero findings (negative control)', async () => {
+    suite.assert(fs.existsSync(cleanButtonsFixture), 'Fixture file exists');
+    const findings = await detectHtml(cleanButtonsFixture);
+    suite.assertNoFindings(findings, 'clean-tactile-buttons fixture');
   });
 
   // Output formatting

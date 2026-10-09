@@ -1,0 +1,180 @@
+/**
+ * Human Editorial Architecture — CSS Design Tokens & Layout Utilities
+ * Enforces anti-eyebrow, anti-pill human typographic hierarchy and asymmetric balance.
+ */
+
+:root {
+  --editorial-display-size: clamp(2.75rem, 6vw, 5rem);
+  --editorial-display-leading: 1.02;
+  --editorial-display-tracking: -0.035em;
+  --editorial-display-weight: 700;
+
+  --editorial-section-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  --editorial-section-leading: 1.15;
+  --editorial-section-tracking: -0.025em;
+  --editorial-section-weight: 600;
+
+  --editorial-lead-size: clamp(1.125rem, 2vw, 1.35rem);
+  --editorial-lead-leading: 1.55;
+  --editorial-lead-tracking: -0.01em;
+
+  --editorial-meta-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --editorial-meta-size: 0.8125rem;
+  --editorial-meta-leading: 1.4;
+  --editorial-meta-tracking: 0.04em;
+
+  --editorial-hairline-color: var(--border-subtle, rgba(0, 0, 0, 0.1));
+  --editorial-text-primary: var(--text-primary, #0f172a);
+  --editorial-text-secondary: var(--text-secondary, #475569);
+  --editorial-text-meta: var(--text-tertiary, #64748b);
+}
+
+/* ─── Editorial Header Container ────────────────────────────────────────── */
+.editorial-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 68rem;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+/* ─── Display Typography (Anti-Slop Headline) ───────────────────────────── */
+.editorial-display {
+  font-size: var(--editorial-display-size);
+  line-height: var(--editorial-display-leading);
+  letter-spacing: var(--editorial-display-tracking);
+  font-weight: var(--editorial-display-weight);
+  color: var(--editorial-text-primary);
+  margin: 0;
+  text-wrap: balance;
+  border: none;
+  background: none;
+}
+
+/* ─── Section Title ─────────────────────────────────────────────────────── */
+.editorial-section-title {
+  font-size: var(--editorial-section-size);
+  line-height: var(--editorial-section-leading);
+  letter-spacing: var(--editorial-section-tracking);
+  font-weight: var(--editorial-section-weight);
+  color: var(--editorial-text-primary);
+  margin: 0;
+  text-wrap: balance;
+  border: none;
+  background: none;
+}
+
+/* ─── Editorial Lead ────────────────────────────────────────────────────── */
+.editorial-lead {
+  font-size: var(--editorial-lead-size);
+  line-height: var(--editorial-lead-leading);
+  letter-spacing: var(--editorial-lead-tracking);
+  font-weight: 400;
+  color: var(--editorial-text-secondary);
+  max-width: 44rem;
+  margin: 0;
+}
+
+/* ─── Pattern A: Inline Meta Index ──────────────────────────────────────── */
+.editorial-meta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--editorial-meta-font);
+  font-size: var(--editorial-meta-size);
+  line-height: var(--editorial-meta-leading);
+  letter-spacing: var(--editorial-meta-tracking);
+  color: var(--editorial-text-meta);
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.editorial-meta-index {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--editorial-text-secondary);
+}
+
+.editorial-meta-divider {
+  opacity: 0.45;
+  user-select: none;
+}
+
+.editorial-meta-tag {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* ─── Pattern B: Asymmetric Column Layout ───────────────────────────────── */
+.editorial-asymmetric {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+@media (min-width: 768px) {
+  .editorial-asymmetric {
+    grid-template-columns: minmax(130px, 1.2fr) 4fr;
+    gap: 3rem;
+  }
+}
+
+.editorial-kicker-col {
+  padding-top: 0.35rem;
+}
+
+.editorial-kicker-text {
+  font-family: var(--editorial-meta-font);
+  font-size: var(--editorial-meta-size);
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  color: var(--editorial-text-meta);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.editorial-content-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ─── Pattern C: Architectural Hairline Divided Header ─────────────────── */
+.editorial-divided {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--editorial-hairline-color);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.editorial-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--editorial-meta-font);
+  font-size: var(--editorial-meta-size);
+  color: var(--editorial-text-meta);
+  letter-spacing: 0.03em;
+}
+
+.editorial-section-id {
+  font-weight: 600;
+}
+
+.editorial-timestamp {
+  opacity: 0.85;
+}
+
+.editorial-hairline {
+  width: 100%;
+  height: 1px;
+  background-color: var(--editorial-hairline-color);
+  margin: 1rem 0;
+  border: none;
+}

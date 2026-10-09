@@ -1,0 +1,11 @@
+{
+  "id": "editorial-section-header",
+  "name": "Editorial Section Header",
+  "category": "editorial",
+  "archetype": "editorial-luxury",
+  "tags": ["editorial", "section", "hairline", "divider", "anti-pill", "typography"],
+  "tokensUsed": ["--border", "--text-primary", "--text-secondary", "--text-tertiary"],
+  "preview": "Architectural section header with crisp 1px hairline rule, timestamp and category metadata, and zero decorative chip containers.",
+  "html": "<div class=\"editorial-divided\">\n  <div class=\"editorial-top-bar\">\n    <span class=\"editorial-section-id\">Section 02 · Architecture</span>\n    <span class=\"editorial-timestamp\">October 2026</span>\n  </div>\n  <h2 class=\"editorial-section-title\">Continuous Verification & Mechanical Contracts</h2>\n  <div class=\"editorial-hairline\"></div>\n</div>",
+  "css": ".editorial-divided {\n  display: flex;\n  flex-direction: column;\n  gap: 0.85rem;\n  padding-top: 1.25rem;\n  border-top: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.1));\n  max-width: 68rem;\n  margin-bottom: clamp(2rem, 4vw, 3rem);\n}\n\n.editorial-top-bar {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;\n  font-size: 0.8125rem;\n  color: var(--text-tertiary, #64748b);\n  letter-spacing: 0.03em;\n}\n\n.editorial-section-id {\n  font-weight: 600;\n}\n\n.editorial-timestamp {\n  opacity: 0.85;\n}\n\n.editorial-section-title {\n  font-size: clamp(1.75rem, 3.5vw, 2.75rem);\n  line-height: 1.15;\n  letter-spacing: -0.025em;\n  font-weight: 600;\n  color: var(--text-primary, #0f172a);\n  margin: 0;\n  text-wrap: balance;\n}\n\n.editorial-hairline {\n  width: 100%;\n  height: 1px;\n  background-color: var(--border-subtle, rgba(0, 0, 0, 0.1));\n  margin: 1rem 0;\n  border: none;\n}"
+}

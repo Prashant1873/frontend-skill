@@ -572,6 +572,35 @@ const ANTIPATTERNS = [
     skillSection: 'Motion',
     skillGuideline: 'image scale or rotate on hover',
   },
+  {
+    id: 'generic-pill-badge',
+    category: 'slop',
+    name: 'Generic eyebrow / pill badge',
+    description:
+      'Floating pill chips, kicker badges ("FEATURE", "WELCOME", "NEW"), and tags above headings are generic AI templates. Use asymmetric editorial typography, inline markers, or integrate context directly into the headline.',
+    skillSection: 'Editorial & Content',
+    skillGuideline: 'generic pill badges above headings',
+  },
+  {
+    id: 'button-missing-active-squish',
+    category: 'slop',
+    scopes: ['motion'],
+    name: 'Button missing active squish spring physics',
+    description:
+      'Interactive buttons require tactile :active squish deformation (transform: scale(1.03, 0.94) or fluid spring) to provide physical click response without layout reflow.',
+    skillSection: 'Buttons & Micro-Interactions',
+    skillGuideline: 'buttons active squish physics',
+  },
+  {
+    id: 'button-insufficient-contrast',
+    category: 'slop',
+    scopes: ['contrast'],
+    name: 'Button insufficient contrast',
+    description:
+      'Button label text and background combination fails WCAG 2.2 AA contrast requirements (minimum 4.5:1 for standard text, 3:1 for large controls).',
+    skillSection: 'Color & Contrast',
+    skillGuideline: 'accessible button contrast',
+  },
 ];
 
 const RULE_ENGINE_SUPPORT = {

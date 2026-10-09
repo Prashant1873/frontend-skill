@@ -1,0 +1,11 @@
+{
+  "id": "editorial-stat-card",
+  "name": "Editorial Stat Card",
+  "category": "cards",
+  "archetype": "editorial-luxury",
+  "tags": ["card", "stats", "editorial", "typography", "luxury"],
+  "tokensUsed": ["--surface", "--border", "--text-primary", "--text-muted", "--font-heading", "--radius-md"],
+  "preview": "Refined editorial metric card featuring large serif figures, balanced subtle margins, and delicate divider lines.",
+  "html": "<div class=\"editorial-stat-card\">\n  <div class=\"editorial-stat-header\">\n    <span class=\"stat-category\">Annual Audit Benchmark</span>\n    <span class=\"stat-period\">FY 2026</span>\n  </div>\n  <div class=\"editorial-stat-value\">94.6<span class=\"stat-unit\">M</span></div>\n  <p class=\"editorial-stat-narrative\">Total algorithmic operations rendered with zero perceptual layout shift or contrast degradation across audited cohorts.</p>\n  <div class=\"editorial-stat-footer\">\n    <span class=\"editorial-stat-delta\">+18.4% YoY Growth</span>\n  </div>\n</div>",
+  "css": ".editorial-stat-card {\n  background: var(--surface);\n  border: 1px solid var(--border);\n  border-radius: var(--radius-md, 8px);\n  padding: 2rem;\n  max-width: 380px;\n  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.04);\n}\n\n.editorial-stat-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  font-size: 0.75rem;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  color: var(--text-muted);\n  padding-bottom: 1rem;\n  border-bottom: 1px solid var(--border);\n  margin-bottom: 1.25rem;\n}\n\n.editorial-stat-value {\n  font-size: 3.5rem;\n  font-family: var(--font-heading), serif;\n  font-weight: 400;\n  color: var(--text-primary);\n  line-height: 1;\n  margin-bottom: 0.75rem;\n  letter-spacing: -0.02em;\n}\n\n.stat-unit {\n  font-size: 2rem;\n  font-weight: 300;\n  color: var(--text-muted);\n  margin-left: 0.2rem;\n}\n\n.editorial-stat-narrative {\n  font-size: 0.9rem;\n  line-height: 1.6;\n  color: var(--text-muted);\n  margin: 0 0 1.25rem;\n}\n\n.editorial-stat-footer {\n  padding-top: 0.75rem;\n  border-top: 1px dashed var(--border);\n}\n\n.editorial-stat-delta {\n  font-size: 0.8rem;\n  font-weight: 500;\n  color: var(--text-primary);\n}"
+}
