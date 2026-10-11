@@ -101,6 +101,24 @@ const SUITES = [
     description: 'Apple spring physics solver, rubber-band curve, and pointer tracker',
   },
   {
+    name: 'Viscoelastic Physics & Poisson Engine',
+    script: path.join(REPO_ROOT, 'test', 'test-viscoelastic.mjs'),
+    args: [],
+    description: 'Stretch-and-squish trajectory math, Poisson volume squish, and WAAPI payload',
+  },
+  {
+    name: 'Elastic Segmented Controls & Tabs',
+    script: path.join(REPO_ROOT, 'test', 'test-segmented.mjs'),
+    args: [],
+    description: '3-tier DOM hierarchy, WAAPI lifecycle, rapid click cancellation, and keyboard a11y',
+  },
+  {
+    name: 'Buttons & Toggles Craft Perfection',
+    script: path.join(REPO_ROOT, 'test', 'test-craft-perfection.mjs'),
+    args: [],
+    description: 'Concentric border radius math, optical icon/text centering, and toggle squish physics',
+  },
+  {
     name: 'Universal Design Token Compiler',
     script: path.join(REPO_ROOT, 'test', 'test-token-compiler.mjs'),
     args: [],

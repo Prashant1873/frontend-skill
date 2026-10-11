@@ -3,6 +3,13 @@
 /* Physics: Poisson elastomeric volume conservation (scale(1.03, 0.94))      */
 /* ========================================================================== */
 
+:root {
+  --btn-radius-outer: var(--radius-outer, 14px);
+  --btn-pad: var(--pad-outer, 4px);
+  --btn-radius-inner: calc(var(--btn-radius-outer) - var(--btn-pad));
+  --border-hairline: oklch(from var(--border, #27272a) l c h / 0.15);
+}
+
 /* Base Button Contract */
 .btn {
   display: inline-flex;
@@ -17,7 +24,7 @@
   -webkit-user-select: none;
   touch-action: manipulation;
   box-sizing: border-box;
-  border: 1px solid transparent;
+  border: 1px solid var(--border-hairline, rgba(255, 255, 255, 0.12));
   outline: none;
   white-space: nowrap;
   line-height: 1;
@@ -41,9 +48,9 @@
   transform: scale(1.03, 0.94);
 }
 
-/* Accessible Focus Ring */
+/* Accessible Focus Ring: non-clipping 2px offset */
 .btn:focus-visible {
-  outline: 2px solid var(--primary, #2563eb);
+  outline: 2px solid var(--accent, var(--primary, #2563eb));
   outline-offset: 2px;
 }
 
@@ -125,14 +132,16 @@
 .btn-secondary {
   background: var(--surface, #18181b);
   color: var(--text-primary, #ffffff);
-  border-color: var(--border, rgba(255, 255, 255, 0.1));
-  box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.08);
+  border-color: oklch(from var(--border, #27272a) l c h / 0.15);
+  box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.08),
+              inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .btn-secondary:hover:not(:disabled) {
   background: var(--canvas, #09090b);
   border-color: var(--primary, #2563eb);
-  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.12),
+              inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .btn-secondary:active:not(:disabled) {
@@ -171,4 +180,40 @@
 
 .btn-destructive:active:not(:disabled) {
   box-shadow: 0 2px 4px -1px rgba(220, 38, 38, 0.2);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Concentric Geometry & Optical Alignment Utilities                         */
+/* -------------------------------------------------------------------------- */
+
+.btn-concentric {
+  border-radius: var(--btn-radius-inner);
+}
+
+.concentric-box {
+  display: inline-flex;
+  border-radius: var(--btn-radius-outer);
+  padding: var(--btn-pad);
+  border: 1px solid var(--border-hairline, rgba(255, 255, 255, 0.12));
+  box-sizing: border-box;
+}
+
+.concentric-box > .concentric-inner,
+.concentric-box > .btn {
+  border-radius: var(--btn-radius-inner);
+}
+
+.optical-align-row {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 0.5rem;
+}
+
+.optical-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transform: translateY(var(--optical-icon-y, -0.5px));
 }

@@ -70,6 +70,20 @@ Exit faster than entrance. Use natural deceleration such as `cubic-bezier(0.16, 
 
 Keep content visible in the default state so failed scripts do not hide the page. Avoid casually animating layout-driving properties such as `width`, `height`, `top`, `left`, and margins; use FLIP, transforms, or grid techniques when appropriate. Bound blur, filter, shadow, canvas, and shader work to isolated regions. Apply `will-change` only during known animation. Measure on target viewports and devices rather than assuming transform means fast.
 
+## Viscoelastic Control Dynamics & Elastic Segmented Indicators
+
+Segmented controls, sliding tabs, and multi-option selectors must behave like an elastic band moving under mechanical tension rather than a rigid sliding pill.
+
+### The Asymmetric Viscoelastic Model
+- **Forward transit ($L_0 \to L_1$):** Asymmetric bridging coordinate is $R_1 - L_0$. The leading edge leaps toward the target while the trailing edge remains anchored under tension before releasing.
+- **Backward transit ($L_1 \to L_0$):** Asymmetric bridging coordinate is $R_0 - L_1$.
+- **Poisson Volume Conservation:** As the indicator stretches horizontally, vertical thickness contracts:
+  - Peak elongation transit (~38%): `scaleY(0.82)` squish.
+  - Momentum rebound (~78%): `scaleY(1.04)` expansion.
+  - Resting equilibrium (100%): `scaleY(1.0)`.
+- **Compositor Execution:** Use native WAAPI (`element.animate()`) with `cubic-bezier(0.16, 1, 0.3, 1)` Apple critically damped curves. Static linear or simple CSS transitions (`transition: left 0.3s ease`) are mechanically flagged by the antipattern detector as `segmented-rigid-sliding-pill`.
+- **Zero-Jitter Lifecycle:** Observe layout with `ResizeObserver` updating resting coordinates directly without triggering false stretch transitions during window resizes.
+
 ## Accessibility and control
 
 Respect autoplay and sound preferences. Any nonessential loop must stop when offscreen or hidden.

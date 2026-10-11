@@ -96,13 +96,13 @@ Before generating layout, declare:
 - ❌ NO generic Inter + slate-900 combinations when brand character demands personality.
 
 ### 1.4 Granular Sub-Playbook Routing & Green-Field Consent (ROUTER-01, ROUTER-02)
-- **Surgical Intent Routing**: When user requests target specific elements (buttons, headings, grids, colors, typography), route strictly to that sub-playbook per [reference/router.md](reference/router.md) without modifying unrelated subsystems:
-  - Buttons & click physics -> [reference/buttons.md](reference/buttons.md)
+- **Surgical Intent Routing**: When user requests target specific elements (buttons, headings, grids, colors, typography, segmented controls), route strictly to that sub-playbook per [reference/router.md](reference/router.md) without modifying unrelated subsystems:
+  - Buttons, concentric radii & optical centering -> [reference/buttons.md](reference/buttons.md)
   - Editorial headings & anti-pill -> [reference/editorial.md](reference/editorial.md)
   - Bento & asymmetric grids -> [reference/bento.md](reference/bento.md)
   - Color & contrast -> [reference/colorize.md](reference/colorize.md)
   - Typography & pairings -> [reference/typeset.md](reference/typeset.md)
-  - Motion & fluid springs -> [reference/animate.md](reference/animate.md)
+  - Motion, viscoelastic tabs & fluid springs -> [reference/animate.md](reference/animate.md)
   - Simplification & chrome reduction -> [reference/distill.md](reference/distill.md)
 - **Green-Field Consent Protocol**: Prompts asking to create an app from scratch (`build app from scratch`, `new app`) must trigger an explicit confirmation prompt before activating the full Human-Craft design system.
 
@@ -111,6 +111,9 @@ Before generating layout, declare:
 ## Section 2: Impeccable Craft & Quality Invariants
 
 - **Inspect before edit**: Query existing CSS tokens, variables, and typography scales first.
+- **Concentric corner radii**: Always enforce $r_{inner} = \max(0, r_{outer} - \text{padding})$ across nested containers to eliminate corner pinching.
+- **Viscoelastic indicators**: Segmented controls and tab rails must use WAAPI compositor stretch-and-squish kinetics with Poisson volume preservation; static linear/ease transitions are strictly banned.
+- **Sub-pixel optical centering**: Offset button and control SVG icons (`translateY(-0.5px)`) relative to font cap-height.
 - **Bounded passes**: Fix identified findings in one disciplined batch; avoid infinite micro-loops.
 - **Refinement preserves; redesign replaces**: Never blend half-hearted redesign into existing brand assets.
 - See [reference/craft-floor.md](reference/craft-floor.md) and [reference/new-work.md](reference/new-work.md) for complete playbooks.

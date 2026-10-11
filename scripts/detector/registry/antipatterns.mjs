@@ -631,6 +631,36 @@ const ANTIPATTERNS = [
     skillSection: 'Buttons & Micro-Interactions',
     skillGuideline: 'minimum touch target 44px',
   },
+  {
+    id: 'segmented-rigid-sliding-pill',
+    category: 'slop',
+    scopes: ['motion'],
+    name: 'Segmented rigid sliding pill',
+    description:
+      'Segmented control or tab indicators using static CSS transitions (linear or simple ease) produce rigid sliding pills that lack viscoelastic stretch-and-squish dynamics. Use WAAPI physical bridging with Poisson volume squish.',
+    skillSection: 'Motion & Fluid Gestures',
+    skillGuideline: 'viscoelastic segmented indicator stretch-and-squish',
+  },
+  {
+    id: 'non-concentric-border-radius',
+    category: 'slop',
+    scopes: ['layout'],
+    name: 'Non-concentric border radius',
+    description:
+      'Nested containers where inner border radius is equal to or greater than the outer radius cause visual corner-pinching. Outer radius and inner radius must be concentric: inner_radius = max(0, outer_radius - padding).',
+    skillSection: 'Visual Details',
+    skillGuideline: 'concentric border radius',
+  },
+  {
+    id: 'off-center-icon-container',
+    category: 'slop',
+    scopes: ['layout'],
+    name: 'Off-center button icon container',
+    description:
+      'Button or control SVG icons centered purely with flexbox/grid appear optically dropped below the text cap-height. Apply sub-pixel optical vertical adjustment (translateY) or optical centering tokens.',
+    skillSection: 'Buttons & Micro-Interactions',
+    skillGuideline: 'optical icon centering',
+  },
 ];
 
 const RULE_ENGINE_SUPPORT = {

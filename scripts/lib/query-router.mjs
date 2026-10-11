@@ -7,7 +7,7 @@ const SURGICAL_RULES = [
   {
     intent: 'buttons',
     playbook: 'reference/buttons.md',
-    regex: /\b(buttons?|btn|squish|tactile|active state|click effect)\b/i,
+    regex: /\b(buttons?|btn|squish|tactile|active state|click effect|concentric|optical|centering|icons? alignment|switches?|toggles?)\b/i,
   },
   {
     intent: 'editorial',
@@ -32,7 +32,7 @@ const SURGICAL_RULES = [
   {
     intent: 'motion',
     playbook: 'reference/animate.md',
-    regex: /\b(animat(e|ion)|motion|springs?|transitions?|gestures?)\b/i,
+    regex: /\b(animat(e|ion)|motion|springs?|transitions?|gestures?|segmented|tabs?|stretch-and-squish|viscoelastic|rubber-band|poisson)\b/i,
   },
   {
     intent: 'distill',

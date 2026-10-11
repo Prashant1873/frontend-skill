@@ -27,6 +27,8 @@ import { fileURLToPath } from 'node:url';
 import { exec } from 'node:child_process';
 import { compileTokens } from './lib/token-compiler.mjs';
 import { SPRING_PRESETS } from './lib/spring-physics.mjs';
+import { VISCOELASTIC_PRESETS } from './lib/viscoelastic.mjs';
+import { computeConcentricRadius, computeOpticalIconOffset, getConcentricCssTokens } from './lib/optical-align.mjs';
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(SCRIPT_DIR, '..');
@@ -51,12 +53,14 @@ function getHtmlContent() {
   <title>Human-Craft UI Sandbox & Test Bench</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- impeccable-disable-next-line overused-font -- visual sandbox showcases font archetype -->
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/lib/buttons.css">
   <link rel="stylesheet" href="/lib/editorial.css">
   <link rel="stylesheet" href="/lib/bento.css">
   <link rel="stylesheet" href="/lib/picker.css">
   <link rel="stylesheet" href="/lib/gestures.css">
+  <link rel="stylesheet" href="/lib/segmented.css">
   <style>
     :root {
       --bg-base: #090d16;
@@ -604,6 +608,90 @@ function getHtmlContent() {
       </div>
     </section>
 
+    <!-- SECTION 10: ELASTIC SEGMENTED CONTROLS & CRAFT PERFECTION BENCH -->
+    <section class="bench-section" id="bench-segmented">
+      <div class="bench-header">
+        <span class="bench-label">Kinetic Engineering • Phase 27</span>
+        <h2 class="bench-title">Elastic Segmented Controls & Craft Perfection Bench</h2>
+        <p class="bench-desc">Live viscoelastic stretch-and-squish pill physics under Poisson volume preservation, paired with mathematical concentric corner radii and sub-pixel optical icon alignment.</p>
+      </div>
+
+      <!-- Playground Row: Segmented Control Interactive -->
+      <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 1.5rem;">
+        <div>
+          <span class="bench-label" style="margin-bottom: 0.75rem;">Interactive Viscoelastic Segmented Tabs (3-Tier DOM)</span>
+          <div class="elastic-segmented-rail" id="sandboxSegmentedRail" role="tablist">
+            <div class="elastic-segmented-indicator" aria-hidden="true"></div>
+            <button class="elastic-segmented-option is-active" role="tab" aria-selected="true" tabindex="0" data-value="overview" id="segTabOverview">
+              <span class="elastic-segmented-icon" style="transform: translateY(-0.5px);">
+                <svg viewBox="0 0 20 20"><path d="M10 2L2 7v11h6v-6h4v6h6V7l-8-5z"/></svg>
+              </span>
+              <span class="elastic-segmented-label">Overview</span>
+            </button>
+            <button class="elastic-segmented-option" role="tab" aria-selected="false" tabindex="-1" data-value="analytics" id="segTabAnalytics">
+              <span class="elastic-segmented-icon" style="transform: translateY(-0.5px);">
+                <svg viewBox="0 0 20 20"><path d="M2 10h3v8H2v-8zm6-6h3v14H8V4zm6 4h3v10h-3V8z"/></svg>
+              </span>
+              <span class="elastic-segmented-label">Analytics</span>
+              <span class="elastic-segmented-badge">12</span>
+            </button>
+            <button class="elastic-segmented-option" role="tab" aria-selected="false" tabindex="-1" data-value="performance" id="segTabPerf">
+              <span class="elastic-segmented-icon" style="transform: translateY(-0.5px);">
+                <svg viewBox="0 0 20 20"><path d="M10 3a7 7 0 100 14 7 7 0 000-14zm1 7.414V6h-2v4.414l3.293 3.293 1.414-1.414L11 10.414z"/></svg>
+              </span>
+              <span class="elastic-segmented-label">Performance</span>
+            </button>
+            <button class="elastic-segmented-option" role="tab" aria-selected="false" tabindex="-1" data-value="settings" id="segTabSettings">
+              <span class="elastic-segmented-icon" style="transform: translateY(-0.5px);">
+                <svg viewBox="0 0 20 20"><path d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"/></svg>
+              </span>
+              <span class="elastic-segmented-label">Settings</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Concentric Border Radius & Optical Centering Controls -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+          <div style="background: var(--bg-surface-elevated); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border-subtle);">
+            <span class="bench-label">Concentric Radius Tuner</span>
+            <div style="display: flex; align-items: center; gap: 1rem; margin: 0.75rem 0;">
+              <label style="font-size: 0.8125rem; color: var(--text-muted); min-width: 60px;">Outer: <span id="outerRadiusVal">14px</span></label>
+              <input type="range" id="outerRadiusSlider" min="8" max="32" value="14" style="flex: 1;">
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+              <label style="font-size: 0.8125rem; color: var(--text-muted); min-width: 60px;">Padding: <span id="paddingVal">4px</span></label>
+              <input type="range" id="paddingSlider" min="2" max="12" value="4" style="flex: 1;">
+            </div>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">
+              Calculated inner radius: <span class="metric-value" id="innerRadiusVal">10px</span> (Formula: <code>max(0, outer - padding)</code>)
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-elevated); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--border-subtle);">
+            <span class="bench-label">Optical Alignment Tuner</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin: 0.75rem 0;">
+              <span style="font-size: 0.875rem;">Sub-pixel Cap-Height Alignment</span>
+              <label style="display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                <input type="checkbox" id="opticalAlignToggle" checked>
+                <span style="font-size: 0.8125rem;" id="opticalStatusText">Active (-0.5px)</span>
+              </label>
+            </div>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">
+              Compensates for em-box ascender whitespace vs uppercase glyph mass with optical balance factor 0.5.
+            </p>
+          </div>
+        </div>
+
+        <!-- Telemetry Panel -->
+        <div class="metrics-panel">
+          <div>Active Tab: <span class="metric-value" id="segActiveTab">Overview</span></div>
+          <div>Viscoelastic Curve: <span class="metric-value">cubic-bezier(0.16, 1, 0.3, 1)</span></div>
+          <div>Poisson Ratio: <span class="metric-value">0.82 Squish / 1.04 Rebound</span></div>
+          <div>Concentric Rule: <span class="metric-value" id="concentricRule">r_inner = 10px</span></div>
+        </div>
+      </div>
+    </section>
+
     <footer>
       Human-Craft UI Engine • High-Velocity Autonomous Development Bench • 2026
     </footer>
@@ -679,6 +767,128 @@ function getHtmlContent() {
         }
       })
       .catch(() => {});
+
+    // Section 10 Segmented Control & Craft Bench Logic
+    const segRail = document.getElementById('sandboxSegmentedRail');
+    const segIndicator = segRail ? segRail.querySelector('.elastic-segmented-indicator') : null;
+    const segTabs = segRail ? Array.from(segRail.querySelectorAll('.elastic-segmented-option')) : [];
+    const segActiveLabel = document.getElementById('segActiveTab');
+
+    function syncSegmentedIndicator(fromEl, toEl) {
+      if (!segIndicator || !segRail || !toEl) return;
+      const railRect = segRail.getBoundingClientRect();
+      const targetRect = toEl.getBoundingClientRect();
+      const toLeft = targetRect.left - railRect.left;
+      const toWidth = targetRect.width;
+
+      if (!fromEl || fromEl === toEl) {
+        segIndicator.style.left = toLeft + 'px';
+        segIndicator.style.width = toWidth + 'px';
+        segIndicator.style.transform = 'scaleY(1)';
+        return;
+      }
+
+      const fromRect = fromEl.getBoundingClientRect();
+      const fromLeft = fromRect.left - railRect.left;
+      const fromWidth = fromRect.width;
+      const isForward = toLeft > fromLeft;
+
+      const deltaX = Math.abs(toLeft - fromLeft);
+      const stretchWidth = Math.max(fromWidth, toWidth) + Math.min(deltaX * 0.45, 60);
+
+      const keyframes = isForward ? [
+        { left: fromLeft + 'px', width: fromWidth + 'px', transform: 'scaleY(1)' },
+        { left: fromLeft + 'px', width: stretchWidth + 'px', transform: 'scaleY(0.82)' },
+        { left: (toLeft - 4) + 'px', width: (toWidth + 8) + 'px', transform: 'scaleY(1.04)' },
+        { left: toLeft + 'px', width: toWidth + 'px', transform: 'scaleY(1)' }
+      ] : [
+        { left: fromLeft + 'px', width: fromWidth + 'px', transform: 'scaleY(1)' },
+        { left: (toLeft - 8) + 'px', width: stretchWidth + 'px', transform: 'scaleY(0.82)' },
+        { left: toLeft + 'px', width: (toWidth + 6) + 'px', transform: 'scaleY(1.04)' },
+        { left: toLeft + 'px', width: toWidth + 'px', transform: 'scaleY(1)' }
+      ];
+
+      const anim = segIndicator.animate(keyframes, {
+        duration: 340,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        fill: 'both'
+      });
+
+      anim.onfinish = () => {
+        segIndicator.style.left = toLeft + 'px';
+        segIndicator.style.width = toWidth + 'px';
+        segIndicator.style.transform = 'scaleY(1)';
+      };
+    }
+
+    if (segTabs.length > 0) {
+      let currentSegTab = segTabs[0];
+      requestAnimationFrame(() => {
+        syncSegmentedIndicator(null, currentSegTab);
+      });
+
+      segTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          if (tab === currentSegTab) return;
+          const prevTab = currentSegTab;
+          currentSegTab = tab;
+          segTabs.forEach(t => {
+            const isSel = t === tab;
+            t.setAttribute('aria-selected', isSel ? 'true' : 'false');
+            t.setAttribute('tabindex', isSel ? '0' : '-1');
+            t.classList.toggle('is-active', isSel);
+          });
+          if (segActiveLabel) {
+            segActiveLabel.textContent = tab.querySelector('.elastic-segmented-label')?.textContent || 'Selected';
+          }
+          syncSegmentedIndicator(prevTab, tab);
+        });
+      });
+    }
+
+    // Concentric tuner
+    const outerSlider = document.getElementById('outerRadiusSlider');
+    const padSlider = document.getElementById('paddingSlider');
+    const outerVal = document.getElementById('outerRadiusVal');
+    const padVal = document.getElementById('paddingVal');
+    const innerVal = document.getElementById('innerRadiusVal');
+    const concentricRuleText = document.getElementById('concentricRule');
+
+    function updateConcentric() {
+      if (!outerSlider || !padSlider) return;
+      const o = Number(outerSlider.value);
+      const p = Number(padSlider.value);
+      const i = Math.max(0, o - p);
+      if (outerVal) outerVal.textContent = o + 'px';
+      if (padVal) padVal.textContent = p + 'px';
+      if (innerVal) innerVal.textContent = i + 'px';
+      if (concentricRuleText) concentricRuleText.textContent = 'r_inner = ' + i + 'px';
+      if (segRail) {
+        segRail.style.borderRadius = o + 'px';
+        segRail.style.padding = p + 'px';
+      }
+      if (segIndicator) {
+        segIndicator.style.borderRadius = i + 'px';
+      }
+    }
+    if (outerSlider && padSlider) {
+      outerSlider.addEventListener('input', updateConcentric);
+      padSlider.addEventListener('input', updateConcentric);
+    }
+
+    // Optical align toggle
+    const opticalToggle = document.getElementById('opticalAlignToggle');
+    const opticalStatus = document.getElementById('opticalStatusText');
+    if (opticalToggle) {
+      opticalToggle.addEventListener('change', () => {
+        const active = opticalToggle.checked;
+        const offset = active ? '-0.5px' : '0px';
+        if (opticalStatus) opticalStatus.textContent = active ? 'Active (-0.5px)' : 'Neutral (0px)';
+        document.querySelectorAll('.elastic-segmented-icon').forEach(icon => {
+          icon.style.transform = 'translateY(' + offset + ')';
+        });
+      });
+    }
   </script>
 </body>
 </html>`;
@@ -771,6 +981,45 @@ export function createSandboxServer() {
       return;
     }
 
+    if (pathname === '/api/segmented') {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        status: 'ok',
+        presets: VISCOELASTIC_PRESETS,
+        poissonConstants: {
+          peakSquish: 0.82,
+          reboundScale: 1.04,
+          easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        },
+        mechanics: {
+          forwardStretch: 'Indicator leading edge pulls toward destination before trailing edge releases',
+          volumePreservation: 'Vertical scale (scaleY) compresses proportionally to horizontal elongation'
+        },
+        sampleSegments: ['Overview', 'Analytics', 'Settings']
+      }));
+      return;
+    }
+
+    if (pathname === '/api/optical-align') {
+      const outer = Number(parsedUrl.searchParams.get('outer') || 14);
+      const pad = Number(parsedUrl.searchParams.get('padding') || 4);
+      const tokens = getConcentricCssTokens({ outerRadius: outer, padding: pad });
+      const opticalIcon = computeOpticalIconOffset({ iconSize: 18, fontSize: 14 });
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        status: 'ok',
+        formula: 'r_inner = max(0, r_outer - padding)',
+        geometry: tokens,
+        opticalIconOffset: opticalIcon,
+        concentricPairs: [
+          { outer: 14, padding: 4, inner: computeConcentricRadius(14, 4) },
+          { outer: 20, padding: 6, inner: computeConcentricRadius(20, 6) },
+          { outer: 8, padding: 2, inner: computeConcentricRadius(8, 2) }
+        ]
+      }));
+      return;
+    }
+
     // Static Asset Serving from scripts/lib/
     if (pathname.startsWith('/lib/')) {
       const fileName = path.basename(pathname);
@@ -849,6 +1098,10 @@ async function runCheck() {
       throw new Error('Token compiler signature missing from HTML payload');
     }
 
+    if (!res.body.includes('Elastic Segmented Controls & Craft Perfection Bench')) {
+      throw new Error('Segmented controls bench signature missing from HTML payload');
+    }
+
     console.log('✓ Sandbox smoke test passed (HTTP 200 OK, payload verified on port ' + port + ')');
     await new Promise((resolve) => server.close(resolve));
     process.exit(0);
@@ -890,6 +1143,8 @@ function main() {
     console.log('  - Multi-variant prototype switcher preview (PICKER.md)');
     console.log('  - Apple fluid gestures, velocity projection & tactile toggles');
     console.log('  - Universal design token compiler & exporter');
+    console.log('  - Elastic segmented controls (viscoelastic WAAPI stretch & squish)');
+    console.log('  - Concentric radii & optical icon alignment bench');
     console.log('Press Ctrl+C to stop.\n');
 
     if (args.includes('--open')) {

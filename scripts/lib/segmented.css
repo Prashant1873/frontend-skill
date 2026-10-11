@@ -1,0 +1,175 @@
+/**
+ * Fluid Elastic Segmented Control & Tab Bar Stylesheet
+ *
+ * Implements a strict 3-tier DOM hierarchy:
+ * 1. Container Rail: isolation: isolate, inline-flex, padded
+ * 2. Floating Indicator Layer: position: absolute, z-index: 1, pointer-events: none, will-change
+ * 3. Interactive Option Buttons: position: relative, z-index: 2, background: transparent !important
+ */
+
+:root {
+  --segmented-rail-pad: 4px;
+  --segmented-radius-rail: 14px;
+  --segmented-radius-indicator: calc(var(--segmented-radius-rail) - var(--segmented-rail-pad)); /* 10px concentric */
+  --segmented-rail-bg: oklch(0.18 0.015 250 / 0.55);
+  --segmented-rail-border: oklch(1 0 0 / 0.08);
+  --segmented-rail-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+
+  --segmented-indicator-bg: oklch(0.32 0.025 250 / 0.85);
+  --segmented-indicator-border: oklch(1 0 0 / 0.15);
+  --segmented-indicator-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.2);
+
+  --segmented-text-idle: oklch(0.72 0.015 250);
+  --segmented-text-active: oklch(0.98 0 0);
+  --segmented-focus-ring: oklch(0.75 0.15 240);
+}
+
+/* 1. Container Rail */
+.elastic-segmented-rail {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  isolation: isolate;
+  padding: var(--segmented-rail-pad);
+  border-radius: var(--segmented-radius-rail);
+  background: var(--segmented-rail-bg);
+  border: 1px solid var(--segmented-rail-border);
+  box-shadow: var(--segmented-rail-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+}
+
+.elastic-segmented-rail.is-full-width {
+  display: flex;
+  width: 100%;
+}
+
+.elastic-segmented-rail.is-full-width .elastic-segmented-option {
+  flex: 1 1 0%;
+}
+
+/* 2. Floating Indicator Layer */
+.elastic-segmented-indicator {
+  position: absolute;
+  top: var(--segmented-rail-pad);
+  bottom: var(--segmented-rail-pad);
+  left: 0;
+  width: 0;
+  z-index: 1;
+  pointer-events: none;
+  will-change: left, width, transform;
+  border-radius: var(--segmented-radius-indicator);
+  background: var(--segmented-indicator-bg);
+  border: 1px solid var(--segmented-indicator-border);
+  box-shadow: var(--segmented-indicator-shadow);
+  transform-origin: center center;
+  transform: scaleY(1);
+}
+
+/* Subtle glass highlight inside indicator */
+.elastic-segmented-indicator::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  border-radius: var(--segmented-radius-indicator) var(--segmented-radius-indicator) 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* 3. Interactive Option Buttons */
+.elastic-segmented-option {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px; /* WCAG 2.2 touch target compliance */
+  min-width: 44px;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  background: transparent !important;
+  border: transparent !important;
+  outline: none;
+  border-radius: var(--segmented-radius-indicator);
+  color: var(--segmented-text-idle);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1), opacity 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.elastic-segmented-option:hover:not([disabled]) {
+  color: var(--segmented-text-active);
+}
+
+.elastic-segmented-option[aria-selected="true"],
+.elastic-segmented-option[aria-checked="true"] {
+  color: var(--segmented-text-active);
+  font-weight: 600;
+}
+
+.elastic-segmented-option:focus-visible {
+  outline: 2px solid var(--segmented-focus-ring) !important;
+  outline-offset: 2px;
+}
+
+.elastic-segmented-option[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Option Content */
+.elastic-segmented-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.elastic-segmented-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.elastic-segmented-label {
+  display: inline-block;
+  pointer-events: none;
+}
+
+.elastic-segmented-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  background: oklch(1 0 0 / 0.12);
+  color: inherit;
+}
+
+/* Reduced Motion Mode */
+@media (prefers-reduced-motion: reduce) {
+  .elastic-segmented-indicator {
+    will-change: auto;
+    transition: none !important;
+  }
+}

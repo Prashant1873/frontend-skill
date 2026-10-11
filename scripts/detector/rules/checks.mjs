@@ -1182,8 +1182,9 @@ function scanCssTextForGestureDynamics(rawContent) {
       }
     }
 
-    // 3: Sub-44px touch target check on interactive controls
-    const isInteractiveControl = /(?:^|[\s>+~,.])(?:btn|button|icon-btn|btn-icon|close-btn|drag-handle|sheet-handle)(?![\w-])/i.test(selector) || /button\b/i.test(selector);
+    // 3: Sub-44px touch target check on interactive controls (excluding child glyphs like svg, img, path)
+    const isChildGlyph = /(?:^|[\s>+~,])(?:svg|path|span|img|i)\b/i.test(selector);
+    const isInteractiveControl = !isChildGlyph && (/(?:^|[\s>+~,.])(?:btn|button|icon-btn|btn-icon|close-btn|drag-handle|sheet-handle)(?![\w-])/i.test(selector) || /button\b/i.test(selector));
     if (isInteractiveControl) {
       const w = decls.get('width');
       const h = decls.get('height');
@@ -1207,6 +1208,158 @@ function scanCssTextForGestureDynamics(rawContent) {
             selector,
           });
         }
+      }
+    }
+  }
+
+  return findings;
+}
+
+function cleanCssSelector(rawSel) {
+  let sel = String(rawSel || '').trim();
+  if (sel.includes('<')) {
+    const idx = sel.lastIndexOf('>');
+    if (idx !== -1) sel = sel.slice(idx + 1).trim();
+  }
+  return sel;
+}
+
+// Scans stylesheet text for segmented control indicator dynamics:
+// segmented-rigid-sliding-pill: Indicators animated with static linear or generic ease CSS transitions
+function scanCssTextForSegmentedDynamics(rawContent) {
+  const content = String(rawContent || '').replace(/\/\*[\s\S]*?\*\//g,
+    (block) => block.replace(/[^\n]/g, ' '));
+  const findings = [];
+
+  const ruleRe = new RegExp(CSS_RULE_BLOCK_SOURCE, 'g');
+  let m;
+  while ((m = ruleRe.exec(content)) !== null) {
+    const selector = cleanCssSelector(m[1]);
+    const decls = parseCssDeclBlock(m[2]);
+
+    const isIndicator = /(?:^|[\s>+~,.])(?:segmented-indicator|elastic-segmented-indicator|tab-pill|sliding-pill|tab-indicator)(?![\w-])/i.test(selector);
+    if (isIndicator) {
+      const transition = decls.get('transition') || decls.get('transition-timing-function') || '';
+      if (transition && transition !== 'none') {
+        const isLinearOrGenericEase = /\b(?:linear|ease|ease-in|ease-out|ease-in-out)\b/i.test(transition);
+        const animatesPosition = /(?:left|transform|width|all)\b/i.test(transition) || !/(?:opacity|color|background)/i.test(transition);
+        if (isLinearOrGenericEase && animatesPosition) {
+          findings.push({
+            id: 'segmented-rigid-sliding-pill',
+            snippet: `${selector} has rigid sliding pill transition (${transition})`,
+            index: m.index,
+            selector,
+          });
+        }
+      }
+    }
+  }
+
+  return findings;
+}
+
+// Scans stylesheet text for non-concentric nested container border radii:
+// non-concentric-border-radius: Nested container where inner radius violates r_inner = max(0, r_outer - padding)
+function scanCssTextForConcentricity(rawContent) {
+  const content = String(rawContent || '').replace(/\/\*[\s\S]*?\*\//g,
+    (block) => block.replace(/[^\n]/g, ' '));
+  const findings = [];
+
+  const ruleRe = new RegExp(CSS_RULE_BLOCK_SOURCE, 'g');
+  const rules = [];
+  let m;
+  while ((m = ruleRe.exec(content)) !== null) {
+    rules.push({
+      selector: cleanCssSelector(m[1]),
+      decls: parseCssDeclBlock(m[2]),
+      index: m.index,
+    });
+  }
+
+  const containerMap = new Map();
+  for (const r of rules) {
+    const rawPad = r.decls.get('padding');
+    const rawRadius = r.decls.get('border-radius');
+    if (rawPad && rawRadius) {
+      const padPx = cssLengthToPx(rawPad.trim().split(/\s+/)[0]);
+      const radiusPx = cssLengthToPx(rawRadius.trim().split(/\s+/)[0]);
+      if (padPx !== null && padPx > 0 && radiusPx !== null && radiusPx > 0) {
+        containerMap.set(r.selector, { padPx, radiusPx, index: r.index });
+      }
+    }
+  }
+
+  for (const r of rules) {
+    const childRadiusRaw = r.decls.get('border-radius');
+    if (!childRadiusRaw || /calc\(/i.test(childRadiusRaw)) continue;
+    const childRadiusPx = cssLengthToPx(childRadiusRaw.trim().split(/\s+/)[0]);
+    if (childRadiusPx === null || childRadiusPx <= 0) continue;
+
+    for (const [parentSel, parent] of containerMap.entries()) {
+      const isDescendant = r.selector !== parentSel && (
+        r.selector.startsWith(`${parentSel} `) ||
+        r.selector.startsWith(`${parentSel}>`) ||
+        r.selector.startsWith(`${parentSel} >`)
+      );
+
+      if (isDescendant) {
+        const expectedMaxRadius = Math.max(0, parent.radiusPx - parent.padPx);
+        if (childRadiusPx > expectedMaxRadius && childRadiusPx >= parent.radiusPx) {
+          findings.push({
+            id: 'non-concentric-border-radius',
+            snippet: `${r.selector} inner radius (${childRadiusPx}px) violates concentric formula with parent ${parentSel} (${parent.radiusPx}px - ${parent.padPx}px = ${expectedMaxRadius}px)`,
+            index: r.index,
+            selector: r.selector,
+          });
+        }
+      }
+    }
+  }
+
+  return findings;
+}
+
+// Scans stylesheet text for button icon optical alignment:
+// off-center-icon-container: Button/control SVG icons lacking optical vertical centering offset relative to font cap-height
+function scanCssTextForOpticalAlignment(rawContent) {
+  const content = String(rawContent || '').replace(/\/\*[\s\S]*?\*\//g,
+    (block) => block.replace(/[^\n]/g, ' '));
+  const findings = [];
+
+  const ruleRe = new RegExp(CSS_RULE_BLOCK_SOURCE, 'g');
+  let m;
+  while ((m = ruleRe.exec(content)) !== null) {
+    const selector = cleanCssSelector(m[1]);
+    const decls = parseCssDeclBlock(m[2]);
+
+    const isButtonIcon = (
+      /(?:^|[\s>+~,.])(?:btn|button|icon-btn|btn-icon|tactile-btn)\s*(?:>\s*)?(?:svg|i|\.icon)\b/i.test(selector) ||
+      /(?:^|[\s>+~,.])(?:button-icon|icon-tile|icon-wrapper)\b/i.test(selector)
+    );
+
+    const isOpticalClass = /(?:optical|align-middle|vertical-center)/i.test(selector);
+
+    if (isButtonIcon && !isOpticalClass) {
+      const transform = decls.get('transform') || '';
+      const top = decls.get('top') || '';
+      const marginTop = decls.get('margin-top') || '';
+      const verticalAlign = decls.get('vertical-align') || '';
+
+      const hasOpticalCompensation = (
+        /\b(?:translateY|translate)\b/i.test(transform) ||
+        /(?:var\(--optical|-0\.\d+px|-1px)/i.test(transform) ||
+        /-(?:0\.\d+|1)px/i.test(top) ||
+        /-(?:0\.\d+|1)px/i.test(marginTop) ||
+        /\b(?:middle|sub|super)\b/i.test(verticalAlign)
+      );
+
+      if (!hasOpticalCompensation) {
+        findings.push({
+          id: 'off-center-icon-container',
+          snippet: `${selector} lacks optical vertical centering offset (translateY or optical-icon)`,
+          index: m.index,
+          selector,
+        });
       }
     }
   }
@@ -5801,6 +5954,9 @@ export {
   scanCssTextForInsetStripe,
   scanCssTextForButtonDynamics,
   scanCssTextForGestureDynamics,
+  scanCssTextForSegmentedDynamics,
+  scanCssTextForConcentricity,
+  scanCssTextForOpticalAlignment,
   checkGenericPillBadge,
   scanCssTextForMarquee,
   collectMarqueeKeyframes,

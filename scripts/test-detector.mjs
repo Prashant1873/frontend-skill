@@ -150,6 +150,24 @@ async function main() {
     suite.assertHasFinding(findings, 'touch-target-sub-44px', 'sub-44px button');
   });
 
+  await suite.run('Unit: detectText catches segmented-rigid-sliding-pill', () => {
+    const css = '.segmented-indicator { transition: left 0.3s ease; }';
+    const findings = detectText(css, 'segmented.css');
+    suite.assertHasFinding(findings, 'segmented-rigid-sliding-pill', 'rigid sliding pill');
+  });
+
+  await suite.run('Unit: detectText catches non-concentric-border-radius', () => {
+    const css = '.card { padding: 8px; border-radius: 12px; } .card .inner { border-radius: 12px; }';
+    const findings = detectText(css, 'card.css');
+    suite.assertHasFinding(findings, 'non-concentric-border-radius', 'non-concentric nested radius');
+  });
+
+  await suite.run('Unit: detectText catches off-center-icon-container', () => {
+    const css = '.btn svg { width: 16px; height: 16px; }';
+    const findings = detectText(css, 'btn.css');
+    suite.assertHasFinding(findings, 'off-center-icon-container', 'off-center button icon');
+  });
+
   // ── Fixture Tests: detectHtml & detectText on test/fixtures/ ──
   const typographyFixture = path.join(FIXTURES_DIR, 'slop-typography.html');
   await suite.run('Fixture: slop-typography.html triggers overused-font', async () => {
@@ -215,6 +233,28 @@ async function main() {
     suite.assert(fs.existsSync(cleanGesturesFixture), 'Fixture file exists');
     const findings = await detectHtml(cleanGesturesFixture);
     suite.assertNoFindings(findings, 'clean-gestures fixture');
+  });
+
+  const slopSegmentedFixture = path.join(FIXTURES_DIR, 'slop-segmented.html');
+  await suite.run('Fixture: slop-segmented.html triggers segmented-rigid-sliding-pill', async () => {
+    suite.assert(fs.existsSync(slopSegmentedFixture), 'Fixture file exists');
+    const findings = await detectHtml(slopSegmentedFixture);
+    suite.assertHasFinding(findings, 'segmented-rigid-sliding-pill', 'slop-segmented rigid indicator');
+  });
+
+  const slopConcentricFixture = path.join(FIXTURES_DIR, 'slop-concentric.html');
+  await suite.run('Fixture: slop-concentric.html triggers non-concentric and off-center rules', async () => {
+    suite.assert(fs.existsSync(slopConcentricFixture), 'Fixture file exists');
+    const findings = await detectHtml(slopConcentricFixture);
+    suite.assertHasFinding(findings, 'non-concentric-border-radius', 'slop-concentric border radius');
+    suite.assertHasFinding(findings, 'off-center-icon-container', 'slop-concentric off-center icon');
+  });
+
+  const cleanSegmentedFixture = path.join(FIXTURES_DIR, 'clean-segmented.html');
+  await suite.run('Fixture: clean-segmented.html produces zero findings (negative control)', async () => {
+    suite.assert(fs.existsSync(cleanSegmentedFixture), 'Fixture file exists');
+    const findings = await detectHtml(cleanSegmentedFixture);
+    suite.assertNoFindings(findings, 'clean-segmented fixture');
   });
 
   // Output formatting

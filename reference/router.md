@@ -20,12 +20,12 @@ When users ask for assistance with a specific frontend element (e.g. *"Fix the b
 
 | User Intent | Prompt Clues & Keywords | Target Playbook | Scope Boundary |
 |---|---|---|---|
-| **Buttons & Click Physics** | `button`, `btn`, `squish`, `press`, `tap`, `click`, `active state` | [buttons.md](buttons.md) | Modify only button geometry, transitions, and specular highlights. |
+| **Buttons & Click Physics** | `button`, `btn`, `squish`, `press`, `tap`, `click`, `active state`, `concentric`, `optical`, `centering`, `switches`, `toggles` | [buttons.md](buttons.md) | Modify button geometry, concentric radii, optical icon offsets, and specular highlights. |
 | **Editorial & Anti-Pill** | `pill`, `badge`, `eyebrow`, `heading`, `kicker`, `editorial` | [editorial.md](editorial.md) | Replace pill chips with asymmetric scale or hairline dividers. |
 | **Bento & Multi-Span Grids** | `bento`, `grid`, `layout`, `columns`, `3-card`, `multi-span` | [bento.md](bento.md) | Break equal-width columns using 2:1 or anchor hero spans. |
 | **Color & Perceptual Contrast** | `color`, `palette`, `contrast`, `oklch`, `theme`, `dark mode` | [colorize.md](colorize.md) | Enforce WCAG 2.2 AA / APCA contrast and harmonic stepping. |
 | **Typography & Font Pairing** | `font`, `typography`, `typeset`, `pairing`, `fallbacks` | [typeset.md](typeset.md) | Pair characterful archetype fonts with metric fallbacks. |
-| **Motion & Spring Gestures** | `animation`, `motion`, `transition`, `spring`, `fluid` | [animate.md](animate.md) | Apply interruptible Apple fluid spring curves. |
+| **Motion & Spring Gestures** | `animation`, `motion`, `transition`, `spring`, `fluid`, `segmented`, `tabs`, `viscoelastic`, `stretch-and-squish`, `rubber-band` | [animate.md](animate.md) | Apply interruptible Apple fluid spring curves and viscoelastic WAAPI segmented indicator physics. |
 | **Simplification & Chrome** | `simplify`, `declutter`, `strip borders`, `distill` | [distill.md](distill.md) | Remove card-in-card chrome and expand negative space. |
 
 ---

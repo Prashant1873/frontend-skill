@@ -93,3 +93,26 @@ Every button variant must satisfy WCAG 2.2 AA contrast standards ($\ge 4.5:1$ fo
 - **Focus Ring:** Every interactive button must define `:focus-visible` with a distinct outline offset (`outline: 2px solid var(--primary); outline-offset: 2px`). Never suppress focus rings with `outline: none` without providing an accessible alternative.
 - **Minimum Touch Target:** Mobile viewports must enforce a minimum hit box of $44 \times 44\text{px}$ using padding or transparent pseudos.
 - **Button Semantics:** Always use native `<button type="button">` or `<a role="button">`. Never build interactive buttons from un-focusable `<div>` elements without ARIA attributes.
+
+---
+
+## 6. Concentric Geometry & Optical Alignment (Craft Perfection)
+
+### Concentric Corner Radii
+When nesting buttons, indicators, or switches inside outer containers or rails, inner corner radii must strictly follow the concentric formula to eliminate visual corner-pinching:
+$$r_{inner} = \max(0, r_{outer} - \text{padding})$$
+
+- If an outer container has `border-radius: 14px` and `padding: 4px`, the inner button must have `border-radius: 10px` (or `calc(var(--radius-outer) - var(--padding))`).
+- Equal radii ($r_{inner} = r_{outer}$) across padded boundaries are mechanically flagged by the antipattern detector as `non-concentric-border-radius`.
+
+### Sub-Pixel Optical Icon Centering
+SVG icons vertically aligned with standard flexbox/grid appear optically dropped below the cap-height of uppercase glyphs due to font leading:
+- Compensate by applying a sub-pixel optical vertical adjustment: `transform: translateY(var(--optical-icon-y, -0.5px))` or class `.optical-icon`.
+- Omission of optical icon adjustment is mechanically flagged as `off-center-icon-container`.
+
+### Tactile Physical Toggle Switches
+Physical toggle switches must employ concentric track/thumb geometry and tactile squish deformation:
+- Outer track: `border-radius: 16px; padding: 2px;`
+- Thumb: `border-radius: 14px;` ($16 - 2 = 14\text{px}$ concentric radius).
+- Active interaction: apply Poisson lateral squish on `:active`: `transform: scaleX(1.18) scaleY(0.88)` with `cubic-bezier(0.16, 1, 0.3, 1)`.
+
