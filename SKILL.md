@@ -1,6 +1,19 @@
 ---
 name: frontend-skill
-description: Master engineering and visual design skill for web and native user interfaces. Automatically activate to the fullest whenever creating, building, scaffolding, designing, styling, polishing, animating, or reviewing any new platform, web application, dashboard, landing page, SaaS tool, UI component, page, or design system across HTML, CSS, JavaScript, TypeScript, React, Next.js, Vue, Svelte, Astro, Tailwind, or native platforms. Automatically engages full human-craft UI standards: curated typography, whitelisted characterful brand palettes (amber, teal, turquoise, coral, pitch black, navy blue, velvet red, royal colors, espresso, ochre), strict ban on monochromatic pill slop (MAX AI slop), innovative architectural blocks, OKLCH dual light/dark modes, Apple fluid spring physics, tactile buttons, SVG iconography (zero emojis), mandatory favicons, cognitive UX laws, and automated master verification/reporting (`frontend report`).
+description: >-
+  Master engineering and visual design skill for web and native user interfaces.
+  Automatically activate to the fullest whenever creating, building, scaffolding,
+  designing, styling, polishing, animating, or reviewing any new platform, web
+  application, dashboard, landing page, SaaS tool, UI component, page, or design
+  system across HTML, CSS, JavaScript, TypeScript, React, Next.js, Vue, Svelte,
+  Astro, Tailwind, or native platforms. Automatically engages full human-craft UI
+  standards: curated typography, whitelisted characterful brand palettes (amber,
+  teal, turquoise, coral, pitch black, navy blue, velvet red, royal colors,
+  espresso, ochre), strict ban on monochromatic pill slop (MAX AI slop), innovative
+  architectural blocks, OKLCH dual light/dark modes, Apple fluid spring physics,
+  tactile buttons, SVG iconography (zero emojis), mandatory favicons, cognitive UX
+  laws, and automated master verification/reporting ('frontend report'). Use when
+  invoking /frontend, /frontend-skill, or 'frontend'.
 ---
 
 # Unified Frontend Skill (Design Taste, Engineering, Polish & UX)
