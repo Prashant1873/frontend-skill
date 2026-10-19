@@ -508,6 +508,24 @@ const REGEX_MATCHERS = [
   { id: 'generic-pill-badge', regex: /\bclass=["'][^"']*\b(?:pill-badge|hero-badge|eyebrow-pill|kicker-badge)\b[^"']*["']/gi,
     test: () => true,
     fmt: (m) => m[0] },
+  // --- Monochromatic same-color tinted pill badge slop ---
+  { id: 'monochromatic-pill-slop',
+    regex: /<(?:span|div|p|a|button)\b[^>]*class=["']([^"']+)["'][^>]*>/gi,
+    test: (m) => {
+      const cls = m[1];
+      if (!/\b(?:rounded-full|rounded-3xl|rounded-2xl|pill|badge|chip)\b/i.test(cls)) return false;
+      const bgM = cls.match(/\bbg-([a-z]+)-(?:50|100|200|500\/[0-9]+|600\/[0-9]+|900\/[0-9]+|950(?:\/[0-9]+)?)\b/);
+      if (!bgM) return false;
+      const family = bgM[1];
+      const hasText = new RegExp(`\\btext-${family}-(?:400|500|600|700|800|900)\\b`).test(cls);
+      const hasBorder = new RegExp(`\\bborder-${family}-(?:200|300|400|500|600|[0-9]+\\/[0-9]+)\\b`).test(cls);
+      return hasText && hasBorder;
+    },
+    fmt: (m) => `Monochromatic same-color pill badge: ${m[0].slice(0, 50)}...` },
+  { id: 'monochromatic-pill-slop',
+    regex: /border-radius:\s*(?:9999px|99px|50px|2rem|100px|50%)[^;{}]*;\s*(?:[^;{}]*;\s*)*background(?:-color)?:\s*[^;{}]*;\s*(?:[^;{}]*;\s*)*border:\s*[^;{}]*;\s*(?:[^;{}]*;\s*)*color:\s*[^;{}]*/gi,
+    test: (m) => /#(?:e0e7ff|3730a3|dbeafe|1e40af|ede9fe|5b21b6|fce7f3|9d174d|d1fae5|065f46)/i.test(m[0]) || /\b(?:rgba?\([^)]+\))\b/i.test(m[0]),
+    fmt: () => 'Monochromatic pill badge slop (same-hue bg, border, and text)' },
   // --- Side-tab ---
   { id: 'side-tab', regex: /\bborder-[lrse]-(\d+)\b/g,
     test: (m, line) => { const n = +m[1]; return hasRounded(line) ? n >= 2 : n >= 4; },
@@ -556,13 +574,22 @@ const REGEX_MATCHERS = [
   { id: 'gray-on-color', regex: /\btext-(?:gray|slate|zinc|neutral|stone)-(\d+)\b/g,
     test: (m, line) => /\bbg-(?:red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d+\b/.test(line),
     fmt: (m, line) => { const bg = line.match(/\bbg-(?:red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d+\b/); return `${m[0]} on ${bg?.[0] || '?'}`; } },
-  // --- Tailwind AI palette ---
+  // --- Tailwind & CSS AI palette (purple, electric blue, cyan gradients) ---
   { id: 'ai-color-palette', regex: /\btext-(?:purple|violet|indigo)-(\d+)\b/g,
-    test: (m, line) => /\btext-(?:[2-9]xl|[3-9]xl)\b|<h[1-3]/i.test(line),
+    test: (m, line) => (/\btext-(?:[2-9]xl|[3-9]xl)\b|<h[1-3]/i.test(line)) && !/\b(?:amber|teal|turquoise|coral|navy|velvet|royal|emerald|plum|burgundy|pitch-black|obsidian|chartreuse|ochre|espresso|mauve|copper)\b/i.test(line),
     fmt: (m) => `${m[0]} on heading` },
+  { id: 'ai-color-palette', regex: /\btext-(?:blue|sky|cyan)-(?:400|500|600)\b/g,
+    test: (m, line) => (/\btext-(?:[2-9]xl|[3-9]xl)\b|<h[1-3]/i.test(line)) && !/\b(?:amber|teal|turquoise|coral|navy|velvet|royal|emerald|plum|burgundy|pitch-black|obsidian|chartreuse|ochre|espresso|mauve|copper)\b/i.test(line),
+    fmt: (m) => `Generic ${m[0]} on heading` },
   { id: 'ai-color-palette', regex: /\bfrom-(?:purple|violet|indigo)-(\d+)\b/g,
     test: (m, line) => /\bto-(?:purple|violet|indigo|blue|cyan|pink|fuchsia)-\d+\b/.test(line),
     fmt: (m) => `${m[0]} gradient` },
+  { id: 'ai-color-palette', regex: /\bfrom-(?:blue|sky|cyan)-(\d+)\b/g,
+    test: (m, line) => /\bto-(?:purple|violet|indigo|blue|cyan|sky)-\d+\b/.test(line),
+    fmt: (m) => `${m[0]} gradient` },
+  { id: 'ai-color-palette', regex: /linear-gradient\([^)]*#(?:7c3aed|8b5cf6|a855f7|9333ea|7e22ce|6d28d9|6366f1|764ba2|667eea|3b82f6|06b6d4|0ea5e9|00f0ff)\b[^)]*#(?:7c3aed|8b5cf6|a855f7|9333ea|7e22ce|6d28d9|6366f1|764ba2|667eea|3b82f6|06b6d4|0ea5e9|00f0ff)\b[^)]*\)/gi,
+    test: (m, line) => !/\b(?:amber|teal|turquoise|coral|navy|velvet|royal|emerald|plum|burgundy|pitch-black|obsidian|chartreuse|ochre|espresso|mauve|copper)\b/i.test(line),
+    fmt: () => 'Generic AI gradient trope (purple/blue/cyan)' },
   // --- Bounce/elastic easing ---
   { id: 'bounce-easing', regex: /\banimate-bounce\b/g,
     test: () => true,

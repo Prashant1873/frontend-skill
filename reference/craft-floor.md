@@ -12,7 +12,7 @@ Each of these is a check on the built result, not an intention. Run them togethe
 - **Type:** body measure 65–75ch, display max 6rem, tracking floor -0.04em, balanced headings, obvious scale and weight steps. Run the real copy at every breakpoint and fix what overflows.
 - **Motion:** one authored moment, not scattered effects and not one identical entrance on every section. Exponential ease-out from an already-visible default. Reach past transform and opacity: blur, backdrop-filter, clip-path, mask, and shadow belong to the palette when they stay smooth.
 - **States:** hover, disabled, loading, error, empty. Plus real content, working controls, responsive composition, keyboard focus.
-- **Browser surfaces:** the parts you did not draw still carry the design. Text selection, the caret, custom scrollbars, focus rings, underline offset, and the numerals in tabular data all ship with browser defaults that belong to no design system. Theme them from the palette. This is the cheapest signal that a page was built rather than assembled, and the one models skip most reliably.
+- **Browser surfaces:** the parts you did not draw still carry the design. Text selection, the caret, custom scrollbars, focus rings, underline offset, and the numerals in tabular data all ship with browser defaults that belong to no design system. Theme them from the palette. Always declare a branded favicon (`<link rel="icon">` in SVG or PNG) in `<head>`; missing favicons leave an unbranded default browser globe. This is the cheapest signal that a page was built rather than assembled, and the one models skip most reliably.
 - **Copy:** the product's own language. Controls name their action; errors name the problem and the recovery.
 - **Coverage:** every brief requirement present and findable within seconds.
 
@@ -38,9 +38,10 @@ Surface habits:
 - Sparklines, progress rings, and soft-shadowed rounded rectangles standing in for content.
 - Monospace as a costume for "technical" rather than for code, data, or measurement.
 - A system display face (Impact, Arial Black, the platform sans) as the display voice of an own-world page. Source and self-host a face whose character matches the approved lettering; the closest installed font is a failure, not a fallback.
-- Unicode glyphs or emoji standing in for an icon system. Icons are drawn, from a real library or authored SVG, in one consistent stroke and weight.
+- Unicode glyphs or raw emojis (🚀, 💡, 🔥, ✨, etc.) standing in for an icon system or decorating buttons, cards, and tags. Emojis render inconsistently across OS platforms and look like cheap AI slop. Icons must be drawn from an authentic library (Lucide, Radix, Heroicons) or authored SVG in one consistent stroke and weight.
+- Monochromatic tinted pill badges (`rounded-full`/`9999px` with light or faint tinted background, darker border, and matching text/icon of the same hue, e.g. `bg-blue-50 border-blue-200 text-blue-700` or dark-mode blue-on-blue "🔒 Dedicated" badge). This is MAX AI slop. Always replace with innovative blocks: split-chamber architectural capsules, tactile inset micro-blocks, specular hairline glass pills, or asymmetric editorial markers.
 - Geometric masks standing in for organic contours. A circle, polygon, or radial-gradient cutout approximating a photographic subject's edge is the cheap version of the effect and reads worse than omitting it. Derive an alpha matte from the actual image, or produce a cut-out asset.
-- Light or dark picked by category. Pick it from the use scene: who, where, under what ambient light.
+- Light or dark picked by category. Pick it from the use scene: who, where, under what ambient light. Enforce dual-mode parity: light mode requires diffuse shadows, dark mode requires luminance stepping and luminous hairline edges. Never mechanically invert colors.
 
 Never animate an image on hover, directly or through its parent. It is not an action target. Give the container the feedback.
 

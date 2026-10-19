@@ -1,6 +1,6 @@
 ---
 name: frontend-skill
-description: Master engineering and visual design skill for web and native user interfaces. Automatically activate whenever building, designing, modifying, styling, polishing, animating, or reviewing any frontend code, web application, landing page, UI component, page, or design system across HTML, CSS, JavaScript, TypeScript, React, Next.js, Vue, Svelte, Astro, Tailwind, or native platforms. Enforces anti-slop craft standards, Apple fluid spring physics, typography scales, WCAG 2.2 AA accessibility, 13 cognitive UX laws, and automated AST antipattern verification.
+description: Master engineering and visual design skill for web and native user interfaces. Automatically activate to the fullest whenever creating, building, scaffolding, designing, styling, polishing, animating, or reviewing any new platform, web application, dashboard, landing page, SaaS tool, UI component, page, or design system across HTML, CSS, JavaScript, TypeScript, React, Next.js, Vue, Svelte, Astro, Tailwind, or native platforms. Automatically engages full human-craft UI standards: curated typography, whitelisted characterful brand palettes (amber, teal, turquoise, coral, pitch black, navy blue, velvet red, royal colors, espresso, ochre), strict ban on monochromatic pill slop (MAX AI slop), innovative architectural blocks, OKLCH dual light/dark modes, Apple fluid spring physics, tactile buttons, SVG iconography (zero emojis), mandatory favicons, cognitive UX laws, and automated master verification/reporting (`frontend report`).
 ---
 
 # Unified Frontend Skill (Design Taste, Engineering, Polish & UX)
@@ -11,24 +11,43 @@ Master engineering and design skill for frontend interfaces: aesthetic direction
 
 ## 🚀 Quick Run Guide & Commands Matrix
 
-Invoke workflows via natural phrasing or direct subcommands:
+Invoke workflows via **three natural modalities**:
+1. **Prefix-Free Natural Phrasing**: *"Make this responsive"*, *"Declutter this card"*, *"Fix button active squish"*, *"Add celebratory haptics"*.
+2. **Explicit Subcommand Syntax**: `frontend <subcommand> [target]` (e.g. `frontend adapt`, `frontend distill`, `frontend tokens`).
+3. **Interactive Help Catalog**: `frontend help` or *"What commands are available?"* to display the live sub-skill directory.
 
-| Command / Trigger | Primary Scope | What It Does |
-|---|---|---|
-| `frontend design [brief]` | Aesthetic & Direction | Analyzes brief, outputs Design Read, sets Dials (Variance, Motion, Density), selects aesthetic family. |
-| `frontend polish [target]` | Visual Finishing | Final craft pass: micro-alignment, spacing rhythm, optical balance, hover states, border continuity. |
-| `frontend critique [target]` | UX / Visual Critique | Evaluates against design heuristics (hierarchy, contrast, typography, affordances) with scored feedback. |
-| `frontend audit [target]` | Technical Audit | Scans WCAG 2.2 AA accessibility, responsive adaptation, performance, and layout shifts. |
-| `frontend clarify [target]` | UX Copy & Clarity | Sharpens copy, error messages, empty states, labels, and cognitive ergonomics. |
-| `frontend distill [target]` | Simplification | Strips visual noise, redundant chrome, nested cards, and unearned embellishments. |
-| `frontend bolder [target]` | Visual Punch | Amplifies safe/bland layouts with distinctive typography, bold contrast, and anchor moments. |
-| `frontend quieter [target]` | Restraint | Calms overstimulated, busy, hyper-animated, or neon-heavy interfaces. |
-| `frontend harden [target]` | Edge Cases | Hardens UI against long strings, slow networks, zero-states, and keyboard traps. |
-| `frontend engineer [feature]` | Component Build | Production component architecture: colocation, composition, strict state tiering. |
-| `frontend apple [component]` | Fluid Motion | Applies Apple HIG fluid motion: 1:1 pointer tracking, interruptible springs, velocity handoff. |
-| `frontend ux [flow]` | Cognitive UX Laws | Evaluates flow against Hick's, Fitts's, Jakob's, Miller's, Doherty 400ms threshold, Peak-End rule. |
-| `frontend pick-lib <task>` | Dependency Lookup | Curated recommendation for toasts, dialogs, charts, OTP inputs, dnd, virtualization, or state. |
-| `frontend prototype <feature>` | Multi-Variant Picker | Builds 3-5 distinct visual variants behind an interactive switcher ([PICKER.md](PICKER.md)). |
+### Primary Command Matrix (Top 18 High-Frequency Workflows)
+
+| Command / Trigger | Domain | Primary Scope | What It Does | Target Playbook |
+|---|---|---|---|---|
+| `frontend design [brief]` | Aesthetic | Direction | Analyzes brief, outputs Design Read, sets Dials (Variance, Motion, Density), selects aesthetic family. | [reference/new-work.md](reference/new-work.md) |
+| `frontend polish [target]` | Craft | Visual Finishing | Final craft pass: micro-alignment, spacing rhythm, optical balance, hover states, border continuity. | [reference/polish.md](reference/polish.md) |
+| `frontend critique [target]` | Review | Heuristic Review | Evaluates against design heuristics (hierarchy, contrast, typography, affordances) with scored feedback. | [reference/critique.md](reference/critique.md) |
+| `frontend audit [target]` | Technical | 5-Pillar Audit | Scans WCAG 2.2 AA accessibility, responsive adaptation, performance, and layout shifts (0–20 score). | [reference/audit.md](reference/audit.md) |
+| `frontend clarify [target]` | UX Copy | Clarity | Sharpens UX copy, microcopy, error messages, empty states, labels, and cognitive ergonomics. | [reference/clarify.md](reference/clarify.md) |
+| `frontend distill [target]` | Simplicity | Simplification | Strips visual noise, redundant chrome, nested cards, and unearned embellishments. | [reference/distill.md](reference/distill.md) |
+| `frontend bolder [target]` | Styling | Visual Punch | Amplifies safe/bland layouts with distinctive typography, bold contrast, and anchor moments. | [reference/bolder.md](reference/bolder.md) |
+| `frontend quieter [target]` | Styling | Restraint | Calms overstimulated, busy, hyper-animated, or neon-heavy interfaces. | [reference/quieter.md](reference/quieter.md) |
+| `frontend harden [target]` | Resilience | Edge Cases | Hardens UI against long strings, slow networks, zero-states, and keyboard traps. | [reference/harden.md](reference/harden.md) |
+| `frontend engineer [feature]` | Architecture | Component Build | Production component architecture: colocation, composition, strict state tiering. | [reference/craft-floor.md](reference/craft-floor.md) |
+| `frontend apple [component]` | Motion | Fluid Physics | Applies Apple HIG fluid motion: 1:1 pointer tracking, interruptible springs, velocity handoff. | [reference/animate.md](reference/animate.md) |
+| `frontend ux [flow]` | Ergonomics | Cognitive Laws | Evaluates flow against Hick's, Fitts's, Jakob's, Miller's, Doherty 400ms threshold, Peak-End rule. | [reference/craft-floor.md](reference/craft-floor.md) |
+| `frontend adapt [target]` | Responsive | Mobile & Fluid | Adapts layouts to mobile viewports, container queries, responsive tables, and breakpoint reflow. | [reference/adapt.md](reference/adapt.md) |
+| `frontend delight [target]` | Micro-UX | Celebration | Injects tactile micro-interactions, spring haptic feedback, celebratory states, and subtle polish. | [reference/delight.md](reference/delight.md) |
+| `frontend visualize [target]` | Data | Visualization | Builds data-dense dashboards, sparklines, responsive metric grids, charts, and tabular trends. | [reference/visualize.md](reference/visualize.md) |
+| `frontend tokens [target]` | System | Token Compiler | Compiles and exports design tokens to CSS variables, Tailwind CSS v3/v4, SCSS, or W3C DTCG format. | [reference/craft-floor.md](reference/craft-floor.md) |
+| `frontend prototype <feature>` | Prototyping | Multi-Variant | Builds 3-5 distinct visual variants behind an interactive switcher ([PICKER.md](PICKER.md)). | [PICKER.md](PICKER.md) |
+| `frontend doctor [target]` | Diagnostics | Health Check | Scans design token coverage, checks detector ignores, color/token drift, and legacy artifact staleness. | [reference/doctor.md](reference/doctor.md) |
+| `frontend report [target]` | Verification | Full Synthesis | Executes all 20 test suites, antipattern detectors, cognitive UX laws, and generates `FRONTEND_REPORT.md`. | [reference/report.md](reference/report.md) |
+
+### Specialized Domain Clusters
+
+| Domain Cluster | Commands & Trigger Keywords | Primary Scope | Target Playbook |
+|---|---|---|---|
+| 🎨 **Aesthetic & Editorial** | `frontend bento`<br>`frontend editorial`<br>`frontend colorize`<br>`frontend typeset`<br>`frontend shape`<br>`frontend overdrive` | Asymmetric multi-span grids, anti-pill typography, OKLCH perceptual palettes, font pairing with metric fallbacks, custom silhouettes, and experimental kinetic styling. | [reference/bento.md](reference/bento.md)<br>[reference/editorial.md](reference/editorial.md)<br>[reference/colorize.md](reference/colorize.md)<br>[reference/typeset.md](reference/typeset.md)<br>[reference/shape.md](reference/shape.md)<br>[reference/overdrive.md](reference/overdrive.md) |
+| 🧠 **UX & Ergonomics** | `frontend operate`<br>`frontend clarify`<br>`frontend harden`<br>`frontend ux` | High-density developer consoles, cockpit layouts, friction audits (Hick's/Fitts's/Miller's), error recovery copy, and keyboard-trap elimination. | [reference/operate.md](reference/operate.md)<br>[reference/clarify.md](reference/clarify.md)<br>[reference/harden.md](reference/harden.md)<br>[reference/craft-floor.md](reference/craft-floor.md) |
+| 📱 **Platform & Native** | `frontend adapt`<br>`frontend ios`<br>`frontend android` | Fluid mobile adaptation, iOS Human Interface Guidelines (SF Pro, bottom sheets, safe area), and Android Material 3 tonal systems. | [reference/adapt.md](reference/adapt.md)<br>[reference/ios.md](reference/ios.md)<br>[reference/android.md](reference/android.md) |
+| 🛠️ **System & Tooling** | `frontend tokens`<br>`frontend extract`<br>`frontend document`<br>`frontend onboard`<br>`frontend pick-lib`<br>`frontend help` | Token dictionary compilation, style harvesting from URLs, generating `DESIGN.md` documentation, onboarding existing repos, library selection, and interactive help catalog. | [reference/craft-floor.md](reference/craft-floor.md)<br>[reference/extract.md](reference/extract.md)<br>[reference/document.md](reference/document.md)<br>[reference/onboard.md](reference/onboard.md)<br>[PICKER.md](PICKER.md)<br>[reference/router.md](reference/router.md) |
 
 ---
 
@@ -89,13 +108,17 @@ Before generating layout, declare:
 - **`VISUAL_DENSITY` (1-10)**: 1 = spacious gallery, 10 = high-density cockpit. Default: `4`.
 
 ### 1.3 Anti-Default Invariants
-- ❌ NO AI-purple gradient meshes behind hero sections.
-- ❌ NO three identical feature cards with generic rounded icons.
-- ❌ NO arbitrary glassmorphism on backgrounds lacking depth.
-- ❌ NO pure gray (`#71717A`) on pure black (`#000000`) without intentional color tinting.
-- ❌ NO generic Inter + slate-900 combinations when brand character demands personality.
+- ❌ **NO Monochromatic Same-Color Tinted Pill Badges (MAX AI Slop)**: Strictly ban capsules with rounded corners (`rounded-full`, `border-radius: 9999px`) that combine a faint tinted background, darker border, and matching text/icon of the exact same color family (e.g. `bg-blue-50 border-blue-200 text-blue-700` or dark-mode `bg-blue-950/40 border-blue-500/30 text-blue-400` "🔒 Dedicated" tags). Use innovative architectural blocks instead.
+- ❌ **NO Generic AI Color Tropes**: Ban reflex generic electric blue headings (`text-blue-500`), unearned purple-to-blue linear gradients on primary buttons and container borders (`from-purple-500 via-blue-500 to-cyan-400`), and cyan-on-dark neon glow. Ground designs in distinctive, whitelisted characterful palettes.
+- ❌ **NO Generic Font Defaults or Monospace Sprawl**: Never blindly default to Inter or Roboto. Choose intentional, characterful typography tailored to product mood (Geist, Plus Jakarta Sans, Space Grotesk, Mona Sans, Instrument Sans/Serif, Fraunces, Recoleta, Horizon, Google Sans, Product Sans, SF Pro). Monospace is strictly reserved for code blocks and tabular numerals.
+- ❌ **NO Three Identical Feature Cards**: Break repetitive 3-column cards with visual anchors, asymmetric spans, and clean negative space.
+- ❌ **NO Arbitrary Glassmorphism**: Eliminate blurry cards on backgrounds lacking depth.
+- ❌ **NO Pure Gray on Pure Black**: Avoid `#71717A` on `#000000` without intentional color chroma and surface luminance stepping.
+- ❌ **NO Unilateral Single-Mode Bias**: Never design solely for dark or light mode. Light mode requires diffuse directional shadows; dark mode requires surface luminance stepping ($L \approx 0.13 \rightarrow 0.18 \rightarrow 0.24$) and luminous hairline borders.
+- ❌ **NO Raw Emojis in UI**: Never use emojis (🚀, 💡, 🔥, ✨, 🔒, etc.) as UI icons, button labels, badge markers, or feature card graphics. Always embed sharp SVG icons (Lucide, Radix, Phosphor, Heroicons).
+- ❌ **NO Missing Favicons**: Always include `<link rel="icon" type="image/svg+xml" href="...">` matching product branding.
 
-### 1.4 Granular Sub-Playbook Routing & Green-Field Consent (ROUTER-01, ROUTER-02)
+### 1.4 Granular Sub-Playbook Routing & Green-Field Full-Craft Auto-Activation (ROUTER-01, ROUTER-02)
 - **Surgical Intent Routing**: When user requests target specific elements (buttons, headings, grids, colors, typography, segmented controls), route strictly to that sub-playbook per [reference/router.md](reference/router.md) without modifying unrelated subsystems:
   - Buttons, concentric radii & optical centering -> [reference/buttons.md](reference/buttons.md)
   - Editorial headings & anti-pill -> [reference/editorial.md](reference/editorial.md)
@@ -104,19 +127,89 @@ Before generating layout, declare:
   - Typography & pairings -> [reference/typeset.md](reference/typeset.md)
   - Motion, viscoelastic tabs & fluid springs -> [reference/animate.md](reference/animate.md)
   - Simplification & chrome reduction -> [reference/distill.md](reference/distill.md)
-- **Green-Field Consent Protocol**: Prompts asking to create an app from scratch (`build app from scratch`, `new app`) must trigger an explicit confirmation prompt before activating the full Human-Craft design system.
+- **Green-Field Full-Craft Auto-Activation (ROUTER-02)**: When building, designing, or scaffolding a new platform, app, dashboard, screen, or website from scratch (`new platform`, `new app`, `create app`, `build app`, `scaffold`, `new design`), automatically engage the full Human-Craft UI Engine to the fullest from the first line of code without hesitation prompts or downgrade to vanilla slop.
 
 ---
 
 ## Section 2: Impeccable Craft & Quality Invariants
 
+### 2.1 Dual-Mode Optical Parity
+Never design for one theme alone. Light and dark modes obey fundamentally different physical lighting models ([reference/colorize.md](reference/colorize.md)):
+- **Light Mode**: Requires diffuse directional shadows (`box-shadow: 0 4px 12px -2px oklch(0% 0 0 / 0.08)`), clean white/light neutral surfaces, and subtle contrast boundaries.
+- **Dark Mode**: Directional drop shadows are invisible on black. Dark mode strictly requires surface luminance stepping ($L \approx 0.13 \rightarrow 0.18 \rightarrow 0.24$), hairline luminous borders (`1px solid oklch(1 0 0 / 0.10)`), and calibrated contrast.
+
+### 2.2 Intentional Brand Palettes vs Generic AI Color Tropes
+Ban reflex generic purple/violet/indigo gradients, floating electric blue headings, and cyan-on-dark neon glow. Ground platforms in distinctive, whitelisted characterful palettes ([reference/colorize.md](reference/colorize.md), `scripts/lib/color-engine.mjs`):
+
+| Palette Identity | Primary Accent | Canvas / Dark Ground | Elevated Surface | Typical UI Mood |
+|---|---|---|---|---|
+| **Artisanal Honey & Botanical Amber** | `#f59e0b` / `oklch(76% 0.17 75)` | `#050505` (Pitch Black) | `#0f172a` (Midnight Navy) | Warmth, craft, high-trust fintech |
+| **Deep Spruce & Maritime Teal** | `#0d9488` / `oklch(60% 0.13 188)` | `#040d12` (Abyssal Spruce) | `#0b1d28` (Maritime Blue) | Security, climate, infrastructure |
+| **Radiant Coral & Obsidian** | `#f97316` / `oklch(68% 0.20 45)` | `#09090b` (Obsidian) | `#18181b` (Graphite) | Energy, consumer tech, creative tools |
+| **Midnight Navy & High-Voltage Electric** | `#1d4ed8` / `oklch(52% 0.22 260)` | `#020617` (Deep Indigo) | `#0f172a` (Navy Bed) | Enterprise authority, precision data |
+| **Velvet Red & Vintage Crimson** | `#881337` / `oklch(36% 0.18 15)` | `#0a0507` (Deep Port) | `#1c0b12` (Wine Surface) | Editorial, luxury, culture |
+| **Royal Prestige** | `#1d4ed8` (Royal Blue) / `#064e3b` (Emerald) / `#581c87` (Plum) | `#050505` | `#0f172a` | Prestige institutions, governance |
+| **Earth & Mineral Heritage** | `#84cc16` (Chartreuse) / `#ca8a04` (Ochre) / `#2d1f18` (Espresso) | `#080706` | `#1f1a17` | Artisanal manufacturing, hospitality |
+
+### 2.3 Strict NO List: Monochromatic Tinted Pill Badges (MAX AI Slop)
+Strictly ban capsules with rounded corners (`rounded-full`, `border-radius: 9999px`) that combine a light or faint tinted background, darker border, and matching text/icon of the exact same color family:
+- ❌ `bg-blue-50 border-blue-200 text-blue-700 rounded-full` (Cookie-cutter light mode slop)
+- ❌ `bg-blue-950/40 border-blue-500/30 text-blue-400 rounded-full` (The ubiquitous dark-mode "🔒 Dedicated" pill cliché)
+- ❌ `bg-purple-100 border-purple-300 text-purple-800 rounded-full`
+- ❌ `bg-emerald-50 border-emerald-200 text-emerald-800 rounded-full`
+
+**Why It Fails:** Monochromatic tinting destroys visual sharpness, feels like an uninspired template, and instantly signals AI boilerplate.
+
+### 2.4 Mandatory Alternative: Innovative Pills & Architectural Blocks
+Always replace monochromatic pill slop with architectural alternatives ([reference/editorial.md](reference/editorial.md)):
+1. **Split-Chamber Badges**: Dual-cell architectural capsules where an elevated neutral chamber houses the icon with a vertical hairline divider, paired with crisp neutral typography:
+   ```html
+   <div class="split-chamber-badge">
+     <span class="chamber-icon">
+       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+     </span>
+     <span class="chamber-label">Dedicated Hardware</span>
+   </div>
+   ```
+2. **Tactile Inset Micro-Blocks**: Subtle 4px/6px chamfered geometric blocks grounded in canvas/surface neutrals with a solitary luminous gemstone indicator dot:
+   ```html
+   <div class="tactile-micro-block">
+     <span class="gem-dot"></span>
+     <span class="block-text">Production Cluster</span>
+   </div>
+   ```
+3. **Specular Hairline Glass Pills**: Translucent neutral frosted glass bounded by an ultra-fine 1px specular luminous rim with clean neutral typography:
+   ```html
+   <div class="specular-glass-pill">
+     <span>Architecture [01]</span>
+   </div>
+   ```
+4. **Asymmetric Editorial Markers**: Pure typographic hierarchy using inline monospace indexes `[01 // DEDICATED]` or category kickers framed by a 24px horizontal hairline divider:
+   ```html
+   <div class="editorial-marker">
+     <span class="marker-index">[ 01 ]</span>
+     <span class="marker-rule"></span>
+     <span class="marker-title">SYSTEMS HERITAGE</span>
+   </div>
+   ```
+
+### 2.5 Curated Characterful Typography & Metric Fallbacks
+Never blindly default to Inter or Roboto. Choose intentional, characterful typography tailored to product mood ([reference/typeset.md](reference/typeset.md), [reference/craft-floor.md](reference/craft-floor.md)):
+- **Geometric / Modern Sans**: *Plus Jakarta Sans*, *Space Grotesk*, *Mona Sans*, *Geist / Geist Sans*.
+- **Humanist / Editorial**: *Instrument Sans*, *Instrument Serif*, *Fraunces*, *Recoleta*, *Horizon*.
+- **System Authority**: *Google Sans*, *Product Sans*, *San Francisco Pro* (`-apple-system, BlinkMacSystemFont, "SF Pro"`).
+- **Monospace Restriction**: Monospace is strictly reserved for code blocks, terminal displays, and tabular data/numerals. Never typeset primary headlines or body copy in monospace.
+- **Zero-CLS Fallbacks**: Always declare metric overrides (`size-adjust`, `ascent-override`, `descent-override`) matching system fonts to prevent cumulative layout shift on webfont load.
+
+### 2.6 Micro-Craft & Geometry Rules
+- **Dedicated SVG iconography & favicons**: Use unified SVG icons (Lucide, Radix, Phosphor, Heroicons) with consistent 1.5px/2px stroke weight; raw emojis in UI chrome are strictly prohibited. Always declare a matching SVG/PNG `<link rel="icon">` in `<head>`.
 - **Inspect before edit**: Query existing CSS tokens, variables, and typography scales first.
 - **Concentric corner radii**: Always enforce $r_{inner} = \max(0, r_{outer} - \text{padding})$ across nested containers to eliminate corner pinching.
 - **Viscoelastic indicators**: Segmented controls and tab rails must use WAAPI compositor stretch-and-squish kinetics with Poisson volume preservation; static linear/ease transitions are strictly banned.
 - **Sub-pixel optical centering**: Offset button and control SVG icons (`translateY(-0.5px)`) relative to font cap-height.
 - **Bounded passes**: Fix identified findings in one disciplined batch; avoid infinite micro-loops.
 - **Refinement preserves; redesign replaces**: Never blend half-hearted redesign into existing brand assets.
-- See [reference/craft-floor.md](reference/craft-floor.md) and [reference/new-work.md](reference/new-work.md) for complete playbooks.
+- See [reference/craft-floor.md](reference/craft-floor.md), [reference/buttons.md](reference/buttons.md), and [reference/new-work.md](reference/new-work.md) for complete playbooks.
 
 ---
 
@@ -213,13 +306,39 @@ Trigger: `frontend prototype <feature>` (e.g. `frontend prototype pricing-table`
 
 ---
 
+## Section 8: Master Verification Pipeline & Synthesis Reporting (`frontend report`)
+
+Trigger: `frontend report [target]` or `node scripts/test-report.mjs`
+
+When validating an entire application, feature, or design system, execute the full synthesis audit across all dimensions:
+1. **Master Unified Test Suite (20 Suites)**:
+   ```bash
+   node scripts/test-all.mjs
+   ```
+   Runs playbook integrity, router, detector, typography fallbacks, OKLCH perceptual engine, component registry, tactile buttons, editorial architecture, Bento grids, gestures, viscoelastic tabs, and doctor automation.
+2. **Mechanical Slop & Antipattern Scanning**:
+   ```bash
+   node scripts/detector/detect-antipatterns.mjs --target <target-directory>
+   ```
+   Evaluates AST and DOM rules for monochromatic pill slop, generic AI color palettes, overused fonts, missing active squish, sub-44px touch targets, non-concentric radii, and missing favicons.
+3. **Cognitive UX Friction Scan**:
+   ```bash
+   node scripts/ux-scan.mjs --target <target-directory>
+   ```
+   Quantifies Cognitive Friction Index (CFI) across Hick's Law, Fitts's Law, and Miller's Law.
+4. **Publication-Grade Synthesis Report**:
+   Generates `FRONTEND_REPORT.md` compiling letter grade, score (0-100), passing suites, blocking findings, and exact line-level remediation diffs ([reference/report.md](reference/report.md)).
+
+---
+
 ## 📋 Compulsory Execution Contract
 
-Before declaring ANY frontend deliverable complete, agents must strictly execute this 4-step contract:
+Before declaring ANY frontend deliverable complete, agents must strictly execute this 5-step contract:
 1. **Design Read & Dials**: Explicitly establish `DESIGN_VARIANCE`, `MOTION_INTENSITY`, and `VISUAL_DENSITY` tailored to product mood.
 2. **Craft Floor Gate**: Adhere to [reference/craft-floor.md](reference/craft-floor.md) (minimum 44px touch targets, WCAG 2.2 AA contrast, intentional hierarchy, zero unstyled buttons).
-3. **Apple Fluid Physics**: Apply WWDC spring parameters for all transitions and interactions ([reference/animate.md](reference/animate.md)).
-4. **Mechanical AST Slop Verification Gate**: Execute the antipattern detector over changed files:
+3. **Dual-Mode & Palette Parity**: Establish physical lighting parity in both light and dark modes with distinctive, whitelisted characterful brand palettes ([reference/colorize.md](reference/colorize.md)).
+4. **Apple Fluid Physics**: Apply WWDC spring parameters for all transitions and interactions ([reference/animate.md](reference/animate.md)).
+5. **Mechanical AST Slop Verification Gate**: Execute the antipattern detector over changed files:
    ```bash
    node scripts/detector/detect-antipatterns.mjs --target <changed files>
    ```
@@ -230,10 +349,14 @@ Before declaring ANY frontend deliverable complete, agents must strictly execute
 ## Pre-Flight Check Before Declaring Work Complete
 
 - [ ] Stated design read and adhered to chosen dials?
-- [ ] No generic AI purple gradients or unearned glassmorphism?
-- [ ] Typography has intentional hierarchy (scale, line-height, font-weight contrast)?
-- [ ] Spacing uses consistent 4px or 8px grid steps?
-- [ ] Keyboard focus works and visible outline exists?
+- [ ] No monochromatic same-color pill capsules (`bg-X border-X text-X rounded-full`)? Used split-chamber, tactile micro-block, specular glass, or editorial marker instead?
+- [ ] Brand colors use intentional, whitelisted characterful palettes (amber, teal, navy, royal, velvet) instead of generic AI electric blue/purple/cyan tropes?
+- [ ] Typography chosen with personality (Plus Jakarta Sans, Space Grotesk, Mona Sans, Instrument Sans/Serif, etc.) with monospace strictly restricted to code and tabular data?
+- [ ] Spacing uses consistent 4px or 8px grid steps with intentional negative space?
+- [ ] Tested and verified in BOTH light and dark modes with proper elevation models (diffuse shadows in light, luminance stepping in dark)?
+- [ ] Zero raw emojis in UI? (All icons rendered via dedicated, scalable SVGs)
+- [ ] Branded SVG/PNG favicon declared in `<head>`?
+- [ ] Keyboard focus works and visible outline exists (`:focus-visible`)?
 - [ ] Micro-interactions respond on pointer-down without latency?
 - [ ] Empty, loading, and error states handled?
-- [ ] Mechanical detector check passed with 0 antipatterns?
+- [ ] Mechanical detector check passed with 0 antipatterns (`node scripts/detector/detect-antipatterns.mjs`)?

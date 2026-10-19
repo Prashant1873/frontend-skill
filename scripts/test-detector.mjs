@@ -108,10 +108,42 @@ async function main() {
     suite.assertNoFindings(findings, 'clean css');
   });
 
+  await suite.run('Unit: detectText catches generic electric blue AI heading', () => {
+    const html = '<h2 class="text-blue-500 text-3xl">Generic Electric Cloud Engine</h2>';
+    const findings = detectText(html, 'hero.html');
+    suite.assertHasFinding(findings, 'ai-color-palette', 'generic electric blue heading');
+  });
+
+  await suite.run('Unit: detectText catches generic AI blue/cyan gradient', () => {
+    const html = '<div class="bg-gradient-to-r from-blue-500 to-indigo-500">AI Gradient Card</div>';
+    const findings = detectText(html, 'card.html');
+    suite.assertHasFinding(findings, 'ai-color-palette', 'generic blue/indigo gradient');
+  });
+
+  await suite.run('Unit: detectText passes whitelisted brand colors (amber, teal, navy, royal, velvet)', () => {
+    const html = `
+      <h1 class="text-amber-500 text-3xl">Artisanal Honey</h1>
+      <h2 class="text-teal-600 text-2xl">Deep Spruce Botanical</h2>
+      <h2 class="text-blue-950 text-2xl">Midnight Navy Maritime</h2>
+      <span class="text-orange-600">Terracotta Coral</span>
+    `;
+    const findings = detectText(html, 'characterful.html');
+    suite.assertNoFindings(findings, 'whitelisted brand colors');
+  });
+
   await suite.run('Unit: detectText catches generic-pill-badge', () => {
     const html = '<span class="pill-badge">NEW FEATURE</span><h1>Headline</h1>';
     const findings = detectText(html, 'hero.html');
     suite.assertHasFinding(findings, 'generic-pill-badge', 'pill badge kicker');
+  });
+
+  await suite.run('Unit: detectText catches monochromatic-pill-slop (light and dark mode)', () => {
+    const lightHtml = '<div class="rounded-full bg-blue-50 border border-blue-200 text-blue-700 px-3 py-1"><span>Dedicated</span></div>';
+    const darkHtml = '<div class="rounded-full bg-indigo-950/40 border border-indigo-500/30 text-indigo-400 px-3 py-1"><span>Dedicated</span></div>';
+    const lightFindings = detectText(lightHtml, 'light-badge.html');
+    const darkFindings = detectText(darkHtml, 'dark-badge.html');
+    suite.assertHasFinding(lightFindings, 'monochromatic-pill-slop', 'light mode pill slop');
+    suite.assertHasFinding(darkFindings, 'monochromatic-pill-slop', 'dark mode pill slop');
   });
 
   await suite.run('Unit: detectText catches button-missing-active-squish', () => {
@@ -177,10 +209,11 @@ async function main() {
   });
 
   const colorsFixture = path.join(FIXTURES_DIR, 'slop-colors.html');
-  await suite.run('Fixture: slop-colors.html triggers gradient-text', async () => {
+  await suite.run('Fixture: slop-colors.html triggers gradient-text and ai-color-palette', async () => {
     suite.assert(fs.existsSync(colorsFixture), 'Fixture file exists');
     const findings = await detectHtml(colorsFixture);
     suite.assertHasFinding(findings, 'gradient-text', 'slop-colors fixture');
+    suite.assertHasFinding(findings, 'ai-color-palette', 'slop-colors fixture');
   });
 
   const layoutFixture = path.join(FIXTURES_DIR, 'slop-layout.html');
@@ -191,10 +224,11 @@ async function main() {
   });
 
   const pillFixture = path.join(FIXTURES_DIR, 'slop-eyebrow-pill.html');
-  await suite.run('Fixture: slop-eyebrow-pill.html triggers generic-pill-badge', async () => {
+  await suite.run('Fixture: slop-eyebrow-pill.html triggers generic-pill-badge and monochromatic-pill-slop', async () => {
     suite.assert(fs.existsSync(pillFixture), 'Fixture file exists');
     const findings = await detectHtml(pillFixture);
     suite.assertHasFinding(findings, 'generic-pill-badge', 'slop-eyebrow-pill fixture');
+    suite.assertHasFinding(findings, 'monochromatic-pill-slop', 'slop-eyebrow-pill fixture');
   });
 
   const buttonFixture = path.join(FIXTURES_DIR, 'slop-button.html');
@@ -217,6 +251,13 @@ async function main() {
     suite.assert(fs.existsSync(cleanButtonsFixture), 'Fixture file exists');
     const findings = await detectHtml(cleanButtonsFixture);
     suite.assertNoFindings(findings, 'clean-tactile-buttons fixture');
+  });
+
+  const cleanColorsFixture = path.join(FIXTURES_DIR, 'clean-characterful-colors.html');
+  await suite.run('Fixture: clean-characterful-colors.html produces zero findings (whitelisted brand colors)', async () => {
+    suite.assert(fs.existsSync(cleanColorsFixture), 'Fixture file exists');
+    const findings = await detectHtml(cleanColorsFixture);
+    suite.assertNoFindings(findings, 'clean-characterful-colors fixture');
   });
 
   const slopGesturesFixture = path.join(FIXTURES_DIR, 'slop-gestures.html');

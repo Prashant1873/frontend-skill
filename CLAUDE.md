@@ -16,11 +16,14 @@ Whenever user requests involve building, modifying, or styling web UIs, componen
    - Accessibility & technical audit: see [`reference/audit.md`](reference/audit.md)
    - Simplification & chrome reduction: see [`reference/distill.md`](reference/distill.md)
    - Apple fluid motion: see [`reference/animate.md`](reference/animate.md)
-3. For green-field app requests ("build from scratch"), always prompt for user consent before activating the full Human-Craft UI Engine.
+3. For green-field app, platform, or design requests ("from scratch", "new platform", "new app", "scaffold"), automatically engage the full Human-Craft UI Engine to the fullest from turn 1.
 
 ## 🛡️ Anti-Slop & Quality Enforcement
 
 - Strictly avoid default AI aesthetics (generic Inter/Roboto fonts, gratuitous purple pills, repetitive nested cards).
+- Never use raw emojis (🚀, 💡, 🔥, etc.) in UI chrome; enforce dedicated SVG icon systems (Lucide, Radix, Heroicons).
+- Always include a branded favicon (`<link rel="icon">`) in `<head>` on all HTML deliverables.
+- Maintain strict dual-mode parity: never design for one theme alone. Light mode uses diffuse shadows; dark mode uses luminance elevation stepping and luminous hairline edges.
 - All transitions must use organic Apple fluid spring physics or refined cubic beziers.
 - Run the antipattern detector over touched files before finishing:
   ```bash

@@ -564,10 +564,118 @@ function parseAnyColor(s) {
 // it as unreadable would make the walk abstain on a surface it can know.
 // (`currentcolor` is NOT here — it is real paint in the element's own text
 // color; resolveBackgroundInfo substitutes the computed color for it.)
+// True when a computed background-color string names no paint at all. Used to
+// tell "this layer is see-through" (walk on to the ancestor) apart from "this
+// layer has a color we could not read" (stop and abstain).
+//
+// `inherit` belongs here even though it is not literally see-through: it means
+// "paint with the parent's background-color", and walking on to the parent IS
+// that resolution. Real browsers resolve the keyword before getComputedStyle
+// output; only jsdom's partial cascade hands it through verbatim, and treating
+// it as unreadable would make the walk abstain on a surface it can know.
+// (`currentcolor` is NOT here — it is real paint in the element's own text
+// color; resolveBackgroundInfo substitutes the computed color for it.)
 function isNoPaintColorValue(value) {
   const v = String(value || '').trim().toLowerCase();
   if (!v) return true;
   return v === 'transparent' || v === 'none' || v === 'initial' || v === 'inherit' || v === 'unset' || v === 'revert' || v === 'revert-layer';
+}
+
+/**
+ * Whitelist of intentional, high-character brand colors that AI models rarely pick.
+ * When present in a design, these must NEVER be flagged as generic AI color slop.
+ * Includes: amber, teal, turquoise, coral, pitch black/obsidian, navy blue,
+ * velvet red/burgundy, royal colors (royal blue, imperial plum, royal emerald),
+ * and unusual brand colors (chartreuse, ochre, espresso, mauve, slate copper).
+ */
+const WHITELISTED_BRAND_HEXES = new Set([
+  // Amber / Honey / Marigold
+  '#f59e0b', '#d97706', '#b45309', '#92400e', '#78350f', '#fcd34d', '#fbbf24',
+  // Teal / Deep Spruce / Pine Teal
+  '#0d9488', '#0f766e', '#115e59', '#134e4a', '#042f2e', '#14b8a6', '#2dd4bf',
+  // Turquoise / Aegean Sea / Seafoam
+  '#0891b2', '#0e7490', '#155e75', '#164e63',
+  // Coral / Terracotta / Persimmon
+  '#f97316', '#ea580c', '#c2410c', '#9a3412', '#7c2d12', '#e11d48', '#f43f5e', '#fb7185',
+  // Pitch Black / Deep Obsidian
+  '#000000', '#050505', '#08080a', '#09090b', '#0a0a0c', '#030712', '#020617',
+  // Navy Blue / Midnight
+  '#0a192f', '#0f172a', '#172554', '#1e3a8a', '#1e293b', '#1e3a5f', '#1e1b4b',
+  // Velvet Red / Burgundy / Crimson Wine
+  '#4a0404', '#7f1d1d', '#881337', '#500724', '#9f1239', '#4c0519',
+  // Royal Blue
+  '#1d4ed8', '#1e40af', '#1e3a8a', '#002366',
+  // Imperial Plum / Royal Purple
+  '#581c87', '#3b0764', '#4a044e',
+  // Royal Emerald
+  '#064e3b', '#047857', '#022c22',
+  // Unusual Brand Colors:
+  // Chartreuse / Acid Lime
+  '#84cc16', '#65a30d', '#4d7c0f', '#a3e635',
+  // Ochre / Dijon Mustard
+  '#ca8a04', '#a16207', '#854d0e',
+  // Espresso / Umber
+  '#2d1f18', '#382319', '#422006',
+  // Mauve / Dusty Rose
+  '#9d7589', '#835d72', '#70485c',
+  // Slate Copper / Patina
+  '#9a3412', '#7c2d12',
+]);
+
+function isWhitelistedBrandColor(c) {
+  if (!c) return false;
+  if (typeof c === 'string') {
+    const hex = c.trim().toLowerCase();
+    if (WHITELISTED_BRAND_HEXES.has(hex)) return true;
+    const parsed = parseAnyColor(hex);
+    if (!parsed) return false;
+    c = parsed;
+  }
+
+  const hex = colorToHex(c).toLowerCase();
+  if (WHITELISTED_BRAND_HEXES.has(hex)) return true;
+
+  const lum = relativeLuminance(c);
+  const hue = getHue(c);
+  const maxChroma = Math.max(c.r, c.g, c.b) - Math.min(c.r, c.g, c.b);
+
+  // 1. Pitch Black / Deep Obsidian
+  if (lum <= 0.015 || (c.r <= 18 && c.g <= 18 && c.b <= 18)) return true;
+
+  // 2. Navy Blue / Midnight (deep architectural blue, lum <= 0.08, hue 210-250)
+  if (hue >= 210 && hue <= 250 && lum <= 0.08 && c.b > c.r) return true;
+
+  // 3. Royal Blue (rich pigment, authoritative, lum <= 0.15, hue 215-240, blue dominant)
+  if (hue >= 215 && hue <= 240 && lum <= 0.15 && c.b >= 140 && c.r <= 50) return true;
+
+  // 4. Velvet Red / Burgundy (deep luxury wine, hue <= 20 or >= 340, lum <= 0.12, red dominant)
+  if ((hue <= 20 || hue >= 340) && lum <= 0.12 && c.r > c.b) return true;
+
+  // 5. Imperial Plum / Royal Purple (deep dark velvet wine plum, hue 265-330, lum <= 0.06, r <= 100)
+  if (hue >= 265 && hue <= 330 && lum <= 0.06 && c.r <= 100) return true;
+
+  // 6. Royal Emerald (deep imperial green, hue 145-165, lum <= 0.15)
+  if (hue >= 145 && hue <= 165 && lum <= 0.15 && c.g > c.r) return true;
+
+  // 7. Amber / Honey (warm golden amber, hue 40-85)
+  if (hue >= 40 && hue <= 85) return true;
+
+  // 8. Coral / Terracotta (warm tactile coral, hue 15-40)
+  if (hue >= 15 && hue <= 40) return true;
+
+  // 9. Teal / Turquoise (deep spruce or coastal turquoise, hue 165-195, lum <= 0.35)
+  if (hue >= 165 && hue <= 195 && lum <= 0.35) return true;
+
+  // 10. Chartreuse (hue 110-135)
+  if (hue >= 110 && hue <= 135 && c.g > c.b) return true;
+
+  // 11. Espresso / Sepia Umber (warm darks, hue 30-50, lum <= 0.05)
+  if (hue >= 30 && hue <= 50 && lum <= 0.05) return true;
+
+  // 12. Mauve / Dusty Rose (thistle/heather, hue 330-355, controlled chroma <= 60)
+  if (hue >= 330 && hue <= 355 && maxChroma <= 60) return true;
+
+  return false;
 }
 
 export {
@@ -593,4 +701,6 @@ export {
   parseAnyColor,
   compositeColorOver,
   isNoPaintColorValue,
+  WHITELISTED_BRAND_HEXES,
+  isWhitelistedBrandColor,
 };

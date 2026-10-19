@@ -59,27 +59,66 @@ Every primary color family must follow a calibrated 9-step luminance ramp:
 | **900** | 0.19 | 0.06 | Dark mode base surface |
 | **950** | 0.13 | 0.03 | Extreme contrast dark canvas anchor |
 
-### Semantic Token Roles
+### Dual-Mode Architecture: Light vs. Dark Mode Distinction
+
+AI-generated interfaces habitually suffer from **unilateral single-mode bias** — either focusing purely on glowing dark mode (neglecting light mode or shipping it unstyled), or building light mode and applying a mechanical, muddy color inversion for dark mode. 
+
+Light and dark modes operate under **diametrically opposed physical lighting models**:
+
+| Architectural Dimension | ☀️ Light Mode (Pigment & Shadow) | 🌙 Dark Mode (Emissive & Luminance Stepping) |
+|---|---|---|
+| **Depth Engine** | Diffuse directional shadows (`box-shadow: 0 4px 16px oklch(0 0 0 / 0.06)`) + subtle borders. | **Luminance stepping**: cards step *up* in lightness ($L \approx 0.13 \rightarrow 0.18 \rightarrow 0.24$). Shadows are invisible on dark. |
+| **Canvas Luminance** | Clean, warm-tinted paper ($L \approx 0.985, C \approx 0.010$). | Deep hue-tinted obsidian ($L \approx 0.130, C \approx 0.012$). Never flat pitch black (`#000000`). |
+| **Card Surface** | Pure white or soft tint ($L \approx 0.965 - 1.000$). | Elevated tint ($L \approx 0.180 - 0.200$). |
+| **Container Delimitation** | Soft borders or purely spatial shadow boundaries. | Hairline luminous borders (`1px solid oklch(1 0 0 / 0.08 - 0.12)`); prevents dark cards merging into background. |
+| **Primary Actions** | Saturated, deeper pigment ($L \approx 0.450 - 0.550, C \approx 0.18$) for crisp text contrast. | Shifted *up* in lightness ($L \approx 0.650 - 0.720, C \approx 0.14$) with dark text, or solid $L \approx 0.55$ with white text. |
+| **Text Glare Mitigation** | Deep tinted ink ($L \approx 0.160 - 0.190$). Avoid stark `#000000` text on pure white. | Softened luminous text ($L \approx 0.920 - 0.960$). Avoid blinding stark `#FFFFFF` glare on body passages. |
+
+### Dual-Theme Token Recipe (Guaranteed Parity)
 
 ```css
 :root {
-  --canvas: oklch(0.985 0.012 var(--brand-hue));
+  /* ☀️ Light Mode: Pigment & Soft Shadow Model */
+  --canvas: oklch(0.985 0.010 var(--brand-hue));
   --surface: oklch(0.965 0.012 var(--brand-hue));
+  --surface-elevated: oklch(1.000 0.000 0);
   --border: oklch(0.880 0.012 var(--brand-hue));
+  --border-subtle: oklch(0.920 0.008 var(--brand-hue));
+  
   --text-primary: oklch(0.180 0.015 var(--brand-hue));
-  --text-muted: oklch(0.460 0.015 var(--brand-hue));
-  --primary: var(--color-primary-500);
-  --primary-hover: var(--color-primary-600);
+  --text-secondary: oklch(0.380 0.015 var(--brand-hue));
+  --text-muted: oklch(0.540 0.012 var(--brand-hue));
+  
+  --primary: oklch(0.520 0.180 var(--brand-hue));
+  --primary-hover: oklch(0.460 0.180 var(--brand-hue));
+  --primary-contrast: oklch(0.990 0.000 0);
+
+  /* Shadows active in light mode */
+  --shadow-sm: 0 1px 2px oklch(0.18 0.015 var(--brand-hue) / 0.05);
+  --shadow-md: 0 4px 12px -1px oklch(0.18 0.015 var(--brand-hue) / 0.08);
+  --shadow-lg: 0 12px 28px -4px oklch(0.18 0.015 var(--brand-hue) / 0.12);
 }
 
 [data-theme="dark"] {
-  --canvas: oklch(0.140 0.012 var(--brand-hue));
-  --surface: oklch(0.180 0.012 var(--brand-hue));
-  --border: oklch(0.280 0.012 var(--brand-hue));
-  --text-primary: oklch(0.960 0.015 var(--brand-hue));
-  --text-muted: oklch(0.680 0.015 var(--brand-hue));
-  --primary: var(--color-primary-400);
-  --primary-hover: var(--color-primary-300);
+  /* 🌙 Dark Mode: Luminance Stepping & Hairline Luminous Edge Model */
+  --canvas: oklch(0.130 0.012 var(--brand-hue));
+  --surface: oklch(0.180 0.014 var(--brand-hue));
+  --surface-elevated: oklch(0.240 0.016 var(--brand-hue));
+  --border: oklch(0.280 0.014 var(--brand-hue));
+  --border-subtle: oklch(1.000 0.000 0 / 0.08); /* Hairline specular boundary */
+  
+  --text-primary: oklch(0.950 0.010 var(--brand-hue));
+  --text-secondary: oklch(0.760 0.012 var(--brand-hue));
+  --text-muted: oklch(0.600 0.012 var(--brand-hue));
+  
+  --primary: oklch(0.660 0.150 var(--brand-hue));
+  --primary-hover: oklch(0.720 0.140 var(--brand-hue));
+  --primary-contrast: oklch(0.140 0.015 var(--brand-hue));
+
+  /* Shadows collapse; depth achieved via surface luminance */
+  --shadow-sm: 0 0 0 1px var(--border-subtle);
+  --shadow-md: 0 0 0 1px var(--border-subtle), 0 8px 24px -4px oklch(0 0 0 / 0.40);
+  --shadow-lg: 0 0 0 1px var(--border-subtle), 0 16px 36px -6px oklch(0 0 0 / 0.60);
 }
 ```
 
@@ -94,11 +133,35 @@ Generic AI-generated interfaces uniformly rely on flat, dead, washed-out grays (
 3. **Cool Brands (Hue 200°–270°):** Neutrals shift gently toward deep obsidian, frost, and twilight zinc.
 4. **Guaranteed Contrast:** Every hue-derived neutral pair (`--text-primary` on `--canvas`, `--text-muted` on `--surface`) must be verified to guarantee minimum 4.5:1 WCAG AA contrast. Never sacrifice readability for tint intensity.
 
-## Strict Anti-Slop Gradient & Button Rule
+## Strict Anti-Slop Color Invariants
 
-- **Ban Unearned Linear Gradients:** Never apply generic purple-to-blue linear gradients (`linear-gradient(135deg, #6366f1, #a855f7)`) on primary action buttons, container borders, or hero heading text.
-- **Earned Lighting:** Gradients are only permitted when modeling physical light sources (e.g. top-edge specular highlight or soft inner shadow).
-- **Solid High-Contrast Actions:** Primary buttons should use deliberate solid fills with crisp contrast and tactile state transitions, not floating fuzzy gradients.
+### 🚫 Generic AI Color Tropes (Flagged by Detector)
+Never produce the telltale generic colors that AI models reflexively generate:
+1. **Unearned Purple/Violet/Indigo Gradients:** `linear-gradient(135deg, #6366f1, #a855f7)`, `from-purple-500 to-indigo-500`, or `from-purple-600 to-blue-500` on buttons, cards, and borders.
+2. **Generic Electric Blue & Cyan Pairs:** `from-blue-500 to-indigo-500`, `from-cyan-400 to-blue-600`, or `linear-gradient(..., #3b82f6, #8b5cf6)`.
+3. **Electric Blue Headings:** Saturated generic blues (`text-blue-500`, `text-sky-400`, `#3b82f6`) floating without intentional brand identity.
+4. **Unearned Cyan Glow on Dark:** High-chroma neon cyan (`#00f0ff`, `#06b6d4`) glowing indiscriminately over dark containers.
+
+### 🛡️ Whitelisted Characterful Brand Palettes (Colors AI Rarely Picks)
+Ground interfaces in characterful, distinctive palettes with authentic personality. The detector explicitly whitelists and rewards these intentional color choices:
+
+| Palette Family | Key Tones & Hex | OKLCH Anchor | Aesthetic Voice & Best Fit |
+|---|---|---|---|
+| **Amber / Honey** | `#f59e0b`, `#d97706`, `#b45309` | `oklch(0.78 0.16 75)` | Warm golden marigold, tactile warmth. Editorial, artisanal fintech, modern commerce. |
+| **Teal / Deep Spruce** | `#0d9488`, `#0f766e`, `#115e59` | `oklch(0.55 0.12 195)` | Calm botanical depth, organic architectural tone. Climate tech, healthcare, high-end editorial. |
+| **Turquoise / Aegean** | `#14b8a6`, `#2dd4bf`, `#0891b2` | `oklch(0.72 0.13 180)` | Sunlit Mediterranean seafoam. Vibrant yet grounded. Maritime, lifestyle, creative studio. |
+| **Coral / Terracotta** | `#f97316`, `#ea580c`, `#e11d48` | `oklch(0.68 0.18 35)` | Sun-baked earth, persimmon, living coral. Hardware, ceramics, culinary, architecture. |
+| **Pitch Black / Obsidian** | `#000000`, `#050505`, `#08080a` | `oklch(0.12 0.008 240)` | High-contrast OLED depth with luminance stepping. Luxury goods, pro audio, developer tools. |
+| **Navy Blue / Midnight** | `#0f172a`, `#172554`, `#1e3a8a` | `oklch(0.28 0.09 255)` | Deep nautical midnight. Authoritative, intellectual, architectural. Institutional finance, law, enterprise infra. |
+| **Velvet Red / Burgundy** | `#4a0404`, `#7f1d1d`, `#881337` | `oklch(0.42 0.18 15)` | Luxurious crimson wine and dark velvet red. Deep pigment prestige. Wine & dining, haute horlogerie, culture. |
+| **Royal Blue** | `#1d4ed8`, `#1e40af`, `#002366` | `oklch(0.48 0.22 265)` | Majestic, authoritative cobalt blue with rich pigment density. Aerospace, civic institutions, flagship enterprise. |
+| **Imperial Plum** | `#581c87`, `#3b0764`, `#4a044e` | `oklch(0.35 0.16 320)` | Deep velvet wine plum. Majestic dignity distinct from generic neon violet. High fantasy, luxury gaming, heritage. |
+| **Royal Emerald** | `#064e3b`, `#047857`, `#022c22` | `oklch(0.45 0.15 155)` | Deep imperial jewel green and forest jade. Legacy wealth management, botanical science, private banking. |
+| **Chartreuse / Acid Lime** | `#84cc16`, `#a3e635`, `#65a30d` | `oklch(0.82 0.19 125)` | Avant-garde, electrifying wasabi/acid lime. Streetwear, music tech, experimental design studios. |
+| **Ochre / Dijon Mustard** | `#ca8a04`, `#a16207`, `#854d0e` | `oklch(0.68 0.14 85)` | Earthy, artisanal French mustard and golden ochre. Publishing, museum catalogs, craft heritage. |
+| **Espresso / Umber** | `#2d1f18`, `#382319`, `#422006` | `oklch(0.25 0.05 45)` | Roasted coffee, raw sepia, and warm umber darks. Leather craft, architecture, bespoke hospitality. |
+| **Mauve / Dusty Rose** | `#9d7589`, `#835d72`, `#70485c` | `oklch(0.62 0.08 340)` | Understated thistle, muted heather, and dusty rose quartz. Calm tech, skincare, literary journals. |
+| **Slate Copper / Patina** | `#b45309`, `#9a3412`, `#7c2d12` | `oklch(0.55 0.11 40)` | Burnished metallic copper and warm architectural patina. Industrial design, acoustics, bespoke metals. |
 
 ## CLI Color Tooling
 

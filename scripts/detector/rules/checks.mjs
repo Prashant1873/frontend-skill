@@ -27,6 +27,7 @@ import {
   parseRgb,
   relativeLuminance,
   splitTopLevelCommas,
+  isWhitelistedBrandColor,
 } from '../shared/color.mjs';
 import { extractGoogleFontFamilies } from '../shared/fonts.mjs';
 
@@ -202,7 +203,15 @@ function checkColors(opts) {
     if (hasChroma(textColor, 50)) {
       const hue = getHue(textColor);
       if (hue >= 260 && hue <= 310 && (['h1', 'h2', 'h3'].includes(tag) || fontSize >= 20)) {
-        findings.push({ id: 'ai-color-palette', snippet: `Purple/violet text (${colorToHex(textColor)}) on heading` });
+        if (!isWhitelistedBrandColor(textColor)) {
+          findings.push({ id: 'ai-color-palette', snippet: `Purple/violet text (${colorToHex(textColor)}) on heading` });
+        }
+      }
+      // Generic electric blue/cyan on headings (high luminance AI trope, excluding whitelisted navy/royal/teal)
+      if (hue >= 180 && hue <= 230 && (['h1', 'h2', 'h3'].includes(tag) || fontSize >= 20)) {
+        if (!isWhitelistedBrandColor(textColor) && relativeLuminance(textColor) > 0.15) {
+          findings.push({ id: 'ai-color-palette', snippet: `Generic electric blue/cyan text (${colorToHex(textColor)}) on heading` });
+        }
       }
     }
   }
@@ -231,8 +240,33 @@ function checkColors(opts) {
       findings.push({ id: 'ai-color-palette', snippet: `${purpleText[0]} on heading` });
     }
 
+    const blueHeading = classStr.match(/\btext-(?:blue|sky|cyan)-(?:400|500|600)\b/);
+    if (blueHeading && (['h1', 'h2', 'h3'].includes(tag) || /\btext-(?:[2-9]xl)\b/.test(classStr))) {
+      findings.push({ id: 'ai-color-palette', snippet: `Generic electric ${blueHeading[0]} on heading` });
+    }
+
     if (/\bfrom-(?:purple|violet|indigo)-\d+\b/.test(classStr) && /\bto-(?:purple|violet|indigo|blue|cyan|pink|fuchsia)-\d+\b/.test(classStr)) {
       findings.push({ id: 'ai-color-palette', snippet: 'Purple/violet gradient (Tailwind)' });
+    }
+
+    if (/\bfrom-(?:blue|sky|cyan)-\d+\b/.test(classStr) && /\bto-(?:purple|violet|indigo|blue|cyan|sky)-\d+\b/.test(classStr)) {
+      findings.push({ id: 'ai-color-palette', snippet: 'Generic AI blue/cyan gradient (Tailwind)' });
+    }
+
+    // Monochromatic same-color tinted pill badge slop
+    if (/\b(?:rounded-full|rounded-3xl|rounded-2xl|pill|badge)\b/i.test(classStr)) {
+      const bgM = classStr.match(/\bbg-([a-z]+)-(?:50|100|200|500\/[0-9]+|600\/[0-9]+|900\/[0-9]+|950(?:\/[0-9]+)?)\b/);
+      if (bgM) {
+        const family = bgM[1];
+        const hasText = new RegExp(`\\btext-${family}-(?:400|500|600|700|800|900)\\b`).test(classStr);
+        const hasBorder = new RegExp(`\\bborder-${family}-(?:200|300|400|500|600|[0-9]+\\/[0-9]+)\\b`).test(classStr);
+        if (hasText && hasBorder) {
+          findings.push({
+            id: 'monochromatic-pill-slop',
+            snippet: `Monochromatic ${family} tinted pill slop (${bgM[0]} + text-${family} + border-${family} on pill container)`,
+          });
+        }
+      }
     }
   }
 
@@ -1370,16 +1404,34 @@ function scanCssTextForOpticalAlignment(rawContent) {
 function checkGenericPillBadge(opts) {
   const { classList, text, siblingHeading } = opts || {};
   const classes = typeof classList === 'string' ? classList : Array.from(classList || []).join(' ');
+  const findings = [];
   const isPillClass = /\b(?:pill|badge|eyebrow|kicker)(?:-badge|-chip|-pill)?\b/i.test(classes);
   const content = String(text || '').trim();
   const isGenericCopy = /\b(?:WELCOME|NEW(?: FEATURE)?|FEATURE|BETA|ANNOUNCEMENT|UPDATES?|COMING SOON|PRO|AI POWERED|AI|LAUNCH)\b/i.test(content);
   if (isPillClass && (isGenericCopy || siblingHeading)) {
-    return [{
+    findings.push({
       id: 'generic-pill-badge',
       snippet: `Generic pill badge "${content.slice(0, 30)}" (${classes})`,
-    }];
+    });
   }
-  return [];
+
+  // Monochromatic same-color tinted pill badge slop
+  if (/\b(?:rounded-full|rounded-3xl|rounded-2xl|pill|badge)\b/i.test(classes)) {
+    const bgM = classes.match(/\bbg-([a-z]+)-(?:50|100|200|500\/[0-9]+|600\/[0-9]+|900\/[0-9]+|950(?:\/[0-9]+)?)\b/);
+    if (bgM) {
+      const family = bgM[1];
+      const hasText = new RegExp(`\\btext-${family}-(?:400|500|600|700|800|900)\\b`).test(classes);
+      const hasBorder = new RegExp(`\\bborder-${family}-(?:200|300|400|500|600|[0-9]+\\/[0-9]+)\\b`).test(classes);
+      if (hasText && hasBorder) {
+        findings.push({
+          id: 'monochromatic-pill-slop',
+          snippet: `Monochromatic ${family} tinted pill slop (${bgM[0]} with matching text and border)`,
+        });
+      }
+    }
+  }
+
+  return findings;
 }
 
 // Collect @keyframes names whose body travels horizontally — the marquee
@@ -1903,7 +1955,7 @@ function checkHtmlPatterns(html, corpora) {
 
   // --- Color ---
 
-  // AI color palette: purple/violet
+  // AI color palette: purple/violet and generic electric blue/cyan tropes
   const purpleHexRe = /#(?:7c3aed|8b5cf6|a855f7|9333ea|7e22ce|6d28d9|6366f1|764ba2|667eea)\b/gi;
   if (purpleHexRe.test(styleText)) {
     const purpleTextRe = /(?:(?:^|;)\s*color\s*:\s*(?:.*?)(?:#(?:7c3aed|8b5cf6|a855f7|9333ea|7e22ce|6d28d9))|gradient.*?#(?:7c3aed|8b5cf6|a855f7|764ba2|667eea))/gi;
@@ -1912,6 +1964,13 @@ function checkHtmlPatterns(html, corpora) {
     if (purpleMatch) {
       findings.push({ id: 'ai-color-palette', snippet: 'Purple/violet accent colors detected', selector: enclosingCssSelector(styleText, purpleMatch.index + 1) || undefined });
     }
+  }
+
+  // Generic electric blue/cyan AI gradient tropes (e.g. #3b82f6 with #8b5cf6 or #06b6d4 with #3b82f6)
+  const genericBlueGradRe = /gradient.*?(?:#(?:3b82f6|2563eb|06b6d4|0ea5e9|00f0ff).*?#(?:7c3aed|8b5cf6|a855f7|6366f1|06b6d4|3b82f6)|#(?:7c3aed|8b5cf6|a855f7|6366f1).*?#(?:3b82f6|2563eb|06b6d4|0ea5e9|00f0ff))/gi;
+  const blueGradMatch = genericBlueGradRe.exec(styleText);
+  if (blueGradMatch) {
+    findings.push({ id: 'ai-color-palette', snippet: 'Generic AI electric blue/cyan gradient trope detected', selector: enclosingCssSelector(styleText, blueGradMatch.index + 1) || undefined });
   }
 
   // Gradient text (background-clip: text + gradient)
@@ -1927,6 +1986,26 @@ function checkHtmlPatterns(html, corpora) {
   }
   if (/\bbg-clip-text\b/.test(classText) && /\bbg-gradient-to-/.test(classText)) {
     findings.push({ id: 'gradient-text', snippet: 'bg-clip-text + bg-gradient (Tailwind)' });
+  }
+
+  // Monochromatic tinted pill badge slop
+  const monoPillRe = /<(?:span|div|p|a|button)\b[^>]*class=["']([^"']*\b(?:rounded-full|rounded-3xl|rounded-2xl|pill|badge)\b[^"']*)["'][^>]*>/gi;
+  let mpm;
+  while ((mpm = monoPillRe.exec(html)) !== null) {
+    const cls = mpm[1];
+    const bgM = cls.match(/\bbg-([a-z]+)-(?:50|100|200|500\/[0-9]+|600\/[0-9]+|900\/[0-9]+|950(?:\/[0-9]+)?)\b/);
+    if (bgM) {
+      const family = bgM[1];
+      const hasText = new RegExp(`\\btext-${family}-(?:400|500|600|700|800|900)\\b`).test(cls);
+      const hasBorder = new RegExp(`\\bborder-${family}-(?:200|300|400|500|600|[0-9]+\\/[0-9]+)\\b`).test(cls);
+      if (hasText && hasBorder) {
+        findings.push({
+          id: 'monochromatic-pill-slop',
+          snippet: `Monochromatic ${family} tinted pill slop (${bgM[0]} on pill container)`,
+        });
+        break;
+      }
+    }
   }
 
   // --- Borders ---
@@ -3135,26 +3214,27 @@ function checkElementAIPaletteDOM(el) {
   const style = getComputedStyle(el);
   const findings = [];
 
-  // Check gradient backgrounds for purple/violet or cyan
+  // Check gradient backgrounds for purple/violet or cyan (excluding whitelisted brand colors)
   const bgImage = style.backgroundImage || '';
   const gradColors = parseGradientColors(bgImage);
   for (const c of gradColors) {
+    if (isWhitelistedBrandColor(c)) continue;
     if (hasChroma(c, 50)) {
       const hue = getHue(c);
       if (hue >= 260 && hue <= 310) {
         findings.push({ id: 'ai-color-palette', snippet: 'Purple/violet gradient background' });
         break;
       }
-      if (hue >= 160 && hue <= 200) {
+      if (hue >= 160 && hue <= 200 && relativeLuminance(c) > 0.35) {
         findings.push({ id: 'ai-color-palette', snippet: 'Cyan gradient background' });
         break;
       }
     }
   }
 
-  // Check for neon text (vivid cyan/purple color on dark background)
+  // Check for neon text (vivid cyan/purple color on dark background, excluding whitelisted brand colors)
   const textColor = parseRgb(style.color) || parseAnyColor(style.color);
-  if (textColor && hasChroma(textColor, 80)) {
+  if (textColor && !isWhitelistedBrandColor(textColor) && hasChroma(textColor, 80)) {
     const hue = getHue(textColor);
     const isAIPalette = (hue >= 160 && hue <= 200) || (hue >= 260 && hue <= 310);
     if (isAIPalette) {
@@ -3567,6 +3647,18 @@ function checkQuality(opts) {
     }
   }
 
+  // --- Raw Emoji in UI (Anti-Slop Craft Rule) ---
+  if (hasDirectText && (tag === 'button' || tag === 'a' || (el.getAttribute && el.getAttribute('role') === 'button') || (el.className && typeof el.className === 'string' && /\b(badge|chip|pill|btn|icon-tile)\b/i.test(el.className)))) {
+    const rawText = el.textContent || '';
+    if (EMOJI_CHAR_RE.test(rawText)) {
+      const match = rawText.match(EMOJI_CHAR_RE);
+      findings.push({
+        id: 'emoji-in-ui',
+        snippet: `<${tag}> contains raw emoji "${match ? match[0] : ''}" — use dedicated SVG icon instead`,
+      });
+    }
+  }
+
   // --- Flush against a visible boundary ---
   // Fires when a container has a visible boundary (border, outline, OR a
   // non-transparent background) AND near-zero padding on the bounded
@@ -3916,6 +4008,18 @@ function checkPageQualityFromDoc(doc) {
     prevLevel = level;
     prevText = text;
   }
+
+  // Check for missing favicon declaration in full HTML documents
+  if (doc.querySelector && (doc.querySelector('head') || doc.querySelector('html'))) {
+    const favicon = doc.querySelector('link[rel~="icon"]');
+    if (!favicon) {
+      findings.push({
+        id: 'missing-favicon',
+        snippet: '<head> missing <link rel="icon"> favicon declaration',
+      });
+    }
+  }
+
   return findings;
 }
 

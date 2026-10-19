@@ -19,6 +19,7 @@ const SKILL_FILE = path.resolve(ROOT_DIR, 'SKILL.md');
 
 // Mapping of subcommands to primary reference playbooks
 const COMMAND_PLAYBOOK_MAP = {
+  // ── Primary 18 High-Frequency Commands ──
   design: 'reference/new-work.md',
   polish: 'reference/polish.md',
   critique: 'reference/critique.md',
@@ -31,8 +32,38 @@ const COMMAND_PLAYBOOK_MAP = {
   engineer: 'reference/craft-floor.md',
   apple: 'reference/animate.md',
   ux: 'reference/craft-floor.md',
-  'pick-lib': 'PICKER.md',
+  adapt: 'reference/adapt.md',
+  delight: 'reference/delight.md',
+  visualize: 'reference/visualize.md',
+  tokens: 'reference/craft-floor.md',
   prototype: 'PICKER.md',
+  doctor: 'reference/doctor.md',
+
+  // ── Specialized Domain Commands ──
+  bento: 'reference/bento.md',
+  editorial: 'reference/editorial.md',
+  colorize: 'reference/colorize.md',
+  typeset: 'reference/typeset.md',
+  shape: 'reference/shape.md',
+  overdrive: 'reference/overdrive.md',
+  operate: 'reference/operate.md',
+  ios: 'reference/ios.md',
+  android: 'reference/android.md',
+  extract: 'reference/extract.md',
+  document: 'reference/document.md',
+  onboard: 'reference/onboard.md',
+  buttons: 'reference/buttons.md',
+  sandbox: 'reference/craft-floor.md',
+  'pick-lib': 'PICKER.md',
+  help: 'reference/router.md',
+  new: 'reference/new-work.md',
+  scaffold: 'reference/new-work.md',
+  platform: 'reference/new-work.md',
+  report: 'reference/report.md',
+  test: 'reference/report.md',
+  'test-report': 'reference/report.md',
+  'test-all': 'reference/report.md',
+  eval: 'reference/report.md',
 };
 
 function parseArgs(argv) {

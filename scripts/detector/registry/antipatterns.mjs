@@ -52,7 +52,7 @@ const ANTIPATTERNS = [
     category: 'slop',
     name: 'AI color palette',
     description:
-      'Purple/violet gradients and cyan-on-dark are the most recognizable tells of AI-generated UIs. Choose a distinctive, intentional palette.',
+      'Unearned purple/violet gradients, generic electric blue headings, and cyan-on-dark neon glow are recognizable tells of AI-generated UIs. Ground designs in distinctive, characterful brand palettes (e.g. amber, teal, turquoise, coral, pitch black, navy blue, velvet red, royal colors, chartreuse, ochre, espresso).',
     skillSection: 'Color & Contrast',
     skillGuideline: 'AI color palette',
   },
@@ -582,6 +582,15 @@ const ANTIPATTERNS = [
     skillGuideline: 'generic pill badges above headings',
   },
   {
+    id: 'monochromatic-pill-slop',
+    category: 'slop',
+    name: 'Monochromatic tinted pill badge slop',
+    description:
+      'Pills and capsules combining rounded corners (rounded-full/9999px) with a light or faint tinted background, darker border, and matching text of the exact same color family (e.g. bg-blue-50 border-blue-200 text-blue-700 or dark-mode blue-on-blue tint) are the #1 tell of reflex AI slop. Strictly banned. Use innovative blocks: split-chamber badges, tactile inset micro-blocks, hairline specular glass pills, or asymmetric editorial markers.',
+    skillSection: 'Editorial & Content',
+    skillGuideline: 'monochromatic same-color tinted pill slop',
+  },
+  {
     id: 'button-missing-active-squish',
     category: 'slop',
     scopes: ['motion'],
@@ -660,6 +669,28 @@ const ANTIPATTERNS = [
       'Button or control SVG icons centered purely with flexbox/grid appear optically dropped below the text cap-height. Apply sub-pixel optical vertical adjustment (translateY) or optical centering tokens.',
     skillSection: 'Buttons & Micro-Interactions',
     skillGuideline: 'optical icon centering',
+  },
+  {
+    id: 'emoji-in-ui',
+    category: 'slop',
+    severity: 'advisory',
+    advisory: true,
+    name: 'Raw emoji in UI',
+    description:
+      'Raw emoji characters (🚀, ✨, 🔥, 💡, etc.) used as icons, buttons, or badge visuals render inconsistently across operating systems and signal low-effort AI slop. Use sharp, scalable SVG icons instead (e.g. Lucide, Radix, Heroicons).',
+    skillSection: 'Visual Details',
+    skillGuideline: 'emoji standing in for an icon system',
+  },
+  {
+    id: 'missing-favicon',
+    category: 'quality',
+    severity: 'advisory',
+    advisory: true,
+    name: 'Missing favicon declaration',
+    description:
+      'Web document lacks a <link rel="icon"> favicon declaration in <head>. Declare an SVG or PNG favicon matching the brand identity.',
+    skillSection: 'Browser surfaces',
+    skillGuideline: 'the parts you did not draw still carry the design',
   },
 ];
 

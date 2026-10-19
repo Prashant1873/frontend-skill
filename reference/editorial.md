@@ -6,7 +6,7 @@
 
 ## 1. The Anti-Pill & Anti-Eyebrow Craft Invariant
 
-AI code generators possess an overwhelming tendency to drop a rounded pill badge above every primary headline:
+AI code generators possess an overwhelming tendency to drop a generic rounded pill badge above every primary headline:
 ```html
 <!-- BAN THIS SLOP: Generic AI Floating Pill Badge -->
 <div class="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-indigo-700">
@@ -15,11 +15,21 @@ AI code generators possess an overwhelming tendency to drop a rounded pill badge
 <h1 class="text-5xl font-bold">The Next Generation Platform</h1>
 ```
 
+### 🚨 Strict NO List: Monochromatic Tinted Pill Badges (MAX AI Slop)
+Never produce capsules combining rounded corners (`rounded-full`, `border-radius: 9999px`) with a light or faint tinted background, darker border, and matching text/icon of the exact same color family:
+- ❌ `bg-blue-50 border-blue-200 text-blue-700 rounded-full` (Cookie-cutter light mode slop)
+- ❌ `bg-blue-950/40 border-blue-500/30 text-blue-400 rounded-full` (The ubiquitous dark-mode "🔒 Dedicated" pill cliché)
+- ❌ `bg-purple-100 border-purple-300 text-purple-800 rounded-full`
+- ❌ `bg-emerald-50 border-emerald-200 text-emerald-800 rounded-full`
+
+**Why It Fails:** Monochromatic tinting destroys visual sharpness, feels like an uninspired template, and instantly signals AI boilerplate.
+
 ### Strict Craft Invariants:
-1. **Never Float Pills Above Headings**: Banned are `.pill`, `.badge`, `.tag`, or `border-radius: 9999px` containers positioned directly above an `<h1>` or `<h2>`.
-2. **Never Use Cliché Kicker Vocabulary**: Prohibit generic uppercase strings like `"NEW"`, `"FEATURE"`, `"INTRODUCING"`, `"WELCOME"`, or `"AI-POWERED"`.
-3. **No Decorative Border Capsules**: Typography and optical space must communicate hierarchy. Do not encapsulate section labels in border chrome.
-4. **Contrast Compliance**: All metadata and kicker labels must strictly achieve WCAG 2.2 AA (≥ 4.5:1) against their backing surface.
+1. **Strictly Ban Monochromatic Same-Color Pills**: No capsule where bg, border, and text share the same chromatic family.
+2. **Never Float Pills Above Headings**: Banned are `.pill`, `.badge`, `.tag`, or `border-radius: 9999px` containers positioned directly above an `<h1>` or `<h2>`.
+3. **Never Use Cliché Kicker Vocabulary**: Prohibit generic uppercase strings like `"NEW"`, `"FEATURE"`, `"INTRODUCING"`, `"WELCOME"`, or `"AI-POWERED"`.
+4. **No Decorative Border Capsules**: Typography and optical space must communicate hierarchy. Do not encapsulate section labels in border chrome.
+5. **Contrast Compliance**: All metadata and kicker labels must strictly achieve WCAG 2.2 AA (≥ 4.5:1) against their backing surface.
 
 ---
 
@@ -35,7 +45,135 @@ True editorial typography (as seen in *The New York Times*, *Bloomberg*, *Wired*
 
 ---
 
-## 3. Human Replacement Patterns
+## 3. Innovative Pills & Architectural Block Alternatives
+
+Instead of cookie-cutter monochromatic pills, deploy these human-crafted architectural primitives:
+
+### Pattern A: Split-Chamber Architectural Badge
+A two-cell neutral capsule where an elevated dark/light neutral inset houses the icon with a vertical hairline divider, paired with crisp neutral typography:
+
+```html
+<div class="split-chamber-badge">
+  <span class="chamber-icon">
+    <!-- Sharp SVG icon, NOT raw emoji -->
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+  </span>
+  <span class="chamber-label">Dedicated Hardware</span>
+</div>
+```
+```css
+.split-chamber-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  padding: 2px;
+  font-size: 0.75rem;
+  color: var(--text-primary);
+}
+.chamber-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background-color: oklch(1 0 0 / 0.08);
+  color: var(--amber);
+  margin-right: 6px;
+}
+.chamber-label {
+  padding-right: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+```
+
+### Pattern B: Inset Tactile Micro-Block
+A subtle 4px/6px chamfered geometric block grounded in canvas/surface neutrals with a solitary luminous gemstone indicator dot:
+
+```html
+<div class="tactile-micro-block">
+  <span class="gem-dot"></span>
+  <span class="block-text">Production Cluster</span>
+</div>
+```
+```css
+.tactile-micro-block {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+}
+.gem-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--teal);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+```
+
+### Pattern C: Specular Hairline Glass Pill
+Translucent neutral frosted glass bound by an ultra-fine 1px specular luminous rim with clean neutral typography:
+
+```html
+<div class="specular-glass-pill">
+  <span>Architecture [01]</span>
+</div>
+```
+```css
+.specular-glass-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  background: oklch(1 0 0 / 0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid oklch(1 0 0 / 0.15);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+}
+```
+
+### Pattern D: Asymmetric Editorial Index Marker
+Pure typographic hierarchy using inline monospace indexes or category kickers framed by a 24px horizontal hairline divider:
+
+```html
+<div class="editorial-marker">
+  <span class="marker-index">[ 01 ]</span>
+  <span class="marker-rule"></span>
+  <span class="marker-title">SYSTEMS HERITAGE</span>
+</div>
+```
+```css
+.editorial-marker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.marker-rule {
+  width: 24px;
+  height: 1px;
+  background-color: var(--border);
+}
+```
+
+---
+
+## 4. Human Editorial Layout Architecture
 
 Replace lazy floating pills with one of three human-crafted editorial primitives:
 
@@ -85,7 +223,7 @@ Frame section transitions with crisp 1px hairline rules and optical breathing ro
 
 ---
 
-## 4. Before-and-After Transformations
+## 5. Before-and-After Transformations
 
 ### Transformation 1: Landing Page Hero
 - **Before (AI Slop)**: Centered container with a pill chip reading `"🔥 PRODUCT LAUNCH"` above a generic sans-serif `<h1>`.

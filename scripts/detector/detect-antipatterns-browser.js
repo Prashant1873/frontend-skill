@@ -854,6 +854,53 @@ function colorToHex(c) {
   return '#' + [c.r, c.g, c.b].map(v => v.toString(16).padStart(2, '0')).join('');
 }
 
+const WHITELISTED_BRAND_HEXES = new Set([
+  '#f59e0b', '#d97706', '#b45309', '#92400e', '#78350f', '#fcd34d', '#fbbf24',
+  '#0d9488', '#0f766e', '#115e59', '#134e4a', '#042f2e', '#14b8a6', '#2dd4bf',
+  '#0891b2', '#0e7490', '#155e75', '#164e63',
+  '#f97316', '#ea580c', '#c2410c', '#9a3412', '#7c2d12', '#e11d48', '#f43f5e', '#fb7185',
+  '#000000', '#050505', '#08080a', '#09090b', '#0a0a0c', '#030712', '#020617',
+  '#0a192f', '#0f172a', '#172554', '#1e3a8a', '#1e293b', '#1e3a5f', '#1e1b4b',
+  '#4a0404', '#7f1d1d', '#881337', '#500724', '#9f1239', '#4c0519',
+  '#1d4ed8', '#1e40af', '#1e3a8a', '#002366',
+  '#581c87', '#3b0764', '#4a044e',
+  '#064e3b', '#047857', '#022c22',
+  '#84cc16', '#65a30d', '#4d7c0f', '#a3e635',
+  '#ca8a04', '#a16207', '#854d0e',
+  '#2d1f18', '#382319', '#422006',
+  '#9d7589', '#835d72', '#70485c',
+  '#9a3412', '#7c2d12',
+]);
+
+function isWhitelistedBrandColor(c) {
+  if (!c) return false;
+  if (typeof c === 'string') {
+    const hex = c.trim().toLowerCase();
+    if (WHITELISTED_BRAND_HEXES.has(hex)) return true;
+    const parsed = parseAnyColor ? parseAnyColor(hex) : null;
+    if (!parsed) return false;
+    c = parsed;
+  }
+  const hex = colorToHex(c).toLowerCase();
+  if (WHITELISTED_BRAND_HEXES.has(hex)) return true;
+  const lum = relativeLuminance(c);
+  const hue = getHue(c);
+  const maxChroma = Math.max(c.r, c.g, c.b) - Math.min(c.r, c.g, c.b);
+  if (lum <= 0.015 || (c.r <= 18 && c.g <= 18 && c.b <= 18)) return true;
+  if (hue >= 210 && hue <= 250 && lum <= 0.08 && c.b > c.r) return true;
+  if (hue >= 215 && hue <= 240 && lum <= 0.15 && c.b >= 140 && c.r <= 50) return true;
+  if ((hue <= 20 || hue >= 340) && lum <= 0.12 && c.r > c.b) return true;
+  if (hue >= 265 && hue <= 330 && lum <= 0.06 && c.r <= 100) return true;
+  if (hue >= 145 && hue <= 165 && lum <= 0.15 && c.g > c.r) return true;
+  if (hue >= 40 && hue <= 85) return true;
+  if (hue >= 15 && hue <= 40) return true;
+  if (hue >= 165 && hue <= 195 && lum <= 0.35) return true;
+  if (hue >= 110 && hue <= 135 && c.g > c.b) return true;
+  if (hue >= 30 && hue <= 50 && lum <= 0.05) return true;
+  if (hue >= 330 && hue <= 355 && maxChroma <= 60) return true;
+  return false;
+}
+
 // ─── Color-space conversions ────────────────────────────────────────────────
 //
 // Every function here lands on 8-bit sRGB, clamped to gamut. Chrome, Safari,
@@ -1475,7 +1522,15 @@ function checkColors(opts) {
     if (hasChroma(textColor, 50)) {
       const hue = getHue(textColor);
       if (hue >= 260 && hue <= 310 && (['h1', 'h2', 'h3'].includes(tag) || fontSize >= 20)) {
-        findings.push({ id: 'ai-color-palette', snippet: `Purple/violet text (${colorToHex(textColor)}) on heading` });
+        if (!isWhitelistedBrandColor(textColor)) {
+          findings.push({ id: 'ai-color-palette', snippet: `Purple/violet text (${colorToHex(textColor)}) on heading` });
+        }
+      }
+      // Generic electric blue/cyan on headings (high luminance AI trope, excluding whitelisted navy/royal/teal)
+      if (hue >= 180 && hue <= 230 && (['h1', 'h2', 'h3'].includes(tag) || fontSize >= 20)) {
+        if (!isWhitelistedBrandColor(textColor) && relativeLuminance(textColor) > 0.15) {
+          findings.push({ id: 'ai-color-palette', snippet: `Generic electric blue/cyan text (${colorToHex(textColor)}) on heading` });
+        }
       }
     }
   }
@@ -1504,8 +1559,33 @@ function checkColors(opts) {
       findings.push({ id: 'ai-color-palette', snippet: `${purpleText[0]} on heading` });
     }
 
+    const blueHeading = classStr.match(/\btext-(?:blue|sky|cyan)-(?:400|500|600)\b/);
+    if (blueHeading && (['h1', 'h2', 'h3'].includes(tag) || /\btext-(?:[2-9]xl)\b/.test(classStr))) {
+      findings.push({ id: 'ai-color-palette', snippet: `Generic electric ${blueHeading[0]} on heading` });
+    }
+
     if (/\bfrom-(?:purple|violet|indigo)-\d+\b/.test(classStr) && /\bto-(?:purple|violet|indigo|blue|cyan|pink|fuchsia)-\d+\b/.test(classStr)) {
       findings.push({ id: 'ai-color-palette', snippet: 'Purple/violet gradient (Tailwind)' });
+    }
+
+    if (/\bfrom-(?:blue|sky|cyan)-\d+\b/.test(classStr) && /\bto-(?:purple|violet|indigo|blue|cyan|sky)-\d+\b/.test(classStr)) {
+      findings.push({ id: 'ai-color-palette', snippet: 'Generic AI blue/cyan gradient (Tailwind)' });
+    }
+
+    // Monochromatic same-color tinted pill badge slop
+    if (/\b(?:rounded-full|rounded-3xl|rounded-2xl|pill|badge)\b/i.test(classStr)) {
+      const bgM = classStr.match(/\bbg-([a-z]+)-(?:50|100|200|500\/[0-9]+|600\/[0-9]+|900\/[0-9]+|950(?:\/[0-9]+)?)\b/);
+      if (bgM) {
+        const family = bgM[1];
+        const hasText = new RegExp(`\\btext-${family}-(?:400|500|600|700|800|900)\\b`).test(classStr);
+        const hasBorder = new RegExp(`\\bborder-${family}-(?:200|300|400|500|600|[0-9]+\\/[0-9]+)\\b`).test(classStr);
+        if (hasText && hasBorder) {
+          findings.push({
+            id: 'monochromatic-pill-slop',
+            snippet: `Monochromatic ${family} tinted pill slop (${bgM[0]} + text-${family} + border-${family} on pill container)`,
+          });
+        }
+      }
     }
   }
 
@@ -2881,6 +2961,13 @@ function checkHtmlPatterns(html, corpora) {
     }
   }
 
+  // Generic electric blue/cyan AI gradient tropes (e.g. #3b82f6 with #8b5cf6 or #06b6d4 with #3b82f6)
+  const genericBlueGradRe = /gradient.*?(?:#(?:3b82f6|2563eb|06b6d4|0ea5e9|00f0ff).*?#(?:7c3aed|8b5cf6|a855f7|6366f1|06b6d4|3b82f6)|#(?:7c3aed|8b5cf6|a855f7|6366f1).*?#(?:3b82f6|2563eb|06b6d4|0ea5e9|00f0ff))/gi;
+  const blueGradMatch = genericBlueGradRe.exec(styleText);
+  if (blueGradMatch) {
+    findings.push({ id: 'ai-color-palette', snippet: 'Generic AI electric blue/cyan gradient trope detected', selector: enclosingCssSelector(styleText, blueGradMatch.index + 1) || undefined });
+  }
+
   // Gradient text (background-clip: text + gradient)
   const gradientRe = /(?:-webkit-)?background-clip\s*:\s*text/gi;
   let gm;
@@ -2894,6 +2981,26 @@ function checkHtmlPatterns(html, corpora) {
   }
   if (/\bbg-clip-text\b/.test(classText) && /\bbg-gradient-to-/.test(classText)) {
     findings.push({ id: 'gradient-text', snippet: 'bg-clip-text + bg-gradient (Tailwind)' });
+  }
+
+  // Monochromatic tinted pill badge slop
+  const monoPillRe = /<(?:span|div|p|a|button)\b[^>]*class=["']([^"']*\b(?:rounded-full|rounded-3xl|rounded-2xl|pill|badge)\b[^"']*)["'][^>]*>/gi;
+  let mpm;
+  while ((mpm = monoPillRe.exec(html)) !== null) {
+    const cls = mpm[1];
+    const bgM = cls.match(/\bbg-([a-z]+)-(?:50|100|200|500\/[0-9]+|600\/[0-9]+|900\/[0-9]+|950(?:\/[0-9]+)?)\b/);
+    if (bgM) {
+      const family = bgM[1];
+      const hasText = new RegExp(`\\btext-${family}-(?:400|500|600|700|800|900)\\b`).test(cls);
+      const hasBorder = new RegExp(`\\bborder-${family}-(?:200|300|400|500|600|[0-9]+\\/[0-9]+)\\b`).test(cls);
+      if (hasText && hasBorder) {
+        findings.push({
+          id: 'monochromatic-pill-slop',
+          snippet: `Monochromatic ${family} tinted pill slop (${bgM[0]} on pill container)`,
+        });
+        break;
+      }
+    }
   }
 
   // --- Borders ---
@@ -4102,26 +4209,27 @@ function checkElementAIPaletteDOM(el) {
   const style = getComputedStyle(el);
   const findings = [];
 
-  // Check gradient backgrounds for purple/violet or cyan
+  // Check gradient backgrounds for purple/violet or cyan (excluding whitelisted brand colors)
   const bgImage = style.backgroundImage || '';
   const gradColors = parseGradientColors(bgImage);
   for (const c of gradColors) {
+    if (isWhitelistedBrandColor(c)) continue;
     if (hasChroma(c, 50)) {
       const hue = getHue(c);
       if (hue >= 260 && hue <= 310) {
         findings.push({ id: 'ai-color-palette', snippet: 'Purple/violet gradient background' });
         break;
       }
-      if (hue >= 160 && hue <= 200) {
+      if (hue >= 160 && hue <= 200 && relativeLuminance(c) > 0.35) {
         findings.push({ id: 'ai-color-palette', snippet: 'Cyan gradient background' });
         break;
       }
     }
   }
 
-  // Check for neon text (vivid cyan/purple color on dark background)
+  // Check for neon text (vivid cyan/purple color on dark background, excluding whitelisted brand colors)
   const textColor = parseRgb(style.color) || parseAnyColor(style.color);
-  if (textColor && hasChroma(textColor, 80)) {
+  if (textColor && !isWhitelistedBrandColor(textColor) && hasChroma(textColor, 80)) {
     const hue = getHue(textColor);
     const isAIPalette = (hue >= 160 && hue <= 200) || (hue >= 260 && hue <= 310);
     if (isAIPalette) {

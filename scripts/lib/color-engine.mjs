@@ -381,3 +381,192 @@ export function generateHarmonicPalette(baseHue, schemeType = 'monochromatic') {
     semantics,
   };
 }
+
+/**
+ * Curated registry of distinctive, high-character brand palettes that AI models rarely pick.
+ * Provides intentional alternatives to generic purple/blue/cyan AI slop.
+ */
+export const CHARACTERFUL_BRAND_PALETTES = {
+  amber: {
+    id: 'amber',
+    name: 'Amber Honey',
+    description: 'Warm, golden, artisanal honey and sunlit marigold. High tactile warmth.',
+    hue: 75,
+    chroma: 0.16,
+    lightness: 0.78,
+    hex: '#f59e0b',
+    category: 'warm',
+    roles: 'editorial, artisanal, fintech, warm modernism',
+  },
+  teal: {
+    id: 'teal',
+    name: 'Deep Spruce Teal',
+    description: 'Dignified, organic botanical blue-green. Calm architectural depth.',
+    hue: 195,
+    chroma: 0.12,
+    lightness: 0.55,
+    hex: '#0d9488',
+    category: 'organic',
+    roles: 'healthcare, climate tech, sustainability, high-end editorial',
+  },
+  turquoise: {
+    id: 'turquoise',
+    name: 'Aegean Turquoise',
+    description: 'Sunlit Mediterranean coastal seafoam and turquoise. Vibrant yet grounded.',
+    hue: 180,
+    chroma: 0.13,
+    lightness: 0.72,
+    hex: '#14b8a6',
+    category: 'coastal',
+    roles: 'travel, maritime, lifestyle, creative studio',
+  },
+  coral: {
+    id: 'coral',
+    name: 'Terracotta Coral',
+    description: 'Tactile, sun-baked terracotta, persimmon, and living coral.',
+    hue: 35,
+    chroma: 0.18,
+    lightness: 0.68,
+    hex: '#f97316',
+    category: 'warm',
+    roles: 'e-commerce, hospitality, architecture, consumer hardware',
+  },
+  pitchBlack: {
+    id: 'pitchBlack',
+    name: 'Pitch Black & Obsidian',
+    description: 'Crisp OLED deep darks with precise luminance stepping and zero AI gray mud.',
+    hue: 240,
+    chroma: 0.008,
+    lightness: 0.12,
+    hex: '#050505',
+    category: 'depth',
+    roles: 'luxury, developer tools, pro audio, hardware',
+  },
+  navyBlue: {
+    id: 'navyBlue',
+    name: 'Midnight Navy',
+    description: 'Deep structured nautical navy. Authoritative, intellectual, and architectural.',
+    hue: 255,
+    chroma: 0.09,
+    lightness: 0.28,
+    hex: '#0f172a',
+    category: 'architectural',
+    roles: 'institutional finance, law, security, enterprise infra',
+  },
+  velvetRed: {
+    id: 'velvetRed',
+    name: 'Velvet Burgundy',
+    description: 'Luxurious crimson wine and dark velvet red. Deep pigment and tactile prestige.',
+    hue: 15,
+    chroma: 0.18,
+    lightness: 0.42,
+    hex: '#881337',
+    category: 'luxury',
+    roles: 'luxury goods, wine & dining, fashion, high culture',
+  },
+  royalBlue: {
+    id: 'royalBlue',
+    name: 'Royal Blue',
+    description: 'Majestic, authoritative cobalt blue with rich pigment density.',
+    hue: 265,
+    chroma: 0.22,
+    lightness: 0.48,
+    hex: '#1d4ed8',
+    category: 'royal',
+    roles: 'aerospace, civic institutions, flagship enterprise',
+  },
+  royalPurple: {
+    id: 'royalPurple',
+    name: 'Imperial Plum',
+    description: 'Deep velvet wine plum. Majestic dignity distinct from generic neon AI violet.',
+    hue: 320,
+    chroma: 0.16,
+    lightness: 0.35,
+    hex: '#581c87',
+    category: 'royal',
+    roles: 'luxury, gaming, high fantasy, royal heritage',
+  },
+  royalEmerald: {
+    id: 'royalEmerald',
+    name: 'Royal Emerald',
+    description: 'Deep imperial jewel green and forest jade.',
+    hue: 155,
+    chroma: 0.15,
+    lightness: 0.45,
+    hex: '#064e3b',
+    category: 'royal',
+    roles: 'wealth management, legacy luxury, botanical science',
+  },
+  chartreuse: {
+    id: 'chartreuse',
+    name: 'Acid Chartreuse',
+    description: 'Avant-garde, electrifying wasabi/acid lime.',
+    hue: 125,
+    chroma: 0.19,
+    lightness: 0.82,
+    hex: '#84cc16',
+    category: 'unusual',
+    roles: 'music, streetwear, edge tech, design studios',
+  },
+  ochre: {
+    id: 'ochre',
+    name: 'Dijon Ochre',
+    description: 'Earthy, artisanal French mustard and golden ochre.',
+    hue: 85,
+    chroma: 0.14,
+    lightness: 0.68,
+    hex: '#ca8a04',
+    category: 'unusual',
+    roles: 'publishing, culinary, museums, craft goods',
+  },
+  espresso: {
+    id: 'espresso',
+    name: 'Espresso Umber',
+    description: 'Warm roasted coffee and dark sepia umber.',
+    hue: 45,
+    chroma: 0.05,
+    lightness: 0.25,
+    hex: '#2d1f18',
+    category: 'unusual',
+    roles: 'coffee, leather, bespoke craft, architecture',
+  },
+  mauve: {
+    id: 'mauve',
+    name: 'Dusty Mauve',
+    description: 'Understated thistle, muted rose quartz, and heather.',
+    hue: 340,
+    chroma: 0.08,
+    lightness: 0.62,
+    hex: '#9d7589',
+    category: 'unusual',
+    roles: 'skincare, wellness, calm technology, editorial',
+  },
+  slateCopper: {
+    id: 'slateCopper',
+    name: 'Slate Copper',
+    description: 'Burnished metallic copper and warm architectural patina.',
+    hue: 40,
+    chroma: 0.11,
+    lightness: 0.55,
+    hex: '#b45309',
+    category: 'unusual',
+    roles: 'industrial design, hardware, acoustics',
+  },
+};
+
+/**
+ * Generate a complete dual-theme design system for any characterful brand palette.
+ */
+export function getCharacterfulPalette(key) {
+  const meta = CHARACTERFUL_BRAND_PALETTES[key] || CHARACTERFUL_BRAND_PALETTES.amber;
+  const ramp = generateLuminanceRamp(meta.hue, meta.chroma);
+  const neutrals = generateHueNeutrals(meta.hue);
+  return {
+    ...meta,
+    ramp,
+    neutrals,
+  };
+}
+
+export { isWhitelistedBrandColor, WHITELISTED_BRAND_HEXES } from '../detector/shared/color.mjs';
+
