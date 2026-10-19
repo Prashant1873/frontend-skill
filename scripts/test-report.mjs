@@ -56,7 +56,7 @@ function parseArgs(argv) {
 
 function findScannableFiles(targetDir) {
   const scannable = [];
-  const validExts = new Set(['.html', '.htm', '.css', '.jsx', '.tsx', '.vue', '.svelte']);
+  const validExts = new Set(['.html', '.htm', '.css', '.scss', '.jsx', '.tsx', '.js', '.ts', '.vue', '.svelte', '.astro']);
 
   function walk(current) {
     if (!fs.existsSync(current)) return;
@@ -123,7 +123,7 @@ async function runAntipatternScan(targetPath) {
       for (const f of fileFindings) {
         findings.push({
           ...f,
-          file: path.relative(REPO_ROOT, file),
+          file: path.relative(process.cwd(), file),
         });
       }
     } catch (_) {}
@@ -340,7 +340,7 @@ Options:
     process.exit(0);
   }
 
-  const targetPath = flags.target ? path.resolve(flags.target) : path.join(REPO_ROOT, 'test', 'fixtures');
+  const targetPath = flags.target ? path.resolve(flags.target) : (process.cwd() === REPO_ROOT ? path.join(REPO_ROOT, 'test', 'fixtures') : process.cwd());
 
   if (!flags.quiet && !flags.json) {
     console.log('Initiating comprehensive master test, audit, critique and antipattern synthesis...\n');
@@ -351,7 +351,7 @@ Options:
   const testSummary = await runMasterTestSuites();
 
   // 2. Run Antipattern Scan
-  if (!flags.quiet && !flags.json) console.log(`→ Scanning antipatterns & slop rules on "${path.relative(REPO_ROOT, targetPath)}"...`);
+  if (!flags.quiet && !flags.json) console.log(`→ Scanning antipatterns & slop rules on "${path.relative(process.cwd(), targetPath) || '.'}"...`);
   const antipatternSummary = await runAntipatternScan(targetPath);
 
   // 3. Run Cognitive UX Scan
@@ -363,7 +363,7 @@ Options:
 
   const reportData = {
     timestamp: new Date().toISOString(),
-    target: path.relative(REPO_ROOT, targetPath) || '.',
+    target: path.relative(process.cwd(), targetPath) || '.',
     testSummary,
     antipatternSummary,
     uxSummary,

@@ -70,15 +70,17 @@ function parseArgs(args) {
   return options;
 }
 
+const SCANNABLE_MARKUP_EXTENSIONS = new Set(['.html', '.htm', '.jsx', '.tsx', '.vue', '.svelte']);
+
 /**
- * Finds all HTML files recursively in a directory.
+ * Finds all HTML/JSX/TSX/Vue/Svelte markup files recursively in a directory.
  */
-function findHtmlFiles(dirPath, files = []) {
+function findMarkupFiles(dirPath, files = []) {
   if (!fs.existsSync(dirPath)) return files;
   const stat = fs.statSync(dirPath);
 
   if (stat.isFile()) {
-    if (dirPath.endsWith('.html') || dirPath.endsWith('.htm')) {
+    if (SCANNABLE_MARKUP_EXTENSIONS.has(path.extname(dirPath).toLowerCase())) {
       files.push(dirPath);
     }
     return files;
@@ -89,8 +91,8 @@ function findHtmlFiles(dirPath, files = []) {
     if (entry.name === 'node_modules' || entry.name.startsWith('.')) continue;
     const fullPath = path.join(dirPath, entry.name);
     if (entry.isDirectory()) {
-      findHtmlFiles(fullPath, files);
-    } else if (entry.isFile() && (entry.name.endsWith('.html') || entry.name.endsWith('.htm'))) {
+      findMarkupFiles(fullPath, files);
+    } else if (entry.isFile() && SCANNABLE_MARKUP_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) {
       files.push(fullPath);
     }
   }
@@ -114,9 +116,9 @@ export function runUxScanner(argv = process.argv.slice(2)) {
     return { exitCode: 1 };
   }
 
-  const htmlFiles = findHtmlFiles(resolvedTarget);
-  if (htmlFiles.length === 0) {
-    console.log(`No HTML files found to scan in: ${targetPath}`);
+  const markupFiles = findMarkupFiles(resolvedTarget);
+  if (markupFiles.length === 0) {
+    console.log(`No scannable markup files (.html, .htm, .jsx, .tsx, .vue, .svelte) found in: ${targetPath}`);
     return { exitCode: 0, results: [] };
   }
 
@@ -124,7 +126,7 @@ export function runUxScanner(argv = process.argv.slice(2)) {
   let highestScore = 0;
   let totalViolations = 0;
 
-  for (const file of htmlFiles) {
+  for (const file of markupFiles) {
     const content = fs.readFileSync(file, 'utf8');
     const report = scanMarkup(content, { file });
     report.file = path.relative(process.cwd(), file);
@@ -142,7 +144,7 @@ export function runUxScanner(argv = process.argv.slice(2)) {
       meta: {
         scanner: 'Cognitive UX Laws Audit & Friction Scanner',
         timestamp: new Date().toISOString(),
-        scannedCount: htmlFiles.length,
+        scannedCount: markupFiles.length,
         highestScore,
         maxFrictionThreshold: opts.maxFriction,
       },
@@ -176,7 +178,7 @@ export function runUxScanner(argv = process.argv.slice(2)) {
   }
 
   // Standard Text Output
-  console.log(`\nCognitive UX Laws Audit Report (${htmlFiles.length} file(s) scanned)\n`);
+  console.log(`\nCognitive UX Laws Audit Report (${markupFiles.length} file(s) scanned)\n`);
 
   for (const res of results) {
     console.log(`------------------------------------------------------------------------`);
@@ -198,7 +200,7 @@ export function runUxScanner(argv = process.argv.slice(2)) {
   }
 
   console.log(`\n========================================================================`);
-  console.log(`Summary: Highest CFI = ${highestScore}/100 across ${htmlFiles.length} file(s)`);
+  console.log(`Summary: Highest CFI = ${highestScore}/100 across ${markupFiles.length} file(s)`);
 
   let exitCode = 0;
   if (opts.maxFriction !== null && highestScore > opts.maxFriction) {

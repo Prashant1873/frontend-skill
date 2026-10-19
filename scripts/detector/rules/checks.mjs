@@ -1989,15 +1989,17 @@ function checkHtmlPatterns(html, corpora) {
   }
 
   // Monochromatic tinted pill badge slop
-  const monoPillRe = /<(?:span|div|p|a|button)\b[^>]*class=["']([^"']*\b(?:rounded-full|rounded-3xl|rounded-2xl|pill|badge)\b[^"']*)["'][^>]*>/gi;
+  const monoPillRe = /<(?:span|div|p|a|button)\b[^>]*\bclass(?:Name)?=["'`]([^"'`]*\b(?:rounded-full|rounded-3xl|rounded-2xl|pill|badge)\b[^"'`]*)["'`][^>]*>/gi;
   let mpm;
   while ((mpm = monoPillRe.exec(html)) !== null) {
     const cls = mpm[1];
     const bgM = cls.match(/\bbg-([a-z]+)-(?:50|100|200|500\/[0-9]+|600\/[0-9]+|900\/[0-9]+|950(?:\/[0-9]+)?)\b/);
     if (bgM) {
       const family = bgM[1];
-      const hasText = new RegExp(`\\btext-${family}-(?:400|500|600|700|800|900)\\b`).test(cls);
-      const hasBorder = new RegExp(`\\bborder-${family}-(?:200|300|400|500|600|[0-9]+\\/[0-9]+)\\b`).test(cls);
+      const contextSlice = html.slice(mpm.index, Math.min(html.length, mpm.index + 400));
+      const searchTarget = contextSlice || cls;
+      const hasText = new RegExp(`\\btext-${family}-(?:400|500|600|700|800|900)\\b`).test(searchTarget);
+      const hasBorder = new RegExp(`\\bborder-${family}-(?:200|300|400|500|600|[0-9]+\\/[0-9]+)\\b`).test(searchTarget);
       if (hasText && hasBorder) {
         findings.push({
           id: 'monochromatic-pill-slop',

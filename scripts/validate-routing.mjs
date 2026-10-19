@@ -125,12 +125,26 @@ function extractFrontmatter(content) {
   if (!match) return null;
   const raw = match[1];
   const fields = {};
+  let currentKey = null;
   for (const line of raw.split(/\r?\n/)) {
+    if (/^\s+/.test(line) && currentKey) {
+      const continuation = line.trim();
+      if (continuation) {
+        fields[currentKey] = fields[currentKey] ? `${fields[currentKey]} ${continuation}` : continuation;
+      }
+      continue;
+    }
     const colonIdx = line.indexOf(':');
     if (colonIdx !== -1) {
       const key = line.slice(0, colonIdx).trim();
-      const val = line.slice(colonIdx + 1).trim().replace(/^['"]|['"]$/g, '');
+      let val = line.slice(colonIdx + 1).trim().replace(/^['"]|['"]$/g, '');
+      if (val === '>-' || val === '>' || val === '|' || val === '|-') {
+        val = '';
+      }
       fields[key] = val;
+      currentKey = key;
+    } else {
+      currentKey = null;
     }
   }
   return fields;

@@ -146,6 +146,30 @@ async function main() {
     suite.assertHasFinding(darkFindings, 'monochromatic-pill-slop', 'dark mode pill slop');
   });
 
+  await suite.run('Unit: detectText catches monochromatic-pill-slop in React TSX (className and nested children)', () => {
+    const tsxSingle = '<span className="rounded-full bg-blue-50 border border-blue-200 text-blue-700">Dedicated</span>';
+    const tsxNested = '<div className="rounded-full bg-blue-50 border border-blue-200">\n  <span className="text-blue-700">Dedicated</span>\n</div>';
+    const singleFindings = detectText(tsxSingle, 'Badge.tsx');
+    const nestedFindings = detectText(tsxNested, 'Badge.tsx');
+    suite.assertHasFinding(singleFindings, 'monochromatic-pill-slop', 'TSX single line pill slop');
+    suite.assertHasFinding(nestedFindings, 'monochromatic-pill-slop', 'TSX nested child pill slop');
+  });
+
+  await suite.run('Unit: detectText catches emoji-in-ui in buttons and badges', () => {
+    const btnEmoji = '<button className="px-4 py-2">🚀 Launch Platform</button>';
+    const badgeEmoji = '<span className="badge">✨ AI Powered</span>';
+    const btnFindings = detectText(btnEmoji, 'Button.tsx');
+    const badgeFindings = detectText(badgeEmoji, 'Hero.tsx');
+    suite.assertHasFinding(btnFindings, 'emoji-in-ui', 'button with raw emoji');
+    suite.assertHasFinding(badgeFindings, 'emoji-in-ui', 'badge with raw emoji');
+  });
+
+  await suite.run('Unit: detectText catches monochromatic pill slop in CSS regardless of property order', () => {
+    const css = '.pill-slop { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 9999px; }';
+    const findings = detectText(css, 'styles.css');
+    suite.assertHasFinding(findings, 'monochromatic-pill-slop', 'CSS pill slop with reversed property order');
+  });
+
   await suite.run('Unit: detectText catches button-missing-active-squish', () => {
     const css = '.btn { color: #fff; background: #000; } .btn:hover { background: #222; }';
     const findings = detectText(css, 'button.css');

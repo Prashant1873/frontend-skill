@@ -499,33 +499,60 @@ function isNeutralBorderColor(str) {
 
 const REGEX_MATCHERS = [
   // --- Generic eyebrow / pill badge ---
-  { id: 'generic-pill-badge', regex: /<(?:span|div|p|a)\b[^>]*class=["'][^"']*\b(?:pill|badge|eyebrow|kicker)(?:-badge|-chip|-pill)?\b[^"']*["'][^>]*>\s*(?:[A-Z0-9_\-\s]+)\s*<\/(?:span|div|p|a)>/gi,
-    test: (m, line) => {
+  { id: 'generic-pill-badge', regex: /<(?:span|div|p|a)\b[^>]*\bclass(?:Name)?=["'`](?:[^"'`]*\b)?(?:pill|badge|eyebrow|kicker)(?:-badge|-chip|-pill)?\b[^"'`]*["'`][^>]*>\s*(?:[A-Z0-9_\-\s]+)\s*<\/(?:span|div|p|a)>/gi,
+    test: (m, context) => {
       const inner = m[0].replace(/<[^>]+>/g, '').trim();
       return /\b(?:WELCOME|NEW(?: FEATURE)?|FEATURE|BETA|ANNOUNCEMENT|UPDATES?|COMING SOON|PRO|AI POWERED|AI|LAUNCH)\b/i.test(inner);
     },
     fmt: (m) => `generic pill badge: "${m[0].replace(/<[^>]+>/g, '').trim()}"` },
-  { id: 'generic-pill-badge', regex: /\bclass=["'][^"']*\b(?:pill-badge|hero-badge|eyebrow-pill|kicker-badge)\b[^"']*["']/gi,
+  { id: 'generic-pill-badge', regex: /\bclass(?:Name)?=["'`](?:[^"'`]*\b)?(?:pill-badge|hero-badge|eyebrow-pill|kicker-badge)\b[^"'`]*["'`]/gi,
     test: () => true,
     fmt: (m) => m[0] },
   // --- Monochromatic same-color tinted pill badge slop ---
   { id: 'monochromatic-pill-slop',
-    regex: /<(?:span|div|p|a|button)\b[^>]*class=["']([^"']+)["'][^>]*>/gi,
-    test: (m) => {
-      const cls = m[1];
+    regex: /(?:<(?:span|div|p|a|button)\b[^>]*\bclass(?:Name)?=["'`]([^"'`]+)["'`][^>]*>|\bclass(?:Name)?=["'`]([^"'`]*\b(?:rounded-full|rounded-3xl|rounded-2xl|pill|badge|chip)\b[^"'`]+)["'`])/gi,
+    test: (m, context) => {
+      const cls = m[1] || m[2] || m[0];
       if (!/\b(?:rounded-full|rounded-3xl|rounded-2xl|pill|badge|chip)\b/i.test(cls)) return false;
       const bgM = cls.match(/\bbg-([a-z]+)-(?:50|100|200|500\/[0-9]+|600\/[0-9]+|900\/[0-9]+|950(?:\/[0-9]+)?)\b/);
       if (!bgM) return false;
       const family = bgM[1];
-      const hasText = new RegExp(`\\btext-${family}-(?:400|500|600|700|800|900)\\b`).test(cls);
-      const hasBorder = new RegExp(`\\bborder-${family}-(?:200|300|400|500|600|[0-9]+\\/[0-9]+)\\b`).test(cls);
+      const searchTarget = (typeof context === 'string' ? context : '') + ' ' + cls;
+      const hasText = new RegExp(`\\btext-${family}-(?:400|500|600|700|800|900)\\b`).test(searchTarget);
+      const hasBorder = new RegExp(`\\bborder-${family}-(?:200|300|400|500|600|[0-9]+\\/[0-9]+)\\b`).test(searchTarget);
       return hasText && hasBorder;
     },
     fmt: (m) => `Monochromatic same-color pill badge: ${m[0].slice(0, 50)}...` },
   { id: 'monochromatic-pill-slop',
-    regex: /border-radius:\s*(?:9999px|99px|50px|2rem|100px|50%)[^;{}]*;\s*(?:[^;{}]*;\s*)*background(?:-color)?:\s*[^;{}]*;\s*(?:[^;{}]*;\s*)*border:\s*[^;{}]*;\s*(?:[^;{}]*;\s*)*color:\s*[^;{}]*/gi,
-    test: (m) => /#(?:e0e7ff|3730a3|dbeafe|1e40af|ede9fe|5b21b6|fce7f3|9d174d|d1fae5|065f46)/i.test(m[0]) || /\b(?:rgba?\([^)]+\))\b/i.test(m[0]),
-    fmt: () => 'Monochromatic pill badge slop (same-hue bg, border, and text)' },
+    regex: /(?:border-radius:\s*(?:9999px|99px|50px|2rem|100px|50%|999rem)[^;}]*;|style=["'][^"']*border-radius:\s*(?:9999px|99px|50px|2rem|100px|50%|999rem)[^"']*["'])/gi,
+    test: (m, context) => {
+      const target = (typeof context === 'string' ? context : '') + ' ' + m[0];
+      const hasBg = /\bbackground(?:-color)?\s*:\s*([^;!}]+)/i.test(target);
+      const colorM = target.match(/(?:^|[^-])color\s*:\s*([^;!}]+)/i);
+      if (!hasBg || !colorM) return false;
+      const colorVal = colorM[1].trim().toLowerCase();
+      // Exempt white and neutral high-contrast button text
+      if (/^#(?:fff|ffffff|f8fafc|f1f5f9|f3f4f6|e2e8f0|000|000000|0f172a)\b|^rgba?\(\s*(?:255|0)\s*,\s*(?:255|0)\s*,\s*(?:255|0)|^white$|^black$/i.test(colorVal)) {
+        return false;
+      }
+      // Check for monochromatic tint families (light/dark bg with matching colored text/border)
+      const isTintedSlop = /#(?:e0e7ff|3730a3|4338ca|dbeafe|1e40af|1d4ed8|2563eb|eff6ff|bfdbfe|ede9fe|5b21b6|6d28d9|fce7f3|9d174d|d1fae5|065f46|ecfdf5|a7f3d0|047857|fef2f2|b91c1c|f0fdfa|0f766e|f0f9ff|0369a1|ecfeff|0e7490)/i.test(target);
+      return isTintedSlop;
+    },
+    fmt: () => 'Monochromatic pill badge slop (same-hue bg, border, and text in CSS)' },
+  // --- Raw emoji in UI chrome ---
+  { id: 'emoji-in-ui',
+    regex: /<(?:button|a|span|div|p)\b[^>]*\b(?:class(?:Name)?=["'`](?:[^"'`]*\b)?(?:badge|chip|pill|btn|icon-tile|tag|label)\b[^"'`]*["'`]|role=["']button["'])[^>]*>[^<]*([\p{Extended_Pictographic}])/gu,
+    test: () => true,
+    fmt: (m) => `Raw emoji "${m[1]}" in UI control — use dedicated SVG icon instead` },
+  { id: 'emoji-in-ui',
+    regex: /<button\b(?![^>]*\b(?:badge|chip|pill|btn|icon-tile)\b)[^>]*>[^<]*([\p{Extended_Pictographic}])/gu,
+    test: () => true,
+    fmt: (m) => `Raw emoji "${m[1]}" in <button> — use dedicated SVG icon instead` },
+  { id: 'emoji-in-ui',
+    regex: /<(?:span|div)\b[^>]*\bclass(?:Name)?=["'`](?:[^"'`]*\b)?(?:badge|chip|pill|tag)\b[^"'`]*["'`][^>]*>\s*([\p{Extended_Pictographic}])/gu,
+    test: () => true,
+    fmt: (m) => `Raw emoji "${m[1]}" in badge/pill — use dedicated SVG icon instead` },
   // --- Side-tab ---
   { id: 'side-tab', regex: /\bborder-[lrse]-(\d+)\b/g,
     test: (m, line) => { const n = +m[1]; return hasRounded(line) ? n >= 2 : n >= 4; },
@@ -1108,10 +1135,8 @@ function runRegexMatchers(lines, filePath, lineOffset = 0, blockContext = null, 
         matcher.regex.lastIndex = 0;
         let m;
         while ((m = matcher.regex.exec(line)) !== null) {
-          // For extracted blocks, use nearby lines as context for multi-line CSS patterns
-          const context = blockContext
-            ? lines.slice(Math.max(0, i - 3), Math.min(lines.length, i + 4)).join(' ')
-            : line;
+          // Provide nearby lines as context for multi-line CSS, nested JSX/HTML children, and multi-line attributes
+          const context = lines.slice(Math.max(0, i - 2), Math.min(lines.length, i + 6)).join(' ');
           if (matcher.test(m, context)) {
             findings.push(finding(matcher.id, filePath, matcher.fmt(m, context), i + 1 + lineOffset));
           }
@@ -1134,10 +1159,8 @@ function runRegexMatchers(lines, filePath, lineOffset = 0, blockContext = null, 
         matcher.regex.lastIndex = 0;
         let m;
         while ((m = matcher.regex.exec(line)) !== null) {
-          // For extracted blocks, use nearby lines as context for multi-line CSS patterns
-          const context = blockContext
-            ? lines.slice(Math.max(0, i - 3), Math.min(lines.length, i + 4)).join(' ')
-            : line;
+          // Provide nearby lines as context for multi-line CSS, nested JSX/HTML children, and multi-line attributes
+          const context = lines.slice(Math.max(0, i - 2), Math.min(lines.length, i + 6)).join(' ');
           if (matcher.test(m, context)) {
             matches.push(finding(matcher.id, filePath, matcher.fmt(m, context), i + 1 + lineOffset));
           }

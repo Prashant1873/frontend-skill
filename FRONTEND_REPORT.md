@@ -1,6 +1,6 @@
 # Frontend Quality, Test, Audit & Critique Synthesis Report
 
-> Generated on **2026-10-19T10:35:56.652Z** | Target: `test\fixtures` | Evaluator: **Unified Frontend Skill Engine**
+> Generated on **2026-10-19T12:29:00.665Z** | Target: `test\fixtures` | Evaluator: **Unified Frontend Skill Engine**
 
 ---
 
@@ -8,7 +8,7 @@
 
 | Overall Grade | Quality Index | Test Suites Passed | Blocking Antipatterns | Avg Cognitive Friction |
 |:---:|:---:|:---:|:---:|:---:|
-| **F** | **40 / 100** | **20 / 20** | **26** | **7 / 100** |
+| **F** | **40 / 100** | **20 / 20** | **27** | **7 / 100** |
 
 ### Score Breakdown:
 - **Master Verification Suites**: `40/40` (20 automated domain verification suites)
@@ -19,36 +19,36 @@
 
 ## 🧪 Section 1: Master Verification Test Suites
 
-Total Duration: **26296ms** | Status: **✓ ALL PASSING**
+Total Duration: **32717ms** | Status: **✓ ALL PASSING**
 
 | # | Verification Suite | Status | Duration | Scope & Description |
 |---|---|:---:|:---:|---|
-| 1 | **Playbook Integrity** | `✓ PASS` | 908ms | Structure, headings, and links across reference playbooks |
-| 2 | **SKILL.md Routing** | `✓ PASS` | 913ms | Command routing targets and cross-references |
-| 3 | **Antipattern Detector** | `✓ PASS` | 1108ms | Unit and fixture tests for UI antipattern rules |
-| 4 | **Curated Typography & Fallbacks** | `✓ PASS` | 797ms | Curated font archetype catalog and zero-CLS metric fallbacks |
-| 5 | **Perceptual Color Engine** | `✓ PASS` | 845ms | OKLCH conversions, gamut clipping, and WCAG/APCA contrast math |
-| 6 | **Component Ingestion & Registry** | `✓ PASS` | 1253ms | HTML/CSS sanitization, token mapping, and registry integrity |
-| 7 | **Tactile Buttons Engine** | `✓ PASS` | 1387ms | Squish spring physics, geometry classes, and button tokens |
-| 8 | **Human Editorial Architecture** | `✓ PASS` | 839ms | Anti-pill rules, asymmetric editorial layouts, and hairline dividers |
-| 9 | **Asymmetric Bento Grids** | `✓ PASS` | 604ms | Responsive multi-span Bento grids and asymmetric layout rhythms |
-| 10 | **Natural Language Router** | `✓ PASS` | 522ms | Surgical intent routing, green-field consent, and agent directive consistency |
-| 11 | **Visual Sandbox & Test Bench** | `✓ PASS` | 1301ms | Local zero-dependency HTTP server, API endpoints, and sandbox UI |
-| 12 | **Multi-Variant Prototype Engine** | `✓ PASS` | 1636ms | PICKER.md spec, floating glass switcher, keyboard controls, and URL sync |
-| 13 | **Fluid Gestures & Spring Physics** | `✓ PASS` | 487ms | Apple spring physics solver, rubber-band curve, and pointer tracker |
-| 14 | **Viscoelastic Physics & Poisson Engine** | `✓ PASS` | 472ms | Stretch-and-squish trajectory math, Poisson volume squish, and WAAPI payload |
-| 15 | **Elastic Segmented Controls & Tabs** | `✓ PASS` | 661ms | 3-tier DOM hierarchy, WAAPI lifecycle, rapid click cancellation, and keyboard a11y |
-| 16 | **Buttons & Toggles Craft Perfection** | `✓ PASS` | 656ms | Concentric border radius math, optical icon/text centering, and toggle squish physics |
-| 17 | **Universal Design Token Compiler** | `✓ PASS` | 3265ms | Design token dictionary compilation, CSS, Tailwind v3/v4, DTCG, and SCSS |
-| 18 | **Cognitive UX Laws Scanner** | `✓ PASS` | 3404ms | Hick's, Fitts's, and Miller's laws cognitive friction audit |
-| 19 | **Doctor Automation** | `✓ PASS` | 4659ms | CLI exit codes, schema validation, and corruption tests |
-| 20 | **Repository Doctor Scan** | `✓ PASS` | 577ms | Active repository artifact health and drift check |
+| 1 | **Playbook Integrity** | `✓ PASS` | 1198ms | Structure, headings, and links across reference playbooks |
+| 2 | **SKILL.md Routing** | `✓ PASS` | 910ms | Command routing targets and cross-references |
+| 3 | **Antipattern Detector** | `✓ PASS` | 1150ms | Unit and fixture tests for UI antipattern rules |
+| 4 | **Curated Typography & Fallbacks** | `✓ PASS` | 1097ms | Curated font archetype catalog and zero-CLS metric fallbacks |
+| 5 | **Perceptual Color Engine** | `✓ PASS` | 808ms | OKLCH conversions, gamut clipping, and WCAG/APCA contrast math |
+| 6 | **Component Ingestion & Registry** | `✓ PASS` | 819ms | HTML/CSS sanitization, token mapping, and registry integrity |
+| 7 | **Tactile Buttons Engine** | `✓ PASS` | 786ms | Squish spring physics, geometry classes, and button tokens |
+| 8 | **Human Editorial Architecture** | `✓ PASS` | 800ms | Anti-pill rules, asymmetric editorial layouts, and hairline dividers |
+| 9 | **Asymmetric Bento Grids** | `✓ PASS` | 771ms | Responsive multi-span Bento grids and asymmetric layout rhythms |
+| 10 | **Natural Language Router** | `✓ PASS` | 793ms | Surgical intent routing, green-field consent, and agent directive consistency |
+| 11 | **Visual Sandbox & Test Bench** | `✓ PASS` | 1892ms | Local zero-dependency HTTP server, API endpoints, and sandbox UI |
+| 12 | **Multi-Variant Prototype Engine** | `✓ PASS` | 2320ms | PICKER.md spec, floating glass switcher, keyboard controls, and URL sync |
+| 13 | **Fluid Gestures & Spring Physics** | `✓ PASS` | 773ms | Apple spring physics solver, rubber-band curve, and pointer tracker |
+| 14 | **Viscoelastic Physics & Poisson Engine** | `✓ PASS` | 762ms | Stretch-and-squish trajectory math, Poisson volume squish, and WAAPI payload |
+| 15 | **Elastic Segmented Controls & Tabs** | `✓ PASS` | 724ms | 3-tier DOM hierarchy, WAAPI lifecycle, rapid click cancellation, and keyboard a11y |
+| 16 | **Buttons & Toggles Craft Perfection** | `✓ PASS` | 725ms | Concentric border radius math, optical icon/text centering, and toggle squish physics |
+| 17 | **Universal Design Token Compiler** | `✓ PASS` | 3805ms | Design token dictionary compilation, CSS, Tailwind v3/v4, DTCG, and SCSS |
+| 18 | **Cognitive UX Laws Scanner** | `✓ PASS` | 4407ms | Hick's, Fitts's, and Miller's laws cognitive friction audit |
+| 19 | **Doctor Automation** | `✓ PASS` | 7324ms | CLI exit codes, schema validation, and corruption tests |
+| 20 | **Repository Doctor Scan** | `✓ PASS` | 851ms | Active repository artifact health and drift check |
 
 ---
 
 ## 🛡️ Section 2: Antipattern & Anti-Slop Audit
 
-Scanned Files: **15** | Blocking Findings: **26** | Advisory Findings: **0**
+Scanned Files: **15** | Blocking Findings: **27** | Advisory Findings: **6**
 
 ### Blocking Antipattern Violations:
 | File | Rule ID | Category | Snippet / Evidence | Description |
@@ -69,6 +69,7 @@ Scanned Files: **15** | Blocking Findings: **26** | Advisory Findings: **0**
 | `test\fixtures\slop-eyebrow-pill.html` | `generic-pill-badge` | slop | `class="pill-badge"` | Floating pill chips, kicker badges ("FEATURE", "WELCOME", "NEW"), and tags above headings are generic AI templates. Use asymmetric editorial typography, inline markers, or integrate context directly into the headline. |
 | `test\fixtures\slop-eyebrow-pill.html` | `monochromatic-pill-slop` | slop | `Monochromatic same-color pill badge: <div class="rounded-full bg-blue-50 border border-...` | Pills and capsules combining rounded corners (rounded-full/9999px) with a light or faint tinted background, darker border, and matching text of the exact same color family (e.g. bg-blue-50 border-blue-200 text-blue-700 or dark-mode blue-on-blue tint) are the #1 tell of reflex AI slop. Strictly banned. Use innovative blocks: split-chamber badges, tactile inset micro-blocks, hairline specular glass pills, or asymmetric editorial markers. |
 | `test\fixtures\slop-eyebrow-pill.html` | `monochromatic-pill-slop` | slop | `Monochromatic same-color pill badge: <div class="rounded-full bg-blue-950/40 border bor...` | Pills and capsules combining rounded corners (rounded-full/9999px) with a light or faint tinted background, darker border, and matching text of the exact same color family (e.g. bg-blue-50 border-blue-200 text-blue-700 or dark-mode blue-on-blue tint) are the #1 tell of reflex AI slop. Strictly banned. Use innovative blocks: split-chamber badges, tactile inset micro-blocks, hairline specular glass pills, or asymmetric editorial markers. |
+| `test\fixtures\slop-eyebrow-pill.html` | `monochromatic-pill-slop` | slop | `Monochromatic pill badge slop (same-hue bg, border, and text in CSS)` | Pills and capsules combining rounded corners (rounded-full/9999px) with a light or faint tinted background, darker border, and matching text of the exact same color family (e.g. bg-blue-50 border-blue-200 text-blue-700 or dark-mode blue-on-blue tint) are the #1 tell of reflex AI slop. Strictly banned. Use innovative blocks: split-chamber badges, tactile inset micro-blocks, hairline specular glass pills, or asymmetric editorial markers. |
 | `test\fixtures\slop-gestures.html` | `gesture-linear-transition` | slop | `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,6 +94,16 @@ Scanned Files: **15** | Blocking Findings: **26** | Advisory Findings: **0**
 | `test\fixtures\slop-typography.html` | `overused-font` | slop | `font-family: 'Inter` | Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality. |
 | `test\fixtures\slop-typography.html` | `overused-font` | slop | `font-family: 'Geist` | Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality. |
 | `test\fixtures\slop-typography.html` | `overused-font` | slop | `font-family: 'Roboto` | Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality. |
+
+### Advisory Craft Recommendations (Non-Blocking):
+| File | Rule ID | Category | Snippet / Recommendation | Description |
+|---|---|:---:|---|---|
+| `test\fixtures\ux-friction-clean.html` | `emoji-in-ui` | slop | `Raw emoji "🗑" in <button> — use dedicated SVG icon instead` | Raw emoji characters (🚀, ✨, 🔥, 💡, etc.) used as icons, buttons, or badge visuals render inconsistently across operating systems and signal low-effort AI slop. Use sharp, scalable SVG icons instead (e.g. Lucide, Radix, Heroicons). |
+| `test\fixtures\ux-friction-clean.html` | `emoji-in-ui` | slop | `Raw emoji "✏" in <button> — use dedicated SVG icon instead` | Raw emoji characters (🚀, ✨, 🔥, 💡, etc.) used as icons, buttons, or badge visuals render inconsistently across operating systems and signal low-effort AI slop. Use sharp, scalable SVG icons instead (e.g. Lucide, Radix, Heroicons). |
+| `test\fixtures\ux-friction-clean.html` | `emoji-in-ui` | slop | `Raw emoji "📌" in <button> — use dedicated SVG icon instead` | Raw emoji characters (🚀, ✨, 🔥, 💡, etc.) used as icons, buttons, or badge visuals render inconsistently across operating systems and signal low-effort AI slop. Use sharp, scalable SVG icons instead (e.g. Lucide, Radix, Heroicons). |
+| `test\fixtures\ux-friction-high.html` | `emoji-in-ui` | slop | `Raw emoji "🗑" in <button> — use dedicated SVG icon instead` | Raw emoji characters (🚀, ✨, 🔥, 💡, etc.) used as icons, buttons, or badge visuals render inconsistently across operating systems and signal low-effort AI slop. Use sharp, scalable SVG icons instead (e.g. Lucide, Radix, Heroicons). |
+| `test\fixtures\ux-friction-high.html` | `emoji-in-ui` | slop | `Raw emoji "✏" in <button> — use dedicated SVG icon instead` | Raw emoji characters (🚀, ✨, 🔥, 💡, etc.) used as icons, buttons, or badge visuals render inconsistently across operating systems and signal low-effort AI slop. Use sharp, scalable SVG icons instead (e.g. Lucide, Radix, Heroicons). |
+| `test\fixtures\ux-friction-high.html` | `emoji-in-ui` | slop | `Raw emoji "📌" in <button> — use dedicated SVG icon instead` | Raw emoji characters (🚀, ✨, 🔥, 💡, etc.) used as icons, buttons, or badge visuals render inconsistently across operating systems and signal low-effort AI slop. Use sharp, scalable SVG icons instead (e.g. Lucide, Radix, Heroicons). |
 
 ---
 
